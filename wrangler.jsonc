@@ -1,0 +1,58 @@
+{
+  // Cloudflare Workers with static assets. Not Pages — Pages is being folded
+  // into Workers, so this is the current target.
+  //
+  // The Astro build stays fully static and lands in ./dist. The Worker in
+  // worker/index.ts runs only for /api/* and hands everything else to the
+  // assets binding.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "sansbev",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-05-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // Astro is configured with trailingSlash: 'never' and build.format: 'file',
+    // so /about resolves to /about.html.
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page",
+    // Assets normally win before the Worker runs. These paths are not assets,
+    // so they must reach the Worker instead of returning the 404 page.
+    "run_worker_first": ["/api/*"]
+  },
+
+  "observability": {
+    "enabled": true
+  }
+
+  // ---------------------------------------------------------------------------
+  // SECRETS — never put these in this file. Set them once with:
+  //   npx wrangler secret put RESEND_API_KEY
+  //   npx wrangler secret put NOTIFY_FROM     e.g. site@sansbev.com
+  //   npx wrangler secret put NOTIFY_TO       where inquiries should land
+  //
+  // Without them the Worker falls back to the console provider and submissions
+  // are logged, not delivered. See worker/submissions.ts.
+  //
+  // For local dev, put the same keys in .dev.vars (already gitignored).
+  // ---------------------------------------------------------------------------
+
+  // ---------------------------------------------------------------------------
+  // OPTIONAL: Cloudflare-side rate limiting. The Worker falls back to an
+  // in-memory limiter when this is absent, which is per-isolate and leaky.
+  // Uncomment to enforce properly. No visitor data is stored either way.
+  //
+  // "unsafe": {
+  //   "bindings": [
+  //     {
+  //       "name": "RATE_LIMITER",
+  //       "type": "ratelimit",
+  //       "namespace_id": "1001",
+  //       "simple": { "limit": 5, "period": 60 }
+  //     }
+  //   ]
+  // }
+  // ---------------------------------------------------------------------------
+}

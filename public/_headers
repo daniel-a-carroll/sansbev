@@ -1,0 +1,16 @@
+# Cache headers for Cloudflare Workers static assets.
+
+# Astro fingerprints everything in /_astro/, so it can be cached forever.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# The font filename is stable and the file rarely changes; a year is fine and
+# it is the only render-blocking asset on the site.
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML must revalidate so a content change goes live on the next request.
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin

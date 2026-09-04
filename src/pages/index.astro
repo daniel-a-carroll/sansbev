@@ -1,18 +1,24 @@
 ---
 /**
- * STAGE 2 SHELL. Structure only.
- *
- * This page exists to exercise the layout, tokens, and placeholder system so
- * they can be reviewed in a browser. Real home page content — brand story,
- * product introduction, email capture — is stage 3, and the capture form is
- * stage 4. The markup here is scaffolding, not final composition.
+ * Home. Consumer-facing, with the trade path present in the hero rather than
+ * buried at the bottom — the layout admitting who the site is actually for.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Asset from '../components/Asset.astro';
+import JsonLd from '../components/JsonLd.astro';
+import SubscribeForm from '../components/forms/SubscribeForm.astro';
 import { copy } from '../data/copy';
+import { claims } from '../data/claims';
+import { organizationSchema } from '../lib/schema';
+
+// Unconfirmed claims never render. See src/data/claims.ts.
+const composition = claims.compositionPoints.filter((p) => p.confirmed);
+const absence = claims.absencePoints.filter((p) => p.confirmed);
 ---
 
 <BaseLayout title={copy.home.seo.title} description={copy.home.seo.description}>
+  <JsonLd schema={organizationSchema()} />
+
   <section class="hero">
     <div class="container grid hero__inner">
       <div class="hero__text">
@@ -24,8 +30,6 @@ import { copy } from '../data/copy';
       </div>
 
       <div class="hero__figure">
-        <!-- The one orchestrated motion moment on the site: this field settles
-             once on load. Collapsed entirely by prefers-reduced-motion. -->
         <div class="hero__field" aria-hidden="true"></div>
         <Asset
           slot="home-hero-can"
@@ -38,14 +42,47 @@ import { copy } from '../data/copy';
   </section>
 
   <section class="section">
+    <div class="container grid">
+      <div class="hero__story prose">
+        {copy.home.storyHeading && <h2>{copy.home.storyHeading}</h2>}
+        {copy.home.storyBody.map((p) => <p>{p}</p>)}
+      </div>
+
+      {
+        (composition.length > 0 || absence.length > 0) && (
+          <div class="hero__facts">
+            <h2 class="visually-hidden">What's in it</h2>
+            <ul class="facts">
+              {composition.map((p) => (
+                <li>
+                  <span class="facts__label">{p.label}</span>
+                  {p.detail && <span class="caption">{p.detail}</span>}
+                </li>
+              ))}
+              {absence.map((p) => (
+                <li><span class="facts__label">{p.label}</span></li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="section">
     <div class="container">
-      <p class="caption">
-        Stage 2 shell — layout, tokens, and the asset placeholder system.
-        Page content is stage 3.
-      </p>
+      <h2>{copy.home.emailCaptureHeading}</h2>
+      {copy.home.emailCaptureBody && (
+        <p class="prose capture__body">{copy.home.emailCaptureBody}</p>
+      )}
+      <SubscribeForm id="home-subscribe" />
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  import '../scripts/forms';
+</script>
 
 <style>
   .hero {
@@ -97,18 +134,42 @@ import { copy } from '../data/copy';
   }
 
   @keyframes field-settle {
-    from {
-      transform: scaleY(0);
-    }
-    to {
-      transform: scaleY(1);
-    }
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero__field {
-      animation: none;
-    }
+    .hero__field { animation: none; }
+  }
+
+  .hero__story {
+    grid-column: 1 / span 6;
+  }
+
+  .hero__facts {
+    grid-column: 8 / span 5;
+  }
+
+  .facts {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .facts li {
+    display: grid;
+    gap: var(--space-3xs);
+    padding-block: var(--space-xs);
+    border-block-end: var(--rule);
+  }
+
+  .facts__label {
+    font-weight: var(--font-weight-medium);
+  }
+
+  .capture__body {
+    margin-block: var(--space-2xs) var(--space-md);
+    color: var(--color-ink-muted);
   }
 
   @media (max-width: 48rem) {

@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Page not found"
+  description="That page does not exist."
+  noindex={true}
+>
+  <section class="section">
+    <div class="container prose">
+      <h1>Page not found</h1>
+      <p>That page does not exist. Try the <a href="/">homepage</a> or
+        <a href="/product">the product range</a>.</p>
+    </div>
+  </section>
+</BaseLayout>

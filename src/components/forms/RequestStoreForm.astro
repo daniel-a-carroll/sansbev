@@ -1,0 +1,53 @@
+---
+/**
+ * "Request SansBev at your store." Same rationale as the email capture: this
+ * is demand data for buyer conversations, not a suggestion box.
+ */
+import FormShell from './FormShell.astro';
+import Field from './Field.astro';
+
+interface Props {
+  id?: string;
+}
+
+const { id = 'request-store' } = Astro.props;
+---
+
+<FormShell
+  id={id}
+  action="/api/request-store"
+  submitLabel="Send request"
+  successHeading="Request received"
+  successBody="Thanks — this genuinely helps. We share requests with buyers when we pitch a store."
+>
+  <Field formId={id} name="storeName" label="Store name" required />
+  <Field formId={id} name="city" label="City" required autocomplete="address-level2" />
+  <Field
+    formId={id}
+    name="state"
+    label="State"
+    required
+    maxlength={2}
+    autocomplete="address-level1"
+    placeholder="CO"
+  />
+  <Field
+    formId={id}
+    name="zip"
+    label="ZIP code"
+    required
+    autocomplete="postal-code"
+    inputmode="numeric"
+    pattern="[0-9]{5}"
+    maxlength={5}
+  />
+  <Field
+    formId={id}
+    name="email"
+    label="Your email"
+    type="email"
+    autocomplete="email"
+    inputmode="email"
+    hint="Only if you want to hear when it lands."
+  />
+</FormShell>

@@ -21,6 +21,18 @@ const siteSchema = z.object({
     nameIsFinal: z.boolean().default(false),
   }),
 
+  /**
+   * THE LAUNCH SWITCH.
+   *
+   * While false, every page emits <meta name="robots" content="noindex,
+   * nofollow"> and robots.txt disallows everything. This is what keeps Google
+   * from indexing placeholder copy, which is slow and annoying to undo.
+   *
+   * Flip to true only when the site is genuinely ready to be found. Nothing
+   * else in the codebase needs to change.
+   */
+  launched: z.boolean().default(false),
+
   contact: z.object({
     trade: z.string().email().optional(),
     general: z.string().email().optional(),
@@ -63,6 +75,9 @@ export const site = siteSchema.parse({
     domain: 'https://sansbev.com',
     nameIsFinal: false,
   },
+
+  // Pre-launch: the whole site is noindex until this is true. See docs/EDITING.md.
+  launched: false,
 
   contact: {
     trade: undefined, // [[PLACEHOLDER — trade/wholesale inquiry address]]

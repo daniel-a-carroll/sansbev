@@ -1,0 +1,199 @@
+---
+/**
+ * Per-flavor page.
+ *
+ * Every section below is conditional. With no data supplied, this renders as
+ * a name, a color field, a placeholder can, and nothing else — which is
+ * correct. It never shows an empty heading or a dangling label.
+ */
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Asset from '../../components/Asset.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import NutritionPanel from '../../components/NutritionPanel.astro';
+import { getCollection, render } from 'astro:content';
+import { flavorSlot } from '../../lib/assets';
+import { productSchema } from '../../lib/schema';
+import { claims } from '../../data/claims';
+
+export const getStaticPaths = (async () => {
+  const flavors = await getCollection('flavors', ({ data }) => !data.draft);
+  return flavors.map((flavor) => ({
+    params: { slug: flavor.id },
+    props: { flavor },
+  }));
+}) satisfies GetStaticPaths;
+
+const { flavor } = Astro.props;
+const d = flavor.data;
+const { Content } = await render(flavor);
+
+const title = d.seo?.title ?? `${d.name}`;
+const description =
+  d.seo?.description ?? d.description ?? `${d.name} from SansBev.`;
+
+const specs = [
+  d.canSizeFlOz !== undefined && { label: 'Can size', value: `${d.canSizeFlOz} fl oz` },
+  d.caffeineMg !== undefined && { label: 'Caffeine', value: `${d.caffeineMg} mg` },
+  d.lTheanineMg !== undefined && { label: 'L-theanine', value: `${d.lTheanineMg} mg` },
+  d.juicePercent !== undefined && { label: 'Juice content', value: `${d.juicePercent}%` },
+  d.upc && { label: 'UPC', value: d.upc },
+].filter((s): s is { label: string; value: string } => Boolean(s));
+
+const fieldStyle = d.color ? `--field: ${d.color.field}; --on-field: ${d.color.onText}` : undefined;
+---
+
+<BaseLayout title={title} description={description}>
+  <JsonLd schema={productSchema(flavor)} />
+
+  <section class="flavor-hero" style={fieldStyle}>
+    <div class="container grid flavor-hero__inner">
+      <div class="flavor-hero__text">
+        <h1 class="display">{d.name}</h1>
+        {d.tagline && <p class="flavor-hero__tagline">{d.tagline}</p>}
+      </div>
+      <div class="flavor-hero__figure">
+        <Asset
+          slot={flavorSlot(flavor.id, 'can-front')}
+          alt=""
+          sizes="(min-width: 48rem) 28vw, 60vw"
+          class="flavor-hero__can"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid">
+      <div class="flavor__prose prose">
+        {d.description && <p class="lede">{d.description}</p>}
+        <Content />
+
+        {
+          d.tastingNotes && d.tastingNotes.length > 0 && (
+            <>
+              <h2>Tasting notes</h2>
+              <ul>{d.tastingNotes.map((note) => <li>{note}</li>)}</ul>
+            </>
+          )
+        }
+      </div>
+
+      {
+        specs.length > 0 && (
+          <div class="flavor__specs">
+            <h2 class="visually-hidden">Specifications</h2>
+            <table class="data-table">
+              <tbody>
+                {specs.map((s) => (
+                  <tr>
+                    <th scope="row">{s.label}</th>
+                    <td class="numeric">{s.value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  {
+    (d.ingredients?.length || d.nutrition || d.allergenStatement) && (
+      <section class="section">
+        <div class="container grid">
+          <div class="flavor__label-data">
+            {d.ingredients && d.ingredients.length > 0 && (
+              <>
+                <h2>Ingredients</h2>
+                <p class="prose">{d.ingredients.join(', ')}.</p>
+              </>
+            )}
+
+            {d.allergenStatement && (
+              <p class="prose flavor__allergen">{d.allergenStatement}</p>
+            )}
+
+            {claims.disclosures.caffeine && !claims.disclosures.caffeine.startsWith('[[') && (
+              <p class="caption flavor__disclosure">{claims.disclosures.caffeine}</p>
+            )}
+          </div>
+
+          <div class="flavor__panel">
+            <NutritionPanel nutrition={d.nutrition} flavorName={d.name} />
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section">
+    <div class="container">
+      <p><a href="/where-to-buy">Where to buy</a></p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .flavor-hero {
+    background-color: var(--field, var(--color-surface));
+    color: var(--on-field, var(--color-ink));
+    padding-block: var(--space-2xl);
+  }
+
+  .flavor-hero__inner {
+    align-items: end;
+  }
+
+  .flavor-hero__text {
+    grid-column: 1 / span 7;
+  }
+
+  .flavor-hero__tagline {
+    margin-block-start: var(--space-sm);
+    /* Large-text floor: this sits on a color field. See tokens.css. */
+    font-size: max(var(--font-size-min-on-accent), var(--text-h3));
+    line-height: var(--leading-tight);
+  }
+
+  .flavor-hero__figure {
+    grid-column: 9 / span 4;
+    display: grid;
+    justify-items: center;
+  }
+
+  .flavor-hero__can {
+    max-inline-size: 16rem;
+  }
+
+  .lede {
+    font-size: var(--text-h3);
+    line-height: var(--leading-tight);
+  }
+
+  .flavor__prose {
+    grid-column: 1 / span 7;
+  }
+
+  .flavor__specs {
+    grid-column: 9 / span 4;
+  }
+
+  .flavor__label-data {
+    grid-column: 1 / span 7;
+  }
+
+  .flavor__panel {
+    grid-column: 9 / span 4;
+  }
+
+  .flavor__allergen {
+    margin-block-start: var(--space-sm);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .flavor__disclosure {
+    margin-block-start: var(--space-sm);
+  }
+</style>

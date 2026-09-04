@@ -1,5 +1,15 @@
 import { defineCollection, z } from 'astro:content';
 import { glob, file } from 'astro/loaders';
+import { hasEntries } from './lib/data-files';
+
+/**
+ * A data file with no entries is the EXPECTED pre-launch state here — there
+ * are no stockists and no press yet. Astro's file() loader warns on every
+ * build when that happens, which trains you to ignore build warnings, so this
+ * substitutes a silent no-op loader until the file actually has entries.
+ */
+const fileOrEmpty = (path: string) =>
+  hasEntries(path) ? file(path) : { name: `empty:${path}`, load: async () => {} };
 
 /* ------------------------------------------------------------------------- *
  * Shared primitives
@@ -111,7 +121,7 @@ const flavors = defineCollection({
  * ------------------------------------------------------------------------- */
 
 const locations = defineCollection({
-  loader: file('src/content/locations.yaml'),
+  loader: fileOrEmpty('src/content/locations.yaml'),
   schema: z.object({
     name: z.string(),
     chain: z.string().optional(),
@@ -163,7 +173,7 @@ const faq = defineCollection({
  * ------------------------------------------------------------------------- */
 
 const press = defineCollection({
-  loader: file('src/content/press.yaml'),
+  loader: fileOrEmpty('src/content/press.yaml'),
   schema: z.object({
     outlet: z.string(),
     title: z.string(),

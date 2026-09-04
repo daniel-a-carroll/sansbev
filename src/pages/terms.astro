@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { copy } from '../data/copy';
+---
+
+<BaseLayout title={copy.legal.terms.seo.title} description={copy.legal.terms.seo.description}>
+  <section class="section">
+    <div class="container prose">
+      <h1>{copy.legal.terms.seo.title}</h1>
+      {copy.legal.terms.body.map((p) => <p>{p}</p>)}
+    </div>
+  </section>
+</BaseLayout>

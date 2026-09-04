@@ -1,0 +1,153 @@
+---
+/**
+ * Where to buy.
+ *
+ * Empty is the expected state right now, and it is handled as a written
+ * pre-launch message with a capture form — not as a broken page. The map and
+ * the list both disappear entirely when there is no data.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ColoradoMap from '../components/ColoradoMap.astro';
+import JsonLd from '../components/JsonLd.astro';
+import SubscribeForm from '../components/forms/SubscribeForm.astro';
+import RequestStoreForm from '../components/forms/RequestStoreForm.astro';
+import { getFileCollection } from '../lib/collections';
+import { copy } from '../data/copy';
+import { localBusinessSchema } from '../lib/schema';
+
+const locations = await getFileCollection('locations');
+
+// Group by city, cities alphabetical, stores alphabetical within each.
+const byCity = new Map<string, typeof locations>();
+for (const location of locations) {
+  const city = location.data.city ?? 'Other';
+  byCity.set(city, [...(byCity.get(city) ?? []), location]);
+}
+const cities = [...byCity.entries()]
+  .map(([city, stores]) => ({
+    city,
+    stores: stores.sort((a, b) => a.data.name.localeCompare(b.data.name)),
+  }))
+  .sort((a, b) => a.city.localeCompare(b.city));
+
+const mapPoints = locations
+  .filter((l) => l.data.lat !== undefined && l.data.lng !== undefined)
+  .map((l) => ({
+    name: l.data.name,
+    city: l.data.city,
+    lat: l.data.lat!,
+    lng: l.data.lng!,
+  }));
+
+const hasLocations = locations.length > 0;
+---
+
+<BaseLayout title={copy.whereToBuy.seo.title} description={copy.whereToBuy.seo.description}>
+  {hasLocations && <JsonLd schema={locations.map(localBusinessSchema)} />}
+
+  <section class="section">
+    <div class="container">
+      <h1>{copy.whereToBuy.heading}</h1>
+      {copy.whereToBuy.intro && <p class="prose lede">{copy.whereToBuy.intro}</p>}
+    </div>
+  </section>
+
+  {
+    hasLocations ? (
+      <>
+        <section class="section">
+          <div class="container">
+            <ColoradoMap points={mapPoints} />
+
+            {cities.map(({ city, stores }) => (
+              <div class="city">
+                <h2 class="city__name">{city}</h2>
+                <ul class="city__list">
+                  {stores.map((store) => (
+                    <li class="store" id={store.id}>
+                      <p class="store__name">
+                        {store.data.url ? (
+                          <a href={store.data.url}>{store.data.name}</a>
+                        ) : (
+                          store.data.name
+                        )}
+                      </p>
+                      {store.data.address1 && (
+                        <p class="caption">
+                          {store.data.address1}
+                          {store.data.zip && `, ${store.data.zip}`}
+                        </p>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="container">
+            <h2>Not carried near you?</h2>
+            <p class="prose capture__body">
+              Tell us where you shop. We bring these requests to buyers when we
+              pitch a store.
+            </p>
+            <RequestStoreForm />
+          </div>
+        </section>
+      </>
+    ) : (
+      <section class="section">
+        <div class="container">
+          <h2>{copy.whereToBuy.preLaunchHeading}</h2>
+          <p class="prose capture__body">{copy.whereToBuy.preLaunchBody}</p>
+          <SubscribeForm id="where-subscribe" />
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<script>
+  import '../scripts/forms';
+</script>
+
+<style>
+  .lede {
+    margin-block-start: var(--space-sm);
+    font-size: var(--text-h3);
+    color: var(--color-ink-muted);
+    line-height: var(--leading-tight);
+  }
+
+  .city + .city {
+    margin-block-start: var(--space-lg);
+  }
+
+  .city__name {
+    font-size: var(--text-h3);
+    padding-block-end: var(--space-2xs);
+    border-block-end: var(--rule-strong);
+  }
+
+  .city__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .store {
+    padding-block: var(--space-xs);
+    border-block-end: var(--rule);
+  }
+
+  .store__name {
+    font-weight: var(--font-weight-medium);
+  }
+
+  .capture__body {
+    margin-block: var(--space-2xs) var(--space-md);
+    color: var(--color-ink-muted);
+  }
+</style>

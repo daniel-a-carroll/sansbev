@@ -1,0 +1,24 @@
+---
+/**
+ * Success page for submissions made without JavaScript. The Worker redirects
+ * here with a 303 after a successful POST.
+ *
+ * Deliberately generic: no submitted data is passed here, in a query string or
+ * anywhere else. noindex because it is not a page anyone should find by search.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Thank you"
+  description="Your submission was received."
+  noindex={true}
+>
+  <section class="section">
+    <div class="container prose">
+      <h1>Thank you</h1>
+      <p>We received your details and will be in touch.</p>
+      <p><a href="/">Back to the homepage</a></p>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,151 @@
+---
+/**
+ * Product index. One entry per SKU from the flavors collection.
+ *
+ * Each card takes its color field from the flavor's own data, so a new SKU
+ * needs no CSS. Drafts are excluded from the build.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Asset from '../../components/Asset.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import { getCollection } from 'astro:content';
+import { copy } from '../../data/copy';
+import { flavorSlot } from '../../lib/assets';
+import { faqSchema } from '../../lib/schema';
+
+const flavors = (await getCollection('flavors', ({ data }) => !data.draft)).sort(
+  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99)
+);
+
+const faq = (await getCollection('faq'))
+  .filter((e) => e.data.audience !== 'trade')
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+---
+
+<BaseLayout title={copy.product.seo.title} description={copy.product.seo.description}>
+  <JsonLd schema={faqSchema(faq)} />
+
+  <section class="section">
+    <div class="container">
+      <h1>{copy.product.heading}</h1>
+      {copy.product.intro && <p class="prose lede">{copy.product.intro}</p>}
+    </div>
+  </section>
+
+  {
+    flavors.length > 0 && (
+      <section class="section">
+        <div class="container">
+          <ul class="lineup">
+            {flavors.map((flavor) => (
+              <li class="lineup__item">
+                <a href={`/product/${flavor.id}`} class="plain lineup__link">
+                  <div
+                    class="lineup__field"
+                    style={
+                      flavor.data.color
+                        ? `--field: ${flavor.data.color.field}`
+                        : undefined
+                    }
+                  >
+                    <Asset
+                      slot={flavorSlot(flavor.id, 'can-front')}
+                      alt=""
+                      sizes="(min-width: 60rem) 30vw, 80vw"
+                      class="lineup__can"
+                    />
+                  </div>
+                  <h2 class="lineup__name">{flavor.data.name}</h2>
+                  {flavor.data.tagline && (
+                    <p class="caption">{flavor.data.tagline}</p>
+                  )}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    faq.length > 0 && (
+      <section class="section">
+        <div class="container">
+          <h2>Questions</h2>
+          <dl class="faq prose">
+            {faq.map((entry) => (
+              <div class="faq__item">
+                <dt>{entry.data.question}</dt>
+                <dd>{entry.data.answer}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .lede {
+    margin-block-start: var(--space-sm);
+    font-size: var(--text-h3);
+    color: var(--color-ink-muted);
+    line-height: var(--leading-tight);
+  }
+
+  .lineup {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    gap: var(--grid-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .lineup__link {
+    display: grid;
+    gap: var(--space-2xs);
+  }
+
+  /* The SKU color field. Flat and unbounded within the cell — no border,
+     no radius, no shadow. */
+  .lineup__field {
+    background-color: var(--field, var(--color-surface));
+    display: grid;
+    place-items: center;
+    padding: var(--space-lg) var(--space-md) 0;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+
+  .lineup__can {
+    max-inline-size: 62%;
+    align-self: end;
+  }
+
+  .lineup__name {
+    font-size: var(--text-h3);
+  }
+
+  .lineup__link:hover .lineup__name {
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  .faq__item + .faq__item {
+    margin-block-start: var(--space-md);
+    padding-block-start: var(--space-md);
+    border-block-start: var(--rule);
+  }
+
+  .faq dt {
+    font-weight: var(--font-weight-medium);
+  }
+
+  .faq dd {
+    margin: var(--space-3xs) 0 0;
+    color: var(--color-ink-muted);
+  }
+</style>

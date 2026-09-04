@@ -1,0 +1,18 @@
+---
+/**
+ * Privacy policy. Placeholder — the body must be written before launch and
+ * must accurately describe the email/ZIP capture and how submissions are
+ * handled. See docs/TODO.md.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { copy } from '../data/copy';
+---
+
+<BaseLayout title={copy.legal.privacy.seo.title} description={copy.legal.privacy.seo.description}>
+  <section class="section">
+    <div class="container prose">
+      <h1>{copy.legal.privacy.seo.title}</h1>
+      {copy.legal.privacy.body.map((p) => <p>{p}</p>)}
+    </div>
+  </section>
+</BaseLayout>

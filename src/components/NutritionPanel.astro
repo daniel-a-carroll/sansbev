@@ -1,0 +1,242 @@
+---
+/**
+ * Nutrition Facts panel, rendered from structured data as a real table.
+ *
+ * Deliberately NOT an image of a panel: this way it stays correct when the
+ * data changes, is readable by a screen reader, is indexable, and can feed
+ * Product JSON-LD from the same source.
+ *
+ * The heavy rules here are the one sanctioned exception to rules-not-cards —
+ * the Nutrition Facts format is a regulated visual convention, and imitating
+ * it makes the panel instantly recognizable. It is not a design flourish.
+ *
+ * Renders nothing when there is not enough declared data to be worth showing.
+ */
+import {
+  DAILY_VALUES,
+  percentDV,
+  micronutrientPercentDV,
+  amount,
+  hasEnoughForPanel,
+} from '../lib/nutrition';
+
+interface Nutrition {
+  servingSizeFlOz?: number;
+  servingsPerContainer?: number;
+  calories?: number;
+  totalFatG?: number;
+  saturatedFatG?: number;
+  transFatG?: number;
+  cholesterolMg?: number;
+  sodiumMg?: number;
+  totalCarbohydrateG?: number;
+  dietaryFiberG?: number;
+  totalSugarsG?: number;
+  addedSugarsG?: number;
+  sugarAlcoholsG?: number;
+  proteinG?: number;
+  micronutrients?: { name: string; amountMg?: number; amountMcg?: number }[];
+}
+
+interface Props {
+  nutrition?: Nutrition;
+  flavorName: string;
+}
+
+const { nutrition: n, flavorName } = Astro.props;
+const show = hasEnoughForPanel(n as Record<string, unknown> | undefined);
+
+// Indented sub-nutrients, in FDA label order.
+const rows = n
+  ? [
+      { label: 'Total Fat', value: amount(n.totalFatG, 'g'), dv: percentDV(n.totalFatG, DAILY_VALUES.totalFatG), bold: true },
+      { label: 'Saturated Fat', value: amount(n.saturatedFatG, 'g'), dv: percentDV(n.saturatedFatG, DAILY_VALUES.saturatedFatG), indent: true },
+      { label: 'Trans Fat', value: amount(n.transFatG, 'g'), dv: undefined, indent: true, italicPrefix: 'Trans' },
+      { label: 'Cholesterol', value: amount(n.cholesterolMg, 'mg'), dv: percentDV(n.cholesterolMg, DAILY_VALUES.cholesterolMg), bold: true },
+      { label: 'Sodium', value: amount(n.sodiumMg, 'mg'), dv: percentDV(n.sodiumMg, DAILY_VALUES.sodiumMg), bold: true },
+      { label: 'Total Carbohydrate', value: amount(n.totalCarbohydrateG, 'g'), dv: percentDV(n.totalCarbohydrateG, DAILY_VALUES.totalCarbohydrateG), bold: true },
+      { label: 'Dietary Fiber', value: amount(n.dietaryFiberG, 'g'), dv: percentDV(n.dietaryFiberG, DAILY_VALUES.dietaryFiberG), indent: true },
+      { label: 'Total Sugars', value: amount(n.totalSugarsG, 'g'), dv: undefined, indent: true },
+      { label: 'Includes Added Sugars', value: amount(n.addedSugarsG, 'g'), dv: percentDV(n.addedSugarsG, DAILY_VALUES.addedSugarsG), indent: true, deep: true },
+      { label: 'Sugar Alcohols', value: amount(n.sugarAlcoholsG, 'g'), dv: undefined, indent: true },
+      { label: 'Protein', value: amount(n.proteinG, 'g'), dv: undefined, bold: true },
+    ].filter((r) => r.value !== '')
+  : [];
+
+const micros = (n?.micronutrients ?? [])
+  .map((m) => ({
+    name: m.name,
+    value: m.amountMg !== undefined ? amount(m.amountMg, 'mg') : amount(m.amountMcg, 'mcg'),
+    dv: micronutrientPercentDV(m.name, m.amountMg, m.amountMcg),
+  }))
+  .filter((m) => m.value !== '');
+---
+
+{
+  show && (
+    <div class="panel">
+      <table class="panel__table">
+        <caption class="panel__caption">
+          Nutrition Facts
+          <span class="visually-hidden"> for {flavorName}</span>
+        </caption>
+
+        <thead>
+          <tr>
+            <th scope="col">Nutrient</th>
+            <th scope="col" class="numeric">Amount</th>
+            <th scope="col" class="numeric">% Daily Value</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {(n?.servingsPerContainer !== undefined || n?.servingSizeFlOz !== undefined) && (
+            <tr class="panel__serving">
+              <th scope="row" colspan="3">
+                {n.servingsPerContainer !== undefined && `${n.servingsPerContainer} serving per container`}
+                {n.servingsPerContainer !== undefined && n.servingSizeFlOz !== undefined && ' · '}
+                {n.servingSizeFlOz !== undefined && `Serving size ${n.servingSizeFlOz} fl oz`}
+              </th>
+            </tr>
+          )}
+
+          {n?.calories !== undefined && (
+            <tr class="panel__calories">
+              <th scope="row">Calories</th>
+              <td class="numeric" colspan="2">{n.calories}</td>
+            </tr>
+          )}
+
+          {rows.map((r) => (
+            <tr
+              class:list={[
+                { 'is-indent': r.indent, 'is-deep': r.deep, 'is-bold': r.bold },
+              ]}
+            >
+              <th scope="row">{r.label}</th>
+              <td class="numeric">{r.value}</td>
+              <td class="numeric">{r.dv !== undefined ? `${r.dv}%` : ''}</td>
+            </tr>
+          ))}
+
+          {micros.length > 0 && (
+            <>
+              <tr class="panel__divider">
+                <td colspan="3" />
+              </tr>
+              {micros.map((m) => (
+                <tr>
+                  <th scope="row">{m.name}</th>
+                  <td class="numeric">{m.value}</td>
+                  <td class="numeric">{m.dv !== undefined ? `${m.dv}%` : ''}</td>
+                </tr>
+              ))}
+            </>
+          )}
+        </tbody>
+      </table>
+
+      <p class="panel__footnote">
+        The % Daily Value tells you how much a nutrient in a serving of food
+        contributes to a daily diet. 2,000 calories a day is used for general
+        nutrition advice.
+      </p>
+    </div>
+  )
+}
+
+<style>
+  .panel {
+    max-inline-size: 22rem;
+    border: 2px solid var(--color-ink);
+    padding: var(--space-sm);
+    background-color: var(--color-bg);
+  }
+
+  .panel__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-small);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .panel__caption {
+    font-size: var(--text-h2);
+    font-weight: var(--font-weight-display);
+    font-stretch: var(--font-width-display);
+    text-align: start;
+    line-height: 1;
+    padding-block-end: var(--space-3xs);
+  }
+
+  /* The column headers are for screen readers and machines. The regulated
+     visual format does not show them, and adding them would make the panel
+     unrecognizable. */
+  .panel__table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .panel__table th,
+  .panel__table td {
+    text-align: start;
+    padding-block: 2px;
+    border-block-end: 1px solid var(--color-rule);
+    font-weight: var(--font-weight-body);
+    vertical-align: baseline;
+  }
+
+  .panel__table .numeric {
+    text-align: end;
+  }
+
+  .panel__serving th {
+    border-block-end: 8px solid var(--color-ink);
+    padding-block: var(--space-3xs) var(--space-2xs);
+  }
+
+  .panel__calories th {
+    font-size: var(--text-h3);
+    font-weight: var(--font-weight-display);
+  }
+
+  .panel__calories td {
+    font-size: var(--text-h2);
+    font-weight: var(--font-weight-display);
+    font-stretch: var(--font-width-display);
+  }
+
+  .panel__calories th,
+  .panel__calories td {
+    border-block-end: 4px solid var(--color-ink);
+  }
+
+  .is-bold th {
+    font-weight: var(--font-weight-heading);
+  }
+
+  .is-indent th {
+    padding-inline-start: var(--space-sm);
+  }
+
+  .is-deep th {
+    padding-inline-start: var(--space-md);
+  }
+
+  .panel__divider td {
+    border-block-end: 4px solid var(--color-ink);
+    padding: 0;
+  }
+
+  .panel__footnote {
+    margin-block-start: var(--space-2xs);
+    padding-block-start: var(--space-2xs);
+    border-block-start: 4px solid var(--color-ink);
+    font-size: var(--text-caption);
+    line-height: var(--leading-tight);
+  }
+</style>

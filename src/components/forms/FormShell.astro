@@ -1,0 +1,138 @@
+---
+/**
+ * Wraps every form on the site: native POST target, error summary region,
+ * success region, honeypot, and submit button.
+ *
+ * Without JavaScript this posts normally and the Worker redirects to
+ * /thank-you. With JavaScript, src/scripts/forms.ts intercepts it and renders
+ * results inline. The markup is identical either way — no JS-only fields, no
+ * hidden inputs the server depends on.
+ */
+import { HONEYPOT_FIELD } from '../../lib/form-schemas';
+
+interface Props {
+  id: string;
+  action: string;
+  submitLabel: string;
+  successHeading: string;
+  successBody?: string;
+}
+
+const { id, action, submitLabel, successHeading, successBody } = Astro.props;
+---
+
+<div class="form-shell" data-form-shell>
+  <!-- Error summary. Focus moves here on failure; role="alert" announces it. -->
+  <div
+    class="form-summary"
+    data-error-summary
+    role="alert"
+    tabindex="-1"
+    hidden
+  >
+    <h3 class="form-summary__heading">There is a problem</h3>
+    <ul class="form-summary__list" data-error-list></ul>
+  </div>
+
+  <form
+    id={id}
+    method="post"
+    action={action}
+    novalidate
+    data-form
+    class="form"
+  >
+    <slot />
+
+    <!-- Honeypot. Hidden from sight and from assistive technology, and
+         excluded from tab order — a human should never encounter it. -->
+    <div class="honeypot" aria-hidden="true">
+      <label for={`${id}-${HONEYPOT_FIELD}`}>Leave this field empty</label>
+      <input
+        type="text"
+        id={`${id}-${HONEYPOT_FIELD}`}
+        name={HONEYPOT_FIELD}
+        tabindex="-1"
+        autocomplete="off"
+      />
+    </div>
+
+    <button type="submit" class="button">{submitLabel}</button>
+  </form>
+
+  <!-- Replaces the form on success. -->
+  <div class="form-success" data-success tabindex="-1" hidden>
+    <h3 class="form-success__heading">{successHeading}</h3>
+    {successBody && <p>{successBody}</p>}
+  </div>
+</div>
+
+<style>
+  .form {
+    display: grid;
+    gap: var(--space-sm);
+    max-inline-size: 32rem;
+  }
+
+  .honeypot {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .button {
+    justify-self: start;
+    padding: var(--space-2xs) var(--space-md);
+    background-color: var(--color-ink);
+    color: var(--color-on-ink);
+    border: 1px solid var(--color-ink);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-small);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+  }
+
+  .button:hover {
+    background-color: var(--color-accent-text);
+    border-color: var(--color-accent-text);
+  }
+
+  .button[aria-disabled='true'] {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
+  .form-summary {
+    max-inline-size: 32rem;
+    margin-block-end: var(--space-md);
+    padding: var(--space-sm);
+    border-inline-start: 3px solid var(--color-accent-text);
+    background-color: var(--color-surface);
+  }
+
+  .form-summary__heading {
+    font-size: var(--text-h3);
+    margin-block-end: var(--space-3xs);
+  }
+
+  .form-summary__list {
+    margin: 0;
+    padding-inline-start: var(--space-sm);
+    font-size: var(--text-small);
+  }
+
+  .form-success {
+    max-inline-size: 32rem;
+    padding: var(--space-sm);
+    border-inline-start: 3px solid var(--color-ink);
+    background-color: var(--color-surface);
+  }
+
+  .form-success__heading {
+    font-size: var(--text-h3);
+    margin-block-end: var(--space-3xs);
+  }
+</style>

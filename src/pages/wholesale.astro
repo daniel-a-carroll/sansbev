@@ -1,0 +1,216 @@
+---
+/**
+ * Wholesale. The primary audience's page.
+ *
+ * Specifications are NOT published — see src/data/trade.ts for why. What is
+ * published is the list of what gets sent on request, given the same
+ * typographic weight the spec table would have had. It signals the operational
+ * answers exist and are ready, and it makes the form's payoff concrete.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Asset from '../components/Asset.astro';
+import JsonLd from '../components/JsonLd.astro';
+import WholesaleForm from '../components/forms/WholesaleForm.astro';
+import { getCollection } from 'astro:content';
+import { copy } from '../data/copy';
+import { trade } from '../data/trade';
+import { site } from '../data/site';
+import { faqSchema } from '../lib/schema';
+
+const faq = (await getCollection('faq'))
+  .filter((e) => e.data.audience !== 'consumer')
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+
+const sellSheetIsPublic =
+  trade.sellSheet.mode === 'public' && Boolean(trade.sellSheet.publicPath);
+---
+
+<BaseLayout title={copy.wholesale.seo.title} description={copy.wholesale.seo.description}>
+  <JsonLd schema={faqSchema(faq)} />
+
+  <section class="section">
+    <div class="container grid">
+      <div class="wholesale__intro">
+        <h1>{copy.wholesale.heading}</h1>
+        {copy.wholesale.intro && <p class="prose lede">{copy.wholesale.intro}</p>}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid">
+      <div class="wholesale__list">
+        <h2>{copy.wholesale.availableOnRequestHeading}</h2>
+        {copy.wholesale.availableOnRequestNote && (
+          <p class="prose capture__body">{copy.wholesale.availableOnRequestNote}</p>
+        )}
+
+        <ul class="specs">
+          {trade.availableOnRequest.map((item) => <li>{item}</li>)}
+        </ul>
+
+        {
+          sellSheetIsPublic && (
+            <p class="wholesale__download">
+              <a href={trade.sellSheet.publicPath}>Download the sell sheet (PDF)</a>
+            </p>
+          )
+        }
+      </div>
+
+      <div class="wholesale__aside">
+        {
+          trade.channels.length > 0 && (
+            <>
+              <h2 class="wholesale__aside-heading">{copy.wholesale.channelsHeading}</h2>
+              <ul class="channels">
+                {trade.channels.map((c) => <li>{c}</li>)}
+              </ul>
+            </>
+          )
+        }
+
+        {
+          trade.certifications.length > 0 && (
+            <>
+              <h2 class="wholesale__aside-heading">Certifications</h2>
+              <ul class="channels">
+                {trade.certifications.map((c) => <li>{c}</li>)}
+              </ul>
+            </>
+          )
+        }
+
+        <Asset
+          slot="wholesale-case"
+          alt=""
+          sizes="(min-width: 60rem) 30vw, 90vw"
+          class="wholesale__photo"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>{copy.wholesale.formHeading}</h2>
+      {trade.responseTime && <p class="capture__body">{trade.responseTime}</p>}
+      <WholesaleForm />
+
+      {
+        site.contact.trade && (
+          <p class="wholesale__direct caption">
+            Or email us directly at{' '}
+            <a href={`mailto:${site.contact.trade}`}>{site.contact.trade}</a>.
+          </p>
+        )
+      }
+    </div>
+  </section>
+
+  {
+    faq.length > 0 && (
+      <section class="section">
+        <div class="container">
+          <h2>Trade questions</h2>
+          <dl class="faq prose">
+            {faq.map((entry) => (
+              <div class="faq__item">
+                <dt>{entry.data.question}</dt>
+                <dd>{entry.data.answer}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<script>
+  import '../scripts/forms';
+</script>
+
+<style>
+  .wholesale__intro {
+    grid-column: 1 / span 8;
+  }
+
+  .lede {
+    margin-block-start: var(--space-sm);
+    font-size: var(--text-h3);
+    color: var(--color-ink-muted);
+    line-height: var(--leading-tight);
+  }
+
+  .wholesale__list {
+    grid-column: 1 / span 6;
+  }
+
+  .wholesale__aside {
+    grid-column: 8 / span 5;
+  }
+
+  .wholesale__aside-heading {
+    font-size: var(--text-h3);
+  }
+
+  /* Same treatment the specifications table would have had — this list is
+     carrying that weight now. */
+  .specs {
+    margin: var(--space-md) 0 0;
+    padding: 0;
+    list-style: none;
+    border-block-start: var(--rule-strong);
+  }
+
+  .specs li {
+    padding-block: var(--space-xs);
+    border-block-end: var(--rule);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .channels {
+    margin: var(--space-2xs) 0 var(--space-lg);
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-small);
+    color: var(--color-ink-muted);
+  }
+
+  .channels li {
+    padding-block: var(--space-3xs);
+  }
+
+  .wholesale__photo {
+    margin-block-start: var(--space-md);
+  }
+
+  .wholesale__download {
+    margin-block-start: var(--space-md);
+  }
+
+  .capture__body {
+    margin-block: var(--space-2xs) var(--space-md);
+    color: var(--color-ink-muted);
+  }
+
+  .wholesale__direct {
+    margin-block-start: var(--space-md);
+  }
+
+  .faq__item + .faq__item {
+    margin-block-start: var(--space-md);
+    padding-block-start: var(--space-md);
+    border-block-start: var(--rule);
+  }
+
+  .faq dt {
+    font-weight: var(--font-weight-medium);
+  }
+
+  .faq dd {
+    margin: var(--space-3xs) 0 0;
+    color: var(--color-ink-muted);
+  }
+</style>

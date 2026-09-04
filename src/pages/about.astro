@@ -1,0 +1,35 @@
+---
+/**
+ * About. Founder story, why the product exists, Colorado provenance.
+ * All copy is placeholder and lives in src/data/copy.ts.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Asset from '../components/Asset.astro';
+import { copy } from '../data/copy';
+---
+
+<BaseLayout title={copy.about.seo.title} description={copy.about.seo.description}>
+  <section class="section">
+    <div class="container grid">
+      <div class="about__text prose">
+        <h1>{copy.about.heading}</h1>
+        {copy.about.body.map((p) => <p>{p}</p>)}
+      </div>
+
+      <div class="about__figure">
+        <Asset slot="about-founder" alt="" sizes="(min-width: 60rem) 28vw, 80vw" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <Asset slot="about-colorado" alt="" sizes="100vw" />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about__text { grid-column: 1 / span 7; }
+  .about__figure { grid-column: 9 / span 4; }
+</style>

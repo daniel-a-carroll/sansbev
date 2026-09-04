@@ -1,0 +1,44 @@
+---
+/**
+ * Consumer email capture. ZIP is required, not optional — geographic demand
+ * is the reason this list exists, and a signup without one is worth far less
+ * in a buyer meeting.
+ */
+import FormShell from './FormShell.astro';
+import Field from './Field.astro';
+
+interface Props {
+  id?: string;
+}
+
+const { id = 'subscribe' } = Astro.props;
+---
+
+<FormShell
+  id={id}
+  action="/api/subscribe"
+  submitLabel="Join the list"
+  successHeading="You're on the list"
+  successBody="We'll email you when there's somewhere near you to buy it."
+>
+  <Field
+    formId={id}
+    name="email"
+    label="Email address"
+    type="email"
+    required
+    autocomplete="email"
+    inputmode="email"
+  />
+  <Field
+    formId={id}
+    name="zip"
+    label="ZIP code"
+    required
+    autocomplete="postal-code"
+    inputmode="numeric"
+    pattern="[0-9]{5}"
+    maxlength={5}
+    hint="We use this to decide which markets to open next."
+  />
+</FormShell>

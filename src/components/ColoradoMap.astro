@@ -1,0 +1,141 @@
+---
+/**
+ * Colorado stockist map.
+ *
+ * Hand-drawn inline SVG, roughly 2KB, no dependency, no tile server, no API
+ * key, no third-party request. Colorado is a rectangle in lat/lng — 37°N to
+ * 41°N, 109.05°W to 102.05°W — so an equirectangular projection is exact for
+ * this state and the whole "map" is one rect plus plotted points. The viewBox
+ * is proportioned for the state's real aspect at 39°N.
+ *
+ * The map is a visual aid. The grouped list below it is the accessible source
+ * of truth, so this carries a summary label rather than duplicating every
+ * store into the accessibility tree.
+ *
+ * Renders nothing unless at least one location has coordinates.
+ */
+
+interface Point {
+  name: string;
+  city?: string;
+  lat: number;
+  lng: number;
+}
+
+interface Props {
+  points: Point[];
+}
+
+const { points } = Astro.props;
+
+// State bounds.
+const W_LNG = -109.05;
+const E_LNG = -102.05;
+const N_LAT = 41;
+const S_LAT = 37;
+
+// Real proportions: 7° of longitude at 39°N is about 1.36x 4° of latitude.
+const VB_W = 544;
+const VB_H = 400;
+
+const projectX = (lng: number) => ((lng - W_LNG) / (E_LNG - W_LNG)) * VB_W;
+const projectY = (lat: number) => ((N_LAT - lat) / (N_LAT - S_LAT)) * VB_H;
+
+// Reference cities, for orientation only. A map of unlabeled dots in a blank
+// rectangle tells a reader nothing.
+const REFERENCE = [
+  { name: 'Fort Collins', lat: 40.5853, lng: -105.0844, anchor: 'end' },
+  { name: 'Boulder', lat: 40.015, lng: -105.2705, anchor: 'end' },
+  { name: 'Denver', lat: 39.7392, lng: -104.9903, anchor: 'start' },
+  { name: 'Colorado Springs', lat: 38.8339, lng: -104.8214, anchor: 'start' },
+  { name: 'Pueblo', lat: 38.2544, lng: -104.6091, anchor: 'start' },
+  { name: 'Grand Junction', lat: 39.0639, lng: -108.5506, anchor: 'start' },
+  { name: 'Durango', lat: 37.2753, lng: -107.8801, anchor: 'start' },
+] as const;
+
+const plotted = points.filter(
+  (p) =>
+    p.lat >= S_LAT && p.lat <= N_LAT && p.lng >= W_LNG && p.lng <= E_LNG
+);
+
+const summary =
+  plotted.length === 1
+    ? 'Map of Colorado showing 1 stockist location.'
+    : `Map of Colorado showing ${plotted.length} stockist locations.`;
+---
+
+{
+  plotted.length > 0 && (
+    <figure class="map">
+      <svg
+        viewBox={`0 0 ${VB_W} ${VB_H}`}
+        role="img"
+        aria-label={`${summary} The full list of stores follows below.`}
+        class="map__svg"
+      >
+        <rect
+          x="1"
+          y="1"
+          width={VB_W - 2}
+          height={VB_H - 2}
+          fill="var(--color-surface)"
+          stroke="var(--color-rule-strong)"
+          stroke-width="1.5"
+        />
+
+        {REFERENCE.map((c) => (
+          <g class="map__ref">
+            <circle cx={projectX(c.lng)} cy={projectY(c.lat)} r="2.5" />
+            <text
+              x={projectX(c.lng) + (c.anchor === 'end' ? -7 : 7)}
+              y={projectY(c.lat) + 4}
+              text-anchor={c.anchor}
+            >
+              {c.name}
+            </text>
+          </g>
+        ))}
+
+        {plotted.map((p) => (
+          <circle
+            cx={projectX(p.lng)}
+            cy={projectY(p.lat)}
+            r="6"
+            class="map__pin"
+          >
+            <title>{p.city ? `${p.name} — ${p.city}` : p.name}</title>
+          </circle>
+        ))}
+      </svg>
+    </figure>
+  )
+}
+
+<style>
+  .map {
+    margin: 0 0 var(--space-lg);
+    max-inline-size: 44rem;
+  }
+
+  .map__svg {
+    width: 100%;
+    height: auto;
+  }
+
+  .map__ref circle {
+    fill: var(--color-rule-strong);
+  }
+
+  .map__ref text {
+    font-family: var(--font-family);
+    font-size: 11px;
+    fill: var(--color-ink-muted);
+  }
+
+  /* Stockists are the only saturated thing on the map. */
+  .map__pin {
+    fill: var(--color-accent-field);
+    stroke: var(--color-bg);
+    stroke-width: 1.5;
+  }
+</style>

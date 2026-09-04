@@ -1,0 +1,33 @@
+---
+/**
+ * Emits JSON-LD. Accepts one object or several; undefined entries are dropped
+ * so callers can pass conditional schemas without guarding each one.
+ *
+ * Suppressed entirely before launch — there is no value in publishing
+ * structured data describing placeholder content.
+ */
+import { site } from '../data/site';
+
+interface Props {
+  schema:
+    | (Record<string, unknown> | undefined)[]
+    | Record<string, unknown>
+    | undefined;
+}
+
+const { schema } = Astro.props;
+const items = (Array.isArray(schema) ? schema : [schema]).filter(
+  (s): s is Record<string, unknown> => s !== undefined
+);
+---
+
+{
+  site.launched &&
+    items.map((item) => (
+      <script
+        type="application/ld+json"
+        is:inline
+        set:html={JSON.stringify(item)}
+      />
+    ))
+}

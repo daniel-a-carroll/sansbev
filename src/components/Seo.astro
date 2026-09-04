@@ -19,6 +19,10 @@ interface Props {
 
 const { title, description, ogSlot = 'og-default', noindex = false } = Astro.props;
 
+// Pre-launch, the entire site is noindex regardless of the per-page flag.
+// Indexing placeholder copy is slow and irritating to undo. See site.launched.
+const blockIndexing = noindex || !site.launched;
+
 const canonical = new URL(Astro.url.pathname, Astro.site ?? site.brand.domain);
 const fullTitle = title.includes(site.brand.name)
   ? title
@@ -35,7 +39,7 @@ const ogUrl = og ? new URL(og.image.src, canonical).href : undefined;
 <title>{fullTitle}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical.href} />
-{noindex && <meta name="robots" content="noindex, nofollow" />}
+{blockIndexing && <meta name="robots" content="noindex, nofollow" />}
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content={site.brand.name} />

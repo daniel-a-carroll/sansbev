@@ -1,0 +1,32 @@
+---
+/**
+ * Wholesale inquiry. This is the form that matters most — it is how a category
+ * buyer gets the specifications, since none are published.
+ */
+import FormShell from './FormShell.astro';
+import Field from './Field.astro';
+import { CHANNELS } from '../../lib/form-schemas';
+
+interface Props {
+  id?: string;
+}
+
+const { id = 'wholesale' } = Astro.props;
+---
+
+<FormShell
+  id={id}
+  action="/api/wholesale"
+  submitLabel="Request specifications"
+  successHeading="Inquiry received"
+  successBody="We'll follow up with the current sell sheet and full specifications."
+>
+  <Field formId={id} name="businessName" label="Business name" required autocomplete="organization" />
+  <Field formId={id} name="contactName" label="Your name" required autocomplete="name" />
+  <Field formId={id} name="email" label="Email address" type="email" required autocomplete="email" inputmode="email" />
+  <Field formId={id} name="role" label="Your role" required placeholder="Category buyer, owner, distributor rep" />
+  <Field formId={id} name="channel" label="Channel" type="select" required options={CHANNELS} />
+  <Field formId={id} name="storeCount" label="Number of locations" inputmode="numeric" pattern="[0-9]*" maxlength={6} />
+  <Field formId={id} name="region" label="Region" placeholder="Front Range, Western Slope, statewide" />
+  <Field formId={id} name="message" label="Anything else" type="textarea" maxlength={4000} />
+</FormShell>
