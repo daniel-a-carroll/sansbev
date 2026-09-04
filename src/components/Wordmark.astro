@@ -1,0 +1,71 @@
+---
+/**
+ * The brand wordmark.
+ *
+ * Falls back to a typographic setting rather than to the gray Asset
+ * placeholder — a placeholder box in the header would make every page look
+ * broken, and the wordmark is one of the few slots where the interim state
+ * has to be presentable rather than obviously empty.
+ *
+ * Drop a file at src/assets/logo-wordmark.svg and this swaps automatically.
+ */
+import { site } from '../data/site';
+import { hasAsset } from '../lib/resolve-asset';
+import Asset from './Asset.astro';
+
+interface Props {
+  /** Header uses the larger setting; footer uses the smaller one. */
+  size?: 'sm' | 'md';
+  class?: string;
+}
+
+const { size = 'md', class: className } = Astro.props;
+const hasLogo = hasAsset('logo-wordmark');
+---
+
+{
+  hasLogo ? (
+    <Asset
+      slot="logo-wordmark"
+      alt={site.brand.name}
+      sizes="160px"
+      class:list={['wordmark-img', `wordmark--${size}`, className]}
+    />
+  ) : (
+    <span class:list={['wordmark', `wordmark--${size}`, className]}>
+      {site.brand.name}
+    </span>
+  )
+}
+
+<style>
+  .wordmark {
+    display: inline-block;
+    font-weight: var(--font-weight-display);
+    font-stretch: var(--font-width-display);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    /* Provisional treatment: plain, confident, and clearly not a logo.
+       Nothing here pretends to be brand identity. */
+  }
+
+  .wordmark--md {
+    font-size: 1.5rem;
+  }
+
+  .wordmark--sm {
+    font-size: 1.125rem;
+  }
+
+  .wordmark-img {
+    width: auto;
+  }
+
+  .wordmark-img.wordmark--md {
+    height: 1.75rem;
+  }
+
+  .wordmark-img.wordmark--sm {
+    height: 1.25rem;
+  }
+</style>

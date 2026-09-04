@@ -1,0 +1,24 @@
+# FAQ entries.
+#
+# `audience` controls where an entry appears:
+#   consumer -> product and where-to-buy pages
+#   trade    -> wholesale page
+#   both     -> everywhere
+#
+# Consumer entries also feed FAQPage JSON-LD.
+#
+# Answers are subject to the same claims rules as src/data/claims.ts. If an
+# answer says anything about what the product does to a body, it belongs in a
+# claims review before it ships.
+
+- id: caffeine-amount
+  question: '[[PLACEHOLDER — how much caffeine is in a can?]]'
+  answer: '[[PLACEHOLDER — factual amount and source. Composition only.]]'
+  audience: consumer
+  order: 1
+
+- id: case-pack
+  question: '[[PLACEHOLDER — what is the case pack and MOQ?]]'
+  answer: '[[PLACEHOLDER — point at the specs table or state directly]]'
+  audience: trade
+  order: 1

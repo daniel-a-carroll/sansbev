@@ -1,0 +1,133 @@
+---
+/**
+ * The single image entry point for the whole site.
+ *
+ *   <Asset slot="home-hero-can" alt="..." sizes="(min-width: 60rem) 40vw, 90vw" />
+ *
+ * If src/assets/<slot>.<ext> exists it renders a real, responsive, optimized
+ * image. If it does not, it renders an SVG placeholder at the EXACT final
+ * dimensions, labeled with the slot name and required size. Because both
+ * branches reserve identical intrinsic dimensions, swapping a placeholder for
+ * real photography causes zero layout shift.
+ *
+ * There are no <img> tags anywhere else in this codebase.
+ */
+import { Image } from 'astro:assets';
+import { getSlot } from '../lib/assets';
+import { resolveAsset } from '../lib/resolve-asset';
+
+interface Props {
+  slot: string;
+  /** Required when a real asset exists. Placeholders describe themselves. */
+  alt?: string;
+  class?: string;
+  /** Passed to the responsive image. Defaults to the slot's intrinsic width. */
+  sizes?: string;
+  loading?: 'lazy' | 'eager';
+}
+
+const { slot, alt, class: className, sizes, loading } = Astro.props;
+const def = getSlot(slot);
+
+const resolved = resolveAsset(slot);
+const raster = resolved?.kind === 'raster' ? resolved.image : undefined;
+const vector = resolved?.kind === 'vector' ? resolved.image : undefined;
+
+const eager = loading ?? (def.priority ? 'eager' : 'lazy');
+const resolvedSizes = sizes ?? `${def.width}px`;
+
+// Never request widths larger than the source.
+const candidateWidths = [def.width / 2, def.width, def.width * 1.5]
+  .map((w) => Math.round(w))
+  .filter((w, i, arr) => w > 0 && arr.indexOf(w) === i);
+const widths = raster
+  ? candidateWidths.filter((w) => w <= raster.width)
+  : candidateWidths;
+
+// Placeholder label sizing, in viewBox units so it scales with the box.
+const labelSize = Math.max(14, Math.min(def.width, def.height) * 0.052);
+const gap = labelSize * 1.35;
+---
+
+{
+  raster ? (
+    <Image
+      src={raster}
+      alt={alt ?? ''}
+      widths={widths.length ? widths : undefined}
+      sizes={resolvedSizes}
+      loading={eager}
+      fetchpriority={def.priority ? 'high' : 'auto'}
+      decoding="async"
+      class:list={['asset', className]}
+    />
+  ) : vector ? (
+    <img
+      src={vector.src}
+      alt={alt ?? ''}
+      width={def.width}
+      height={def.height}
+      loading={eager}
+      decoding="async"
+      class:list={['asset', className]}
+    />
+  ) : (
+    <svg
+      role="img"
+      aria-label={`Placeholder image: ${slot}, ${def.width} by ${def.height} pixels`}
+      viewBox={`0 0 ${def.width} ${def.height}`}
+      width={def.width}
+      height={def.height}
+      class:list={['asset', 'asset--placeholder', className]}
+      data-slot={slot}
+    >
+      <rect width={def.width} height={def.height} fill="var(--color-surface)" />
+      <rect
+        x="0.5"
+        y="0.5"
+        width={def.width - 1}
+        height={def.height - 1}
+        fill="none"
+        stroke="var(--color-rule-strong)"
+        stroke-width="1"
+      />
+      <text
+        x={def.width / 2}
+        y={def.height / 2 - gap / 2}
+        text-anchor="middle"
+        font-family="var(--font-family)"
+        font-size={labelSize}
+        font-weight="500"
+        fill="var(--color-ink-muted)"
+      >
+        {slot}
+      </text>
+      <text
+        x={def.width / 2}
+        y={def.height / 2 + gap / 2}
+        text-anchor="middle"
+        font-family="var(--font-family)"
+        font-size={labelSize * 0.82}
+        fill="var(--color-ink-muted)"
+      >
+        {`${def.width} × ${def.height} ${def.format.toUpperCase()}`}
+      </text>
+    </svg>
+  )
+}
+
+<style>
+  /* Intrinsic width/height attributes reserve the space; these keep it
+     responsive without giving that reservation up. */
+  .asset {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+
+  .asset--placeholder {
+    /* Deliberately inert. A placeholder should read as a gap in the design,
+       not as a designed element. */
+    background-color: var(--color-surface);
+  }
+</style>

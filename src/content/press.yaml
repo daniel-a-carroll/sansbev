@@ -1,0 +1,15 @@
+# Press mentions.
+#
+# Empty until there is press. The press section removes itself from the page
+# when this file is empty -- it never renders an empty heading.
+#
+# Example entry:
+#
+# - id: bevnet-2026-launch
+#   outlet: BevNET
+#   title: Example headline
+#   url: https://example.com/article
+#   date: 2026-06-01
+#   excerpt: One or two sentences pulled from the piece.
+
+[]

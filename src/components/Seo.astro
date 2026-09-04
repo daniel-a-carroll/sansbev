@@ -1,0 +1,70 @@
+---
+/**
+ * Head metadata. Per-page title and description come from frontmatter or the
+ * copy singletons — never hardcoded here.
+ *
+ * JSON-LD structured data is added in stage 5 and will be generated from the
+ * same content collections the pages render, so the two cannot drift.
+ */
+import { site } from '../data/site';
+import { resolveAsset } from '../lib/resolve-asset';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Overrides the default social image slot. */
+  ogSlot?: string;
+  noindex?: boolean;
+}
+
+const { title, description, ogSlot = 'og-default', noindex = false } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.brand.domain);
+const fullTitle = title.includes(site.brand.name)
+  ? title
+  : `${title} — ${site.brand.name}`;
+
+// Only emit an OG image tag if real artwork exists. A social card pointing at
+// a gray placeholder is worse than no card at all.
+const og = resolveAsset(ogSlot);
+const ogUrl = og ? new URL(og.image.src, canonical).href : undefined;
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical.href} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={site.brand.name} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical.href} />
+{ogUrl && <meta property="og:image" content={ogUrl} />}
+
+<meta name="twitter:card" content={ogUrl ? 'summary_large_image' : 'summary'} />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+{ogUrl && <meta name="twitter:image" content={ogUrl} />}
+
+<!-- Self-hosted, subset, and preloaded: it is the only blocking asset. -->
+<link
+  rel="preload"
+  href="/fonts/archivo-subset-var.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
+
+{
+  site.analytics.cloudflareToken && (
+    <script
+      is:inline
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon={`{"token": "${site.analytics.cloudflareToken}"}`}
+    />
+  )
+}

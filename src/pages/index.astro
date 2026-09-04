@@ -1,0 +1,123 @@
+---
+/**
+ * STAGE 2 SHELL. Structure only.
+ *
+ * This page exists to exercise the layout, tokens, and placeholder system so
+ * they can be reviewed in a browser. Real home page content — brand story,
+ * product introduction, email capture — is stage 3, and the capture form is
+ * stage 4. The markup here is scaffolding, not final composition.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Asset from '../components/Asset.astro';
+import { copy } from '../data/copy';
+---
+
+<BaseLayout title={copy.home.seo.title} description={copy.home.seo.description}>
+  <section class="hero">
+    <div class="container grid hero__inner">
+      <div class="hero__text">
+        <h1 class="display">{copy.home.heroHeadline}</h1>
+        {copy.home.heroSubhead && <p class="hero__sub">{copy.home.heroSubhead}</p>}
+        <p class="hero__trade">
+          <a href="/wholesale" class="accent">{copy.home.heroTradeLinkLabel}</a>
+        </p>
+      </div>
+
+      <div class="hero__figure">
+        <!-- The one orchestrated motion moment on the site: this field settles
+             once on load. Collapsed entirely by prefers-reduced-motion. -->
+        <div class="hero__field" aria-hidden="true"></div>
+        <Asset
+          slot="home-hero-can"
+          alt=""
+          sizes="(min-width: 48rem) 34vw, 70vw"
+          class="hero__can"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="caption">
+        Stage 2 shell — layout, tokens, and the asset placeholder system.
+        Page content is stage 3.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-block: var(--space-2xl) var(--space-3xl);
+  }
+
+  .hero__inner {
+    align-items: center;
+  }
+
+  .hero__text {
+    grid-column: 1 / span 7;
+  }
+
+  .hero__sub {
+    max-width: var(--measure-narrow);
+    margin-block-start: var(--space-md);
+    font-size: var(--text-h3);
+    color: var(--color-ink-muted);
+    line-height: var(--leading-tight);
+  }
+
+  .hero__trade {
+    margin-block-start: var(--space-lg);
+    font-size: var(--text-small);
+  }
+
+  .hero__figure {
+    grid-column: 9 / span 4;
+    position: relative;
+    display: grid;
+    place-items: end center;
+  }
+
+  /* Flat, unbounded color. Not a card, not a container around the product. */
+  .hero__field {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline: -12%;
+    block-size: 62%;
+    background-color: var(--color-accent-field);
+    transform-origin: bottom;
+    animation: field-settle var(--duration-considered) var(--ease-out) both;
+  }
+
+  .hero__can {
+    position: relative;
+    max-inline-size: 26rem;
+  }
+
+  @keyframes field-settle {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__field {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 48rem) {
+    .hero__figure {
+      margin-block-start: var(--space-xl);
+      justify-items: start;
+    }
+    .hero__field {
+      inset-inline: -8% 40%;
+    }
+  }
+</style>

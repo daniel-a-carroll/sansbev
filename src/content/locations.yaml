@@ -1,0 +1,26 @@
+# Retail locations for /where-to-buy.
+#
+# Hand-maintained. Add a store, commit, push -- the page rebuilds and regroups
+# by city automatically, and each entry emits LocalBusiness JSON-LD.
+#
+# `id` must be unique and stable; it becomes the anchor link for that store.
+# Only `name` is required. `lat`/`lng` are only needed for the store to appear
+# on the Colorado map -- without them it still appears in the list.
+#
+# Example entry:
+#
+# - id: natural-grocers-boulder-north
+#   name: Natural Grocers
+#   chain: Natural Grocers
+#   type: natural-grocery      # natural-grocery | independent | convenience |
+#                              # specialty | foodservice | other
+#   address1: 0000 Example St
+#   city: Boulder
+#   state: CO
+#   zip: "80301"
+#   lat: 40.0274
+#   lng: -105.2519
+#   url: https://example.com
+#   dateAdded: 2026-01-15
+
+[]

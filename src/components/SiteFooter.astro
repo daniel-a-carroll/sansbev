@@ -1,0 +1,116 @@
+---
+/**
+ * Site footer.
+ *
+ * Demonstrates the optionality rule from docs/IA.md: every contact address is
+ * optional today, so each row renders only if it has a value and the whole
+ * contact block disappears if none do. No empty headings, no "undefined",
+ * no dangling labels.
+ */
+import Wordmark from './Wordmark.astro';
+import { site } from '../data/site';
+
+const contacts = [
+  { label: 'Trade', email: site.contact.trade },
+  { label: 'General', email: site.contact.general },
+  { label: 'Press', email: site.contact.press },
+].filter((c): c is { label: string; email: string } => Boolean(c.email));
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <div class="site-footer__brand">
+      <Wordmark size="sm" />
+      {site.brand.tagline && <p class="caption">{site.brand.tagline}</p>}
+    </div>
+
+    {
+      contacts.length > 0 && (
+        <div>
+          <h2 class="site-footer__heading">Contact</h2>
+          <ul class="site-footer__list">
+            {contacts.map((c) => (
+              <li>
+                <span class="muted">{c.label}</span>{' '}
+                <a href={`mailto:${c.email}`}>{c.email}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+
+    {
+      site.social.length > 0 && (
+        <div>
+          <h2 class="site-footer__heading">Elsewhere</h2>
+          <ul class="site-footer__list">
+            {site.social.map((s) => (
+              <li>
+                <a href={s.url} rel="me">
+                  {s.platform}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+
+    <div>
+      <h2 class="site-footer__heading">Legal</h2>
+      <ul class="site-footer__list">
+        <li><a href="/privacy">Privacy policy</a></li>
+        <li><a href="/terms">Terms of use</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container">
+    <p class="caption site-footer__legal">
+      &copy; {year} {site.brand.legalName ?? site.brand.name}. All rights reserved.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-block-start: var(--space-3xl);
+    border-block-start: var(--rule);
+    padding-block: var(--space-xl) var(--space-lg);
+  }
+
+  .site-footer__inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+    gap: var(--space-lg);
+    align-items: start;
+  }
+
+  .site-footer__brand {
+    display: grid;
+    gap: var(--space-2xs);
+  }
+
+  .site-footer__heading {
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-ink-muted);
+    margin-block-end: var(--space-2xs);
+  }
+
+  .site-footer__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-small);
+    display: grid;
+    gap: var(--space-3xs);
+  }
+
+  .site-footer__legal {
+    margin-block-start: var(--space-xl);
+  }
+</style>

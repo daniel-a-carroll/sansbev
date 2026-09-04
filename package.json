@@ -1,0 +1,22 @@
+{
+  "name": "sansbev-site",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "sync": "astro sync",
+    "check": "astro check",
+    "assets:manifest": "node scripts/generate-assets-manifest.mjs",
+    "todo": "grep -rn '\\[\\[PLACEHOLDER' src/ || echo 'No placeholders remaining.'"
+  },
+  "dependencies": {
+    "astro": "^5.14.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "typescript": "^5.9.2"
+  }
+}

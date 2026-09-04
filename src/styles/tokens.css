@@ -1,0 +1,157 @@
+/* ===========================================================================
+ * DESIGN TOKENS — the only file you edit to re-skin this site.
+ *
+ * Everything visual resolves through these custom properties. No component
+ * hardcodes a color, size, or font. When brand identity is finalized, changing
+ * the values here changes the whole site.
+ *
+ * Rationale for every choice is in docs/DESIGN.md.
+ * All contrast ratios below are computed, not estimated.
+ * ======================================================================== */
+
+/* --- Typeface ---------------------------------------------------------- */
+/* Archivo, SIL OFL 1.1. Self-hosted, latin subset, variable on weight and
+ * width, instanced to the ranges actually used. See scripts/build-font.sh. */
+
+@font-face {
+  font-family: 'Archivo';
+  src: url('/fonts/archivo-subset-var.woff2') format('woff2-variations');
+  font-weight: 400 700;
+  font-stretch: 100% 112%;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* =====================================================================
+   * COLOR
+   * Raw palette. Named for Front Range conditions so the names survive a
+   * re-skin. Do not reference these directly in components — use the
+   * semantic tokens below.
+   * ================================================================== */
+
+  --c-snowfield: #f1f3ef; /* page ground — cool near-white, faint green cast */
+  --c-spruce: #13241d;    /* ink — a green-black, not a neutral black       */
+  --c-granite: #5a635c;   /* secondary text, hairlines                      */
+  --c-mist: #e2e6e0;      /* recessed surfaces, table banding, placeholders */
+  --c-sunbreak: #d6451b;  /* THE loud color — full-bleed fields only        */
+  --c-ember: #b63510;     /* text-safe sibling of sunbreak                  */
+
+  /* Semantic. Components use only these. */
+  --color-bg: var(--c-snowfield);
+  --color-ink: var(--c-spruce);
+  --color-ink-muted: var(--c-granite);   /* 5.57:1 on bg — AA              */
+  --color-surface: var(--c-mist);
+  --color-accent-field: var(--c-sunbreak);
+  --color-accent-text: var(--c-ember);   /* 5.36:1 on bg — AA              */
+  --color-on-accent-field: var(--c-spruce); /* 3.64:1 — LARGE TYPE ONLY    */
+  --color-on-ink: var(--c-snowfield);    /* 14.49:1 on ink — AAA           */
+  --color-rule: color-mix(in srgb, var(--c-granite) 28%, transparent);
+  --color-rule-strong: color-mix(in srgb, var(--c-granite) 55%, transparent);
+  --color-focus: var(--c-ember);
+  --color-focus-on-ink: var(--c-snowfield);
+
+  /* Hard rule enforced by --font-size-min-on-accent below: nothing smaller
+   * than 24px (or 19px bold) may sit on --color-accent-field. 3.64:1 clears
+   * WCAG AA for large text and non-text UI, and nothing else. */
+  --font-size-min-on-accent: 1.5rem;
+
+  /* =====================================================================
+   * TYPE
+   * One family, two registers. The width axis gives a display voice without
+   * a second typeface. Tabular figures are the load-bearing feature — this
+   * site is columns of numbers a buyer reads.
+   * ================================================================== */
+
+  --font-family: 'Archivo', ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  --font-weight-body: 400;
+  --font-weight-medium: 500;
+  --font-weight-heading: 600;
+  --font-weight-display: 700;
+
+  --font-width-normal: 100%;
+  --font-width-display: 112%;
+
+  /* Fluid scale, 375px → 1920px. */
+  --text-display: clamp(2.75rem, 1.45rem + 5.55vw, 6rem);
+  --text-h1: clamp(2rem, 1.46rem + 2.3vw, 3.25rem);
+  --text-h2: clamp(1.5rem, 1.29rem + 0.9vw, 2rem);
+  --text-h3: clamp(1.1875rem, 1.13rem + 0.24vw, 1.375rem);
+  --text-body: 1.0625rem;
+  --text-small: 0.9375rem;
+  --text-caption: 0.8125rem;
+
+  --leading-display: 0.98;
+  --leading-heading: 1.14;
+  --leading-body: 1.6;
+  --leading-tight: 1.35;
+
+  --tracking-display: -0.022em;
+  --tracking-heading: -0.012em;
+  --tracking-body: 0;
+
+  /* Prose measure. Wider than this and the listing-sheet logic breaks down. */
+  --measure: 66ch;
+  --measure-narrow: 46ch;
+
+  /* =====================================================================
+   * SPACE — 4px base, geometric-ish. Section rhythm is deliberately large;
+   * whitespace is doing the work that cards and shadows are not.
+   * ================================================================== */
+
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: clamp(4rem, 2.5rem + 6vw, 7rem);
+  --space-3xl: clamp(5.5rem, 3rem + 10vw, 10rem);
+
+  /* =====================================================================
+   * LAYOUT
+   * ================================================================== */
+
+  --layout-max: 78rem;
+  --layout-gutter: clamp(1.25rem, 0.7rem + 2.4vw, 3rem);
+  --grid-columns: 12;
+  --grid-gap: clamp(1rem, 0.6rem + 1.6vw, 2rem);
+
+  /* =====================================================================
+   * BORDERS & RADII
+   * Rules, not cards. Radii exist for form controls and little else; if you
+   * find yourself raising these, re-read principle 3 in docs/DESIGN.md.
+   * ================================================================== */
+
+  --rule-width: 1px;
+  --rule: var(--rule-width) solid var(--color-rule);
+  --rule-strong: var(--rule-width) solid var(--color-rule-strong);
+
+  --radius-none: 0;
+  --radius-sm: 2px;   /* form controls, buttons */
+  --radius-md: 3px;
+
+  /* No shadow tokens. This is intentional and load-bearing. */
+
+  /* =====================================================================
+   * MOTION
+   * One orchestrated moment site-wide (the home hero field). Everything
+   * else is instant. All of it collapses under prefers-reduced-motion.
+   * ================================================================== */
+
+  --duration-instant: 90ms;
+  --duration-quick: 160ms;
+  --duration-considered: 620ms;
+  --ease-out: cubic-bezier(0.2, 0.7, 0.3, 1);
+
+  /* =====================================================================
+   * MISC
+   * ================================================================== */
+
+  --focus-width: 2px;
+  --focus-offset: 2px;
+  --z-skiplink: 100;
+}

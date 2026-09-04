@@ -1,0 +1,130 @@
+{
+  "_comment": [
+    "Single source of truth for every image the site expects.",
+    "Consumed by src/lib/assets.ts (rendering) and scripts/generate-assets-manifest.mjs",
+    "(which regenerates ASSETS.md). It is JSON rather than TS so both a typed",
+    "Astro component and a plain node script can read it without a build step.",
+    "",
+    "To add a slot: add an entry here, run `npm run assets:manifest`, then use",
+    "<Asset slot=\"your-slot\" /> in a component.",
+    "To fulfil a slot: drop the file at src/assets/<slot>.<ext>. Nothing else."
+  ],
+
+  "slots": [
+    {
+      "slot": "logo-wordmark",
+      "width": 640,
+      "height": 128,
+      "format": "svg",
+      "where": "Site header, footer",
+      "note": "Horizontal wordmark, transparent background, single color so it can be recolored via CSS. Until this exists the header renders a typographic wordmark.",
+      "priority": true
+    },
+    {
+      "slot": "logo-mark",
+      "width": 512,
+      "height": 512,
+      "format": "svg",
+      "where": "Favicon, app icons, social profile",
+      "note": "Square standalone mark, no wordmark, legible at 32px."
+    },
+    {
+      "slot": "og-default",
+      "width": 1200,
+      "height": 630,
+      "format": "png",
+      "where": "Open Graph / social preview for any page without its own image",
+      "note": "Brand lockup on a flat field. Keep text large; this is rendered small in feeds."
+    },
+    {
+      "slot": "home-hero-can",
+      "width": 1400,
+      "height": 1750,
+      "format": "png",
+      "where": "Home hero",
+      "note": "Single can, three-quarter angle, transparent background. The hero product shot. Studio lighting, no props, no ice, no condensation styling. This is the LCP image — the most important shot on the site.",
+      "priority": true
+    },
+    {
+      "slot": "home-story",
+      "width": 1800,
+      "height": 1200,
+      "format": "jpg",
+      "where": "Home, brand story section",
+      "note": "Environmental Front Range shot or ingredient still. No people holding cans. Should read as place, not as lifestyle stock."
+    },
+    {
+      "slot": "product-lineup",
+      "width": 2000,
+      "height": 1250,
+      "format": "png",
+      "where": "Product index page",
+      "note": "All three SKUs together, straight-on, evenly spaced, transparent background. Reshoot whenever the lineup changes."
+    },
+    {
+      "slot": "about-founder",
+      "width": 1400,
+      "height": 1750,
+      "format": "jpg",
+      "where": "About page",
+      "note": "Founder portrait, natural light, working context rather than posed studio. Buyers read this as evidence of a real operator."
+    },
+    {
+      "slot": "about-colorado",
+      "width": 2400,
+      "height": 1200,
+      "format": "jpg",
+      "where": "About page, provenance section",
+      "note": "Wide Colorado landscape or production facility exterior. Avoid the generic mountain-range stock crop."
+    },
+    {
+      "slot": "wholesale-case",
+      "width": 1600,
+      "height": 1200,
+      "format": "jpg",
+      "where": "Wholesale page, near the specs table",
+      "note": "The shipper case, and a pallet if one exists. Plain background. This is an operational photo for buyers, not a beauty shot — it should show the case as it arrives on a dock."
+    },
+    {
+      "slot": "wholesale-shelf",
+      "width": 1600,
+      "height": 1200,
+      "format": "jpg",
+      "where": "Wholesale page",
+      "note": "Product on a real retail shelf, facing forward. Powerful proof for a category buyer. Omit until there is a genuine shelf placement — do not stage this."
+    }
+  ],
+
+  "_flavorComment": [
+    "Per-SKU slots. Expanded once per entry in src/content/flavors/ as",
+    "flavor-<id>-<kind>, e.g. flavor-flavor-one-can-front.",
+    "Referenced in components via flavorSlot(id, kind)."
+  ],
+
+  "flavorSlots": [
+    {
+      "kind": "can-front",
+      "width": 1000,
+      "height": 1600,
+      "format": "png",
+      "where": "Flavor page hero, product index card",
+      "note": "Single can, straight-on, label centered and fully legible, transparent background. Slim 12oz can."
+    },
+    {
+      "kind": "can-angle",
+      "width": 1400,
+      "height": 1400,
+      "format": "png",
+      "where": "Flavor page secondary",
+      "note": "Same can, three-quarter angle, transparent background."
+    },
+    {
+      "kind": "ingredient-still",
+      "width": 1600,
+      "height": 1200,
+      "format": "jpg",
+      "where": "Flavor page, tasting notes section",
+      "note": "The actual fruit for this SKU, styled simply on a plain surface. Real fruit, matching the flavor. No syrup splashes, no motion photography."
+    }
+  ]
+}
