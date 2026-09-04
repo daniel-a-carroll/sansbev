@@ -48,10 +48,10 @@ const copySchema = z.object({
     seo,
     heading: z.string(),
     intro: z.string().optional(),
-    specsHeading: z.string(),
-    sellSheetHeading: z.string(),
-    /** Shown when trade.sellSheetPath is unset. */
-    sellSheetFallback: z.string(),
+    /** Heading over trade.availableOnRequest — the no-values disclosure list. */
+    availableOnRequestHeading: z.string(),
+    availableOnRequestNote: z.string().optional(),
+    channelsHeading: z.string(),
     formHeading: z.string(),
   }),
 
@@ -120,10 +120,10 @@ export const copy = copySchema.parse({
     },
     heading: 'Wholesale and retail partners',
     intro: '[[PLACEHOLDER — one paragraph aimed at category buyers and distributors]]',
-    specsHeading: 'Trade specifications',
-    sellSheetHeading: 'Sell sheet',
-    sellSheetFallback:
-      'The current sell sheet is available on request. Use the form below or email us directly.',
+    availableOnRequestHeading: 'Available on request',
+    availableOnRequestNote:
+      'Send an inquiry and we will follow up with the current sell sheet and full specifications.',
+    channelsHeading: 'Channels we serve',
     formHeading: 'Wholesale inquiry',
   },
 
