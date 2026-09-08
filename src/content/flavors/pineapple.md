@@ -16,7 +16,7 @@ color:
   ink: '#875514'
 ---
 
-Pineapple is the sweetest of the three and the easiest to overdo. This one stays on the fruit side of that line. Ripe and tropical up front, with enough acidity behind it that the can does not turn syrupy halfway down.
+Pineapple is the sweetest of the range and the easiest to overdo. This one stays on the fruit side of that line. Ripe and tropical up front, with enough acidity behind it that the can does not turn syrupy halfway down.
 
 [[PLACEHOLDER: still needed for the Pineapple SKU. Each is optional and its row or
 section does not render until it exists:

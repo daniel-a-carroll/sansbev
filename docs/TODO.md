@@ -51,13 +51,13 @@ These are decisions and inputs only you can supply. Ordered by what blocks the m
 ### `src/data/copy.ts`
 
 - **L15** — ...
-- **L156** — launch timing, and whether you are taking orders yet. One sentence.
-- **L179** — where specifically, and where the product is produced. Buyers ask this early, so answer it plainly here.
-- **L202** — date this was last reviewed
-- **L232** — the address people should write to in order to be removed. Set the contact addresses in src/data/site.ts, then name the general one here.
-- **L241** — REVIEW REQUIRED. This policy was written to describe accurately what the site actually does, but it has not been reviewed by counsel and does not attempt to address state-specific privacy obligations. Have it reviewed before launch.
-- **L253** — date this was last reviewed
-- **L288** — REVIEW REQUIRED. These terms are a plain-language starting point, not a complete or jurisdiction-specific agreement. They deliberately omit warranty disclaimers, limitation of liability, and governing law, all of which counsel should decide. Have this reviewed before launch.
+- **L167** — launch timing, and whether you are taking orders yet. One sentence.
+- **L190** — where specifically, and where the product is produced. Buyers ask this early, so answer it plainly here.
+- **L213** — date this was last reviewed
+- **L243** — the address people should write to in order to be removed. Set the contact addresses in src/data/site.ts, then name the general one here.
+- **L252** — REVIEW REQUIRED. This policy was written to describe accurately what the site actually does, but it has not been reviewed by counsel and does not attempt to address state-specific privacy obligations. Have it reviewed before launch.
+- **L264** — date this was last reviewed
+- **L299** — REVIEW REQUIRED. These terms are a plain-language starting point, not a complete or jurisdiction-specific agreement. They deliberately omit warranty disclaimers, limitation of liability, and governing law, all of which counsel should decide. Have this reviewed before launch.
 
 ### `src/data/site.ts`
 

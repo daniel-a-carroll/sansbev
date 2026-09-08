@@ -53,6 +53,17 @@ const copySchema = z.object({
     emailCaptureBody: z.string().optional(),
   }),
 
+  /**
+   * NOTE ON THE FLAVOR COUNT.
+   * Launching on three SKUs is a distribution decision, not a brand attribute:
+   * it is the count CPG and retail operators advise starting on to earn
+   * recognisable shelf presence without overreaching a first buy. The range is
+   * expected to grow.
+   *
+   * So no user-visible string counts the flavors. Copy names them, and where a
+   * count is genuinely useful to a buyer it is derived from the collection at
+   * render time. Nothing here goes stale the day a fourth SKU is added.
+   */
   product: z.object({
     seo,
     heading: z.string(),
@@ -102,19 +113,19 @@ export const copy = copySchema.parse({
     seo: {
       title: 'SANS energy drink, made with real fruit juice',
       description:
-        'A Colorado energy drink made with real fruit juice and 200mg of caffeine from green coffee. Three flavors: lime, pineapple, and cranberry.',
+        'A Colorado energy drink made with real fruit juice and 200mg of caffeine from green coffee. Lime, pineapple, and cranberry.',
     },
     // The line printed on every can. It is the strongest copy the brand has, it
     // makes no claim about the body, and it is already on the packaging.
     heroHeadline: "What's important is what's not in it",
     heroSubhead:
-      'Three flavors, made with real fruit juice, with 200mg of caffeine from green coffee.',
+      'Made with real fruit juice, with 200mg of caffeine from green coffee.',
     heroTradeLinkLabel: 'See wholesale specs',
 
     storyHeading: 'Sans means without',
     storyBody: [
       'Sans means without in French. That is the whole idea. What matters in a can of SANS is the list of things that are not in it.',
-      'What is in it is simple. Real fruit juice for the fruit named on the front, and 200mg of caffeine from green coffee. Three flavors, in a 12 ounce can.',
+      'What is in it is simple. Real fruit juice for the fruit named on the front, and 200mg of caffeine from green coffee, in a 12 ounce can.',
     ],
 
     emailCaptureHeading: 'Find out when it lands near you',
@@ -123,11 +134,11 @@ export const copy = copySchema.parse({
 
   product: {
     seo: {
-      title: 'Three flavors',
+      title: 'The lineup',
       description:
         'Lime, pineapple, and cranberry. Each made with real fruit juice, with 200mg of caffeine from green coffee, in a 12 ounce slim can.',
     },
-    heading: 'Three flavors',
+    heading: 'The lineup',
     intro:
       'Each one is built around the fruit it is named for. Twelve ounce slim cans, 200mg of caffeine from green coffee.',
   },
@@ -153,7 +164,7 @@ export const copy = copySchema.parse({
     },
     heading: 'Wholesale and retail partners',
     intro:
-      'SANS is a 12 ounce slim-can energy drink made with real fruit juice, in three flavors, with 200mg of caffeine from green coffee. We are talking to buyers, distributors, and brokers in Colorado now. [[PLACEHOLDER: launch timing, and whether you are taking orders yet. One sentence.]]',
+      'SANS is a 12 ounce slim-can energy drink made with real fruit juice, with 200mg of caffeine from green coffee. We are talking to buyers, distributors, and brokers in Colorado now. [[PLACEHOLDER: launch timing, and whether you are taking orders yet. One sentence.]]',
     availableOnRequestHeading: 'Available on request',
     availableOnRequestNote:
       'Send an inquiry and we will follow up with the current sell sheet and full specifications.',
@@ -175,7 +186,7 @@ export const copy = copySchema.parse({
       'For years I got my caffeine from everywhere. Coffee, tea, supplements, energy drinks, whatever was in front of me that day.',
       'Then I had a family and ran out of time. I wanted one convenient thing I could reach for every day and feel good about drinking. I went looking and could not find it. Some had ingredients I did not recognize. Some were sweeter than I wanted. Some just did not taste good.',
       'So I kept drinking things I was not happy with. For years. Eventually I decided to do something about it myself.',
-      'SANS is the drink I wanted and could not buy. Three flavors built on real fruit juice, caffeine from green coffee, and a label I am comfortable handing to anybody.',
+      'SANS is the drink I wanted and could not buy. Real fruit juice, caffeine from green coffee, and a label I am comfortable handing to anybody.',
       'We are based in Colorado. [[PLACEHOLDER: where specifically, and where the product is produced. Buyers ask this early, so answer it plainly here.]]',
     ],
   },
@@ -204,7 +215,7 @@ export const copy = copySchema.parse({
         {
           heading: 'What we collect',
           body: [
-            'We collect information only when you choose to submit one of the three forms on this site.',
+            'We collect information only when you choose to submit one of the forms on this site.',
             'The email signup collects your email address and your ZIP code. The ZIP code is required, and we use it to decide which markets to open next.',
             'The store request form collects the name and location of a store you would like to see carrying SANS, and your email address if you choose to give it.',
             'The wholesale inquiry form collects your business name, your name, your email address, your role, and your channel, plus your number of locations, your region, and a message if you provide them.',

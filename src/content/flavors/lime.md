@@ -16,7 +16,7 @@ color:
   ink: '#3E7017'
 ---
 
-Lime is the most direct of the three. The fruit is sharp on its own, so the can leans into that rather than rounding it off. Citrus first, with the bitterness that makes lime taste like lime left in.
+Lime is the most direct of the range. The fruit is sharp on its own, so the can leans into that rather than rounding it off. Citrus first, with the bitterness that makes lime taste like lime left in.
 
 [[PLACEHOLDER: still needed for the Lime SKU. Each is optional and its row or
 section does not render until it exists:

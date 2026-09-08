@@ -17,6 +17,13 @@ import { trade } from '../data/trade';
 import { site } from '../data/site';
 import { faqSchema } from '../lib/schema';
 
+// The range is rendered from the collection, never written as a count. Adding
+// a SKU updates the wholesale page on the next build, and no copy anywhere
+// claims a number that could go stale. See the note in src/data/copy.ts.
+const flavors = (await getCollection('flavors', ({ data }) => !data.draft)).sort(
+  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99)
+);
+
 const faq = (await getCollection('faq'))
   .filter((e) => e.data.audience !== 'consumer')
   .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
@@ -59,6 +66,21 @@ const sellSheetIsPublic =
       </div>
 
       <div class="wholesale__aside">
+        {
+          flavors.length > 0 && (
+            <>
+              <h2 class="wholesale__aside-heading">Current range</h2>
+              <ul class="channels">
+                {flavors.map((flavor) => (
+                  <li>
+                    <a href={`/product/${flavor.id}`}>{flavor.data.name}</a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )
+        }
+
         {
           trade.channels.length > 0 && (
             <>
