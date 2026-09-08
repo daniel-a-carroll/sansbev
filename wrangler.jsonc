@@ -11,6 +11,16 @@
   "compatibility_date": "2026-05-01",
   "compatibility_flags": ["nodejs_compat"],
 
+  // Custom domain. Declaring it here rather than clicking it into the
+  // dashboard keeps the config in the repo, so a redeploy can never quietly
+  // detach it and you can see what the site is bound to without logging in.
+  //
+  // sansbev.com must already be an active zone on this Cloudflare account
+  // (it is), and there must be no conflicting A/AAAA/CNAME record at the apex
+  // — Cloudflare creates and manages that record itself. The TLS certificate
+  // is provisioned automatically; allow a few minutes on first deploy.
+  "routes": [{ "pattern": "sansbev.com", "custom_domain": true }],
+
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
