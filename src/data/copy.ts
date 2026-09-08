@@ -9,8 +9,10 @@
  *   - No comparisons to named or implied competitors. "Most energy drinks..."
  *     is a comparative advertising claim, not a turn of phrase.
  *   - Plain sentence case, active voice, no filler. Buttons state what happens.
+ *   - No em dashes anywhere in user-visible copy. Use a comma, a full stop, or
+ *     rewrite the sentence.
  *
- * Remaining unwritten strings use the [[PLACEHOLDER — ...]] format. Run
+ * Remaining unwritten strings use the [[PLACEHOLDER: ...]] format. Run
  * `npm run todo` for the list.
  */
 
@@ -70,7 +72,7 @@ const copySchema = z.object({
     seo,
     heading: z.string(),
     intro: z.string().optional(),
-    /** Heading over trade.availableOnRequest — the no-values disclosure list. */
+    /** Heading over trade.availableOnRequest, the no-values disclosure list. */
     availableOnRequestHeading: z.string(),
     availableOnRequestNote: z.string().optional(),
     channelsHeading: z.string(),
@@ -98,7 +100,7 @@ const copySchema = z.object({
 export const copy = copySchema.parse({
   home: {
     seo: {
-      title: 'SANS — energy drink made with real fruit juice',
+      title: 'SANS energy drink, made with real fruit juice',
       description:
         'A Colorado energy drink made with real fruit juice and 200mg of caffeine from green coffee. Three flavors: lime, pineapple, and cranberry.',
     },
@@ -109,10 +111,10 @@ export const copy = copySchema.parse({
       'Three flavors, made with real fruit juice, with 200mg of caffeine from green coffee.',
     heroTradeLinkLabel: 'See wholesale specs',
 
-    storyHeading: 'It starts with the juice',
+    storyHeading: 'Sans means without',
     storyBody: [
-      'SANS is built around the fruit it is named for. Lime, pineapple, and cranberry are on the front of the can because they are what you taste.',
-      'The caffeine comes from green coffee — 200mg in a 12 ounce can. The line on the can is the whole idea: what matters is the list of things that are not in it.',
+      'Sans means without in French. That is the whole idea. What matters in a can of SANS is the list of things that are not in it.',
+      'What is in it is simple. Real fruit juice for the fruit named on the front, and 200mg of caffeine from green coffee. Three flavors, in a 12 ounce can.',
     ],
 
     emailCaptureHeading: 'Find out when it lands near you',
@@ -151,7 +153,7 @@ export const copy = copySchema.parse({
     },
     heading: 'Wholesale and retail partners',
     intro:
-      'SANS is a 12 ounce slim-can energy drink made with real fruit juice, in three flavors, with 200mg of caffeine from green coffee. We are talking to buyers, distributors, and brokers in Colorado now. [[PLACEHOLDER — launch timing, and whether you are taking orders yet. One sentence.]]',
+      'SANS is a 12 ounce slim-can energy drink made with real fruit juice, in three flavors, with 200mg of caffeine from green coffee. We are talking to buyers, distributors, and brokers in Colorado now. [[PLACEHOLDER: launch timing, and whether you are taking orders yet. One sentence.]]',
     availableOnRequestHeading: 'Available on request',
     availableOnRequestNote:
       'Send an inquiry and we will follow up with the current sell sheet and full specifications.',
@@ -163,13 +165,18 @@ export const copy = copySchema.parse({
     seo: {
       title: 'About',
       description:
-        'SANS is a Colorado energy drink made with real fruit juice. Who makes it and why.',
+        'Why SANS exists, in the founder’s words. A Colorado energy drink made with real fruit juice.',
     },
     heading: 'About',
+    // The founder's own account, lightly edited for grammar and flow. Claim
+    // language was removed rather than reworded: see the note in claims.ts and
+    // docs/TODO.md for exactly what came out and why.
     body: [
-      '[[PLACEHOLDER — founder story. Who started SANS, when, and what you were doing before. Two or three specific sentences. A category buyer reads this as evidence that there is a real operator behind the brand, so specifics matter more than polish.]]',
-      'The idea was narrow enough to fit on the front of a can: put real fruit juice in an energy drink, name the fruit, and keep the rest of the ingredient list short enough to read in a store aisle.',
-      'We are based in Colorado. [[PLACEHOLDER — where specifically, and where the product is produced. Buyers ask this early; answer it plainly here.]]',
+      'For years I got my caffeine from everywhere. Coffee, tea, supplements, energy drinks, whatever was in front of me that day.',
+      'Then I had a family and ran out of time. I wanted one convenient thing I could reach for every day and feel good about drinking. I went looking and could not find it. Some had ingredients I did not recognize. Some were sweeter than I wanted. Some just did not taste good.',
+      'So I kept drinking things I was not happy with. For years. Eventually I decided to do something about it myself.',
+      'SANS is the drink I wanted and could not buy. Three flavors built on real fruit juice, caffeine from green coffee, and a label I am comfortable handing to anybody.',
+      'We are based in Colorado. [[PLACEHOLDER: where specifically, and where the product is produced. Buyers ask this early, so answer it plainly here.]]',
     ],
   },
 
@@ -192,7 +199,7 @@ export const copy = copySchema.parse({
       },
       summary:
         'This site collects very little, stores none of it on our own servers, and sets no cookies.',
-      lastUpdated: '[[PLACEHOLDER — date this was last reviewed]]',
+      lastUpdated: '[[PLACEHOLDER: date this was last reviewed]]',
       sections: [
         {
           heading: 'What we collect',
@@ -208,7 +215,7 @@ export const copy = copySchema.parse({
           body: [
             'Submissions are forwarded to us by email through Resend, our email provider. They are not written to a database or stored on any server we operate. The record is our inbox.',
             'We do not sell this information, and we do not share it outside the business except with our email provider, which processes it in order to deliver the message.',
-            'We may report demand in aggregate — for example, how many people in a given area have asked for the product — to retailers and distributors. That reporting does not identify individuals.',
+            'We may report demand in aggregate, for example how many people in a given area have asked for the product, to retailers and distributors. That reporting does not identify individuals.',
           ],
         },
         {
@@ -222,7 +229,7 @@ export const copy = copySchema.parse({
           heading: 'Keeping or removing your information',
           body: [
             'We keep submissions for as long as they are useful to the business and then delete them.',
-            '[[PLACEHOLDER — the address people should write to in order to be removed. Set the contact addresses in src/data/site.ts, then name the general one here.]]',
+            '[[PLACEHOLDER: the address people should write to in order to be removed. Set the contact addresses in src/data/site.ts, then name the general one here.]]',
           ],
         },
         {
@@ -231,7 +238,7 @@ export const copy = copySchema.parse({
         },
         {
           body: [
-            '[[PLACEHOLDER — REVIEW REQUIRED. This policy was written to describe accurately what the site actually does, but it has not been reviewed by counsel and does not attempt to address state-specific privacy obligations. Have it reviewed before launch.]]',
+            '[[PLACEHOLDER: REVIEW REQUIRED. This policy was written to describe accurately what the site actually does, but it has not been reviewed by counsel and does not attempt to address state-specific privacy obligations. Have it reviewed before launch.]]',
           ],
         },
       ],
@@ -243,7 +250,7 @@ export const copy = copySchema.parse({
         description: 'Terms governing use of the SANS website.',
       },
       summary: 'The short version: this site is informational.',
-      lastUpdated: '[[PLACEHOLDER — date this was last reviewed]]',
+      lastUpdated: '[[PLACEHOLDER: date this was last reviewed]]',
       sections: [
         {
           heading: 'About this site',
@@ -278,7 +285,7 @@ export const copy = copySchema.parse({
         },
         {
           body: [
-            '[[PLACEHOLDER — REVIEW REQUIRED. These terms are a plain-language starting point, not a complete or jurisdiction-specific agreement. They deliberately omit warranty disclaimers, limitation of liability, and governing law, all of which counsel should decide. Have this reviewed before launch.]]',
+            '[[PLACEHOLDER: REVIEW REQUIRED. These terms are a plain-language starting point, not a complete or jurisdiction-specific agreement. They deliberately omit warranty disclaimers, limitation of liability, and governing law, all of which counsel should decide. Have this reviewed before launch.]]',
           ],
         },
       ],

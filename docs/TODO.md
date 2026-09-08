@@ -2,57 +2,62 @@
 
 **Generated file — do not edit by hand.** Regenerate with `npm run todo:doc`.
 
-Counts as of the last run: **22 placeholder strings**,
+Counts as of the last run: **21 placeholder strings**,
 **15 unfulfilled asset slots**, **6 unconfirmed claims**.
 
 ## Blocking before launch
 
 These are decisions and inputs only you can supply. Ordered by what blocks the most.
 
-1. **Confirm the juice percentage in the finished formula**
-   Decides whether "healthy" is legally usable. It is the food-group leg of the FDA rule — low sugar/sodium/fat alone does not qualify. See src/data/claims.ts.
+1. **Resolve the caffeine figure: site says 200mg, the can art says 160MG**
+   FDA treats this site as labeling, so the site and the physical can must state the same number. They currently do not. Update the artwork or bring the site figure back down.
 
-2. **Confirm L-theanine sourcing (natural vs synthetic)**
+2. **Confirm the juice percentage in the finished formula**
+   Gates the nutrient-content claim. It is the food-group leg of the FDA rule; low sugar, sodium and fat alone do not qualify. See src/data/claims.ts.
+
+3. **Confirm L-theanine sourcing, natural or synthetic**
    Decides whether any "natural" positioning is defensible. Commonly synthesized rather than tea-extracted.
 
-3. **Legal review of src/data/claims.ts**
-   FDA treats this site as labeling. Review that one file, not the whole repo.
+4. **Legal review of src/data/claims.ts, including the About page language**
+   FDA treats this site as labeling. Review that one file, not the whole repo. It records which phrases were removed from the founder story and why.
 
-4. **Write the privacy policy**
-   It must accurately describe the email/ZIP capture. Currently placeholder.
+5. **Legal review of the privacy policy and terms**
+   Both are written and accurate about what the site does, but neither has been reviewed. Each carries a REVIEW REQUIRED marker in src/data/copy.ts.
 
-5. **Set the three contact email addresses in src/data/site.ts**
+6. **Write the founder biography and production location on the About page**
+   The story is written; the specifics only you have are still marked. Buyers read the About page as evidence of a real operator.
+
+7. **Set the three contact email addresses in src/data/site.ts**
    The contact page falls back to a form-only message until they exist.
 
-6. **Set RESEND_API_KEY, NOTIFY_FROM, NOTIFY_TO as Wrangler secrets**
+8. **Set RESEND_API_KEY, NOTIFY_FROM, NOTIFY_TO as Wrangler secrets**
    Without them the Worker logs submissions instead of delivering them. Every lead is silently lost.
 
-7. **Flip `launched` to true in src/data/site.ts**
+9. **Flip `launched` to true in src/data/site.ts**
    The entire site is noindex and robots.txt disallows everything until you do. This is the last step before going live.
 
 ## Placeholder copy and data
 
 ### `src/data/claims.ts`
 
-- **L126** — one sentence describing what is in the can. Composition only, no effect language.
-- **L150** — L-theanine amount and source. Sourcing still open.
-- **L154** — juice percentage. Also the open question for the "healthy" claim.
-- **L158** — sweetener approach, stated as composition
-- **L164** — e.g. "No artificial colors"
-- **L165** — e.g. "No artificial flavors"
-- **L166** — carbohydrate/sugar statement, stated factually
+- **L151** — one sentence describing what is in the can. Composition only, no effect language.
+- **L175** — L-theanine amount and source. Sourcing still open.
+- **L179** — juice percentage. Also the open question for the "healthy" claim.
+- **L183** — sweetener approach, stated as composition
+- **L189** — e.g. "No artificial colors"
+- **L190** — e.g. "No artificial flavors"
+- **L191** — carbohydrate/sugar statement, stated factually
 
 ### `src/data/copy.ts`
 
-- **L13** — ...
-- **L154** — launch timing, and whether you are taking orders yet. One sentence.
-- **L170** — founder story. Who started SANS, when, and what you were doing before. Two or three specific sentences. A category buyer reads this as evidence that there is a real operator behind the brand, so specifics matter more than polish.
-- **L172** — where specifically, and where the product is produced. Buyers ask this early; answer it plainly here.
-- **L195** — date this was last reviewed
-- **L225** — the address people should write to in order to be removed. Set the contact addresses in src/data/site.ts, then name the general one here.
-- **L234** — REVIEW REQUIRED. This policy was written to describe accurately what the site actually does, but it has not been reviewed by counsel and does not attempt to address state-specific privacy obligations. Have it reviewed before launch.
-- **L246** — date this was last reviewed
-- **L281** — REVIEW REQUIRED. These terms are a plain-language starting point, not a complete or jurisdiction-specific agreement. They deliberately omit warranty disclaimers, limitation of liability, and governing law, all of which counsel should decide. Have this reviewed before launch.
+- **L15** — ...
+- **L156** — launch timing, and whether you are taking orders yet. One sentence.
+- **L179** — where specifically, and where the product is produced. Buyers ask this early, so answer it plainly here.
+- **L202** — date this was last reviewed
+- **L232** — the address people should write to in order to be removed. Set the contact addresses in src/data/site.ts, then name the general one here.
+- **L241** — REVIEW REQUIRED. This policy was written to describe accurately what the site actually does, but it has not been reviewed by counsel and does not attempt to address state-specific privacy obligations. Have it reviewed before launch.
+- **L253** — date this was last reviewed
+- **L288** — REVIEW REQUIRED. These terms are a plain-language starting point, not a complete or jurisdiction-specific agreement. They deliberately omit warranty disclaimers, limitation of liability, and governing law, all of which counsel should decide. Have this reviewed before launch.
 
 ### `src/data/site.ts`
 

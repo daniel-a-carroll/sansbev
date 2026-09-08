@@ -32,7 +32,7 @@ const placeholders = [];
 for (const file of sourceFiles) {
   const lines = readFileSync(file, 'utf8').split('\n');
   lines.forEach((line, i) => {
-    const match = line.match(/\[\[PLACEHOLDER\s*—?\s*([^\]]*)\]\]/);
+    const match = line.match(/\[\[PLACEHOLDER\s*[:—-]?\s*([^\]]*)\]\]/);
     if (match) {
       placeholders.push({
         file: relative(root, file),
@@ -81,20 +81,28 @@ const unconfirmed = (claimsSource.match(/confirmed:\s*false/g) ?? []).length;
 
 const decisions = [
   {
-    item: 'Confirm the juice percentage in the finished formula',
-    why: 'Decides whether "healthy" is legally usable. It is the food-group leg of the FDA rule — low sugar/sodium/fat alone does not qualify. See src/data/claims.ts.',
+    item: 'Resolve the caffeine figure: site says 200mg, the can art says 160MG',
+    why: 'FDA treats this site as labeling, so the site and the physical can must state the same number. They currently do not. Update the artwork or bring the site figure back down.',
   },
   {
-    item: 'Confirm L-theanine sourcing (natural vs synthetic)',
+    item: 'Confirm the juice percentage in the finished formula',
+    why: 'Gates the nutrient-content claim. It is the food-group leg of the FDA rule; low sugar, sodium and fat alone do not qualify. See src/data/claims.ts.',
+  },
+  {
+    item: 'Confirm L-theanine sourcing, natural or synthetic',
     why: 'Decides whether any "natural" positioning is defensible. Commonly synthesized rather than tea-extracted.',
   },
   {
-    item: 'Legal review of src/data/claims.ts',
-    why: 'FDA treats this site as labeling. Review that one file, not the whole repo.',
+    item: 'Legal review of src/data/claims.ts, including the About page language',
+    why: 'FDA treats this site as labeling. Review that one file, not the whole repo. It records which phrases were removed from the founder story and why.',
   },
   {
-    item: 'Write the privacy policy',
-    why: 'It must accurately describe the email/ZIP capture. Currently placeholder.',
+    item: 'Legal review of the privacy policy and terms',
+    why: 'Both are written and accurate about what the site does, but neither has been reviewed. Each carries a REVIEW REQUIRED marker in src/data/copy.ts.',
+  },
+  {
+    item: 'Write the founder biography and production location on the About page',
+    why: 'The story is written; the specifics only you have are still marked. Buyers read the About page as evidence of a real operator.',
   },
   {
     item: 'Set the three contact email addresses in src/data/site.ts',

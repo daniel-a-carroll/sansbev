@@ -69,6 +69,31 @@
  *    "150mg caffeine from green tea" is stronger copy AND lower risk than
  *    "all natural".
  *
+ * 4b. WHAT WAS REMOVED FROM THE FOUNDER'S ABOUT-PAGE DRAFT.
+ *    The founder supplied his story in his own words. The narrative is used
+ *    almost intact in copy.ts. These specific phrases were NOT published, and
+ *    the reasoning is recorded here so counsel can review the decision rather
+ *    than discover the omission:
+ *
+ *      "still healthy alternative"       -> "healthy" is a regulated nutrient
+ *                                          content claim. See item 4 above.
+ *                                          The build lint rejects it outright.
+ *      "all natural ingredients"         -> unresolved while L-theanine
+ *                                          sourcing is open. Build lint
+ *                                          rejects it outright.
+ *      "benefits my health overall"      -> a health claim about the body,
+ *                                          resting on non-nutritive components.
+ *                                          See item 3 above.
+ *      "gives me the energy that I need" -> an effect claim. Composition only.
+ *      "better for you energy drink"     -> category shorthand that functions
+ *                                          as an implied health claim.
+ *      "probably not the best for me"    -> implies competing products are
+ *                                          harmful. See item 5 below.
+ *
+ *    If counsel clears any of these against the finished formula, they can be
+ *    restored to copy.ts and removed from prohibitedTerms deliberately. Do not
+ *    restore them by weakening the lint.
+ *
  * 5. COMPARATIVE CLAIMS ARE ADVERTISING CLAIMS.
  *    Naming or alluding to a competitor invokes Lanham Act exposure on top of
  *    FDA. Any comparison must be to a substantiated, documented fact.
@@ -123,7 +148,7 @@ const claimsSchema = z.object({
 
 export const claims = claimsSchema.parse({
   productDescriptor:
-    '[[PLACEHOLDER — one sentence describing what is in the can. Composition only, no effect language.]]',
+    '[[PLACEHOLDER: one sentence describing what is in the can. Composition only, no effect language.]]',
 
   compositionPoints: [
     // Confirmed: printed on all three packaging renders.
@@ -147,23 +172,23 @@ export const claims = claimsSchema.parse({
     // updated to 200mg or this value comes back down -- but they cannot ship
     // apart. This is the single highest-risk inconsistency in the project.
     {
-      label: '[[PLACEHOLDER — L-theanine amount and source. Sourcing still open.]]',
+      label: '[[PLACEHOLDER: L-theanine amount and source. Sourcing still open.]]',
       confirmed: false,
     },
     {
-      label: '[[PLACEHOLDER — juice percentage. Also the open question for the "healthy" claim.]]',
+      label: '[[PLACEHOLDER: juice percentage. Also the open question for the "healthy" claim.]]',
       confirmed: false,
     },
     {
-      label: '[[PLACEHOLDER — sweetener approach, stated as composition]]',
+      label: '[[PLACEHOLDER: sweetener approach, stated as composition]]',
       confirmed: false,
     },
   ],
 
   absencePoints: [
-    { label: '[[PLACEHOLDER — e.g. "No artificial colors"]]', confirmed: false },
-    { label: '[[PLACEHOLDER — e.g. "No artificial flavors"]]', confirmed: false },
-    { label: '[[PLACEHOLDER — carbohydrate/sugar statement, stated factually]]', confirmed: false },
+    { label: '[[PLACEHOLDER: e.g. "No artificial colors"]]', confirmed: false },
+    { label: '[[PLACEHOLDER: e.g. "No artificial flavors"]]', confirmed: false },
+    { label: '[[PLACEHOLDER: carbohydrate/sugar statement, stated factually]]', confirmed: false },
   ],
 
   disclosures: {

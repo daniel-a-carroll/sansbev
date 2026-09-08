@@ -74,7 +74,7 @@ export const site = siteSchema.parse({
     // this split -- if the brand is meant to be SansBev everywhere, this one
     // line is the only change needed.
     name: 'SANS',
-    legalName: '[[PLACEHOLDER — registered legal entity name]]',
+    legalName: '[[PLACEHOLDER: registered legal entity name]]',
     // Printed on all three cans.
     tagline: "what's important is what's not in it",
     domain: 'https://sansbev.com',
@@ -85,18 +85,18 @@ export const site = siteSchema.parse({
   launched: false,
 
   contact: {
-    trade: undefined, // [[PLACEHOLDER — trade/wholesale inquiry address]]
-    general: undefined, // [[PLACEHOLDER — general address]]
-    press: undefined, // [[PLACEHOLDER — press address]]
+    trade: undefined, // [[PLACEHOLDER: trade/wholesale inquiry address]]
+    general: undefined, // [[PLACEHOLDER: general address]]
+    press: undefined, // [[PLACEHOLDER: press address]]
     phone: undefined,
   },
 
-  address: undefined, // [[PLACEHOLDER — business address for LocalBusiness JSON-LD]]
+  address: undefined, // [[PLACEHOLDER: business address for LocalBusiness JSON-LD]]
 
   social: [],
 
   analytics: {
-    cloudflareToken: undefined, // [[PLACEHOLDER — Cloudflare Web Analytics token]]
+    cloudflareToken: undefined, // [[PLACEHOLDER: Cloudflare Web Analytics token]]
   },
 });
 

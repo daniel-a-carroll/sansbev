@@ -26,7 +26,7 @@ const blockIndexing = noindex || !site.launched;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? site.brand.domain);
 const fullTitle = title.includes(site.brand.name)
   ? title
-  : `${title} — ${site.brand.name}`;
+  : `${title} | ${site.brand.name}`;
 
 // Only emit an OG image tag if real artwork exists. A social card pointing at
 // a gray placeholder is worse than no card at all.

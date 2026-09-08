@@ -16,14 +16,14 @@ color:
   ink: '#3E7017'
 ---
 
-Lime is the most direct of the three. The fruit is sharp on its own, so the can leans into that rather than rounding it off — citrus first, with the bitterness that makes lime taste like lime still in the glass.
+Lime is the most direct of the three. The fruit is sharp on its own, so the can leans into that rather than rounding it off. Citrus first, with the bitterness that makes lime taste like lime left in.
 
-[[PLACEHOLDER — still needed for the Lime SKU. Each is optional and its row or
+[[PLACEHOLDER: still needed for the Lime SKU. Each is optional and its row or
 section does not render until it exists:
 
   ingredients:         full declared ingredient list, in label order
   allergenStatement:   string
-  juicePercent:        number — also gates the nutrient-content claim; see src/data/claims.ts
+  juicePercent:        number, also gates the nutrient-content claim; see src/data/claims.ts
   lTheanineMg:         number
   upc:                 12-14 digits
   nutrition:           see the schema in src/content.config.ts
