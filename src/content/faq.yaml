@@ -9,16 +9,59 @@
 #
 # Answers are subject to the same claims rules as src/data/claims.ts. If an
 # answer says anything about what the product does to a body, it belongs in a
-# claims review before it ships.
+# claims review before it ships. Describe what is in the can instead.
 
 - id: caffeine-amount
-  question: '[[PLACEHOLDER — how much caffeine is in a can?]]'
-  answer: '[[PLACEHOLDER — factual amount and source. Composition only.]]'
+  question: How much caffeine is in a can?
+  answer: >-
+    200mg per 12 fl oz can, from green coffee. Not recommended for children, or
+    for people sensitive to caffeine.
   audience: consumer
   order: 1
 
-- id: case-pack
-  question: '[[PLACEHOLDER — what is the case pack and MOQ?]]'
-  answer: '[[PLACEHOLDER — point at the specs table or state directly]]'
+- id: real-juice
+  question: Is it actually made with fruit juice?
+  answer: >-
+    Yes. Each flavor is built around the fruit it is named for, and the juice is
+    declared on the ingredient list on the can.
+  audience: consumer
+  order: 2
+
+- id: can-size
+  question: What size is the can?
+  answer: 12 fl oz (355 mL), in a slim can.
+  audience: both
+  order: 3
+
+- id: where-sold
+  question: Where can I buy it?
+  answer: >-
+    Stores carrying SANS are listed on the where to buy page. If there is nothing
+    near you yet, tell us the store you shop at — we bring those requests to
+    buyers when we pitch an account.
+  audience: consumer
+  order: 4
+
+- id: trade-specs
+  question: How do I get case pack, pricing, and specifications?
+  answer: >-
+    Send a wholesale inquiry and we will follow up with the current sell sheet
+    and full specifications. We reply within two business days.
   audience: trade
   order: 1
+
+- id: trade-territory
+  question: Where are you currently selling?
+  answer: >-
+    We are opening accounts in Colorado first, across natural grocery,
+    independent markets, and convenience. Talk to us about other territories.
+  audience: trade
+  order: 2
+
+- id: trade-distribution
+  question: Do you work through distributors or direct?
+  answer: >-
+    Both, depending on the account and the territory. Tell us how you prefer to
+    buy in your inquiry and we will work to it.
+  audience: trade
+  order: 3

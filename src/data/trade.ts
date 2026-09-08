@@ -67,10 +67,13 @@ const tradeSchema = z.object({
 });
 
 export const trade = tradeSchema.parse({
+  // Taken from the audience definition in the original brief: natural grocery,
+  // independent markets, convenience, plus distributor and broker reps.
   channels: [
-    '[[PLACEHOLDER — channel 1, e.g. Natural grocery]]',
-    '[[PLACEHOLDER — channel 2, e.g. Independent markets]]',
-    '[[PLACEHOLDER — channel 3, e.g. Convenience]]',
+    'Natural grocery',
+    'Independent markets',
+    'Convenience',
+    'Distributors and brokers',
   ],
 
   // Values are never published. This list is the point.
@@ -88,7 +91,9 @@ export const trade = tradeSchema.parse({
   // Empty until certifications actually exist. The section hides itself.
   certifications: [],
 
-  responseTime: '[[PLACEHOLDER — response commitment, e.g. "We reply within two business days."]]',
+  // A published commitment you actually have to hold. Change the number rather
+  // than miss it -- an unanswered inquiry is worse than no stated window.
+  responseTime: 'We reply to trade inquiries within two business days.',
 
   sellSheet: {
     mode: 'request',

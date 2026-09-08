@@ -1,18 +1,20 @@
 ---
 /**
- * Privacy policy. Placeholder — the body must be written before launch and
- * must accurately describe the email/ZIP capture and how submissions are
- * handled. See docs/TODO.md.
+ * Privacy policy.
+ *
+ * The body describes what this site actually does — email + ZIP capture,
+ * forwarded by Resend, nothing stored server-side, cookie-free analytics. It
+ * still needs legal review; that requirement is written into the page itself
+ * as a placeholder so it cannot be quietly forgotten.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalPage from '../components/LegalPage.astro';
 import { copy } from '../data/copy';
 ---
 
-<BaseLayout title={copy.legal.privacy.seo.title} description={copy.legal.privacy.seo.description}>
-  <section class="section">
-    <div class="container prose">
-      <h1>{copy.legal.privacy.seo.title}</h1>
-      {copy.legal.privacy.body.map((p) => <p>{p}</p>)}
-    </div>
-  </section>
+<BaseLayout
+  title={copy.legal.privacy.seo.title}
+  description={copy.legal.privacy.seo.description}
+>
+  <LegalPage page={copy.legal.privacy} />
 </BaseLayout>

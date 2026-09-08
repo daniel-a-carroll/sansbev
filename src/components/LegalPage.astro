@@ -1,0 +1,81 @@
+---
+/**
+ * Renders a sectioned legal page from src/data/copy.ts.
+ *
+ * Shared by /privacy and /terms so both stay structurally identical, and so
+ * adding a section is a data edit rather than a template edit.
+ */
+
+interface Section {
+  heading?: string;
+  body: string[];
+}
+
+interface Props {
+  page: {
+    seo: { title: string; description: string };
+    summary?: string;
+    lastUpdated?: string;
+    sections: Section[];
+  };
+}
+
+const { page } = Astro.props;
+---
+
+<article class="section">
+  <div class="container legal">
+    <h1>{page.seo.title}</h1>
+
+    {page.summary && <p class="legal__summary">{page.summary}</p>}
+
+    {
+      page.lastUpdated && (
+        <p class="caption legal__updated">Last updated {page.lastUpdated}</p>
+      )
+    }
+
+    {
+      page.sections.map((section) => (
+        <section class="legal__section">
+          {section.heading && <h2>{section.heading}</h2>}
+          {section.body.map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
+        </section>
+      ))
+    }
+  </div>
+</article>
+
+<style>
+  .legal {
+    max-inline-size: var(--measure);
+  }
+
+  .legal__summary {
+    margin-block-start: var(--space-sm);
+    font-size: var(--text-h3);
+    line-height: var(--leading-tight);
+    color: var(--color-ink-muted);
+  }
+
+  .legal__updated {
+    margin-block-start: var(--space-2xs);
+  }
+
+  .legal__section {
+    margin-block-start: var(--space-lg);
+    padding-block-start: var(--space-md);
+    border-block-start: var(--rule);
+  }
+
+  .legal__section h2 {
+    font-size: var(--text-h3);
+    margin-block-end: var(--space-2xs);
+  }
+
+  .legal__section p + p {
+    margin-block-start: var(--space-sm);
+  }
+</style>

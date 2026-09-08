@@ -2,29 +2,30 @@
 name: Pineapple
 order: 2
 status: in-development
-tagline: '[[PLACEHOLDER — short flavor tagline. The line on the can is brand-level, not per-flavor.]]'
-description: '[[PLACEHOLDER — one or two sentences. Composition and taste, not effect.]]'
+tagline: 'Ripe and tropical.'
+description: 'Ripe pineapple, closer to the fruit than to candy, made with real fruit juice.'
+tastingNotes:
+  - 'Ripe pineapple'
+  - 'Bright tropical fruit'
+  - 'Soft acidity'
 canSizeFlOz: 12
-caffeineMg: 160
+caffeineMg: 200
 color:
   field: '#F6C90C'
   onText: '#0A0A08'
   ink: '#875514'
 ---
 
-[[PLACEHOLDER — longer flavor description for the Pineapple SKU. Composition and taste
-only; anything describing an effect on the body belongs in src/data/claims.ts.
+Pineapple is the sweetest of the three and the easiest to overdo. This one stays on the fruit side of that line: ripe and tropical up front, with enough acidity behind it that the can does not turn syrupy halfway down.
 
-Confirmed from the packaging render and carried in the frontmatter above:
-12 fl oz (355 mL), 160mg caffeine from green coffee, made with real fruit juice.
+[[PLACEHOLDER — still needed for the Pineapple SKU. Each is optional and its row or
+section does not render until it exists:
 
-Still needed — add to the frontmatter as they are decided. Each is optional and
-its row or section simply does not render until it exists:
-
-  tastingNotes:        list of strings
   ingredients:         full declared ingredient list, in label order
   allergenStatement:   string
   juicePercent:        number — also gates the nutrient-content claim; see src/data/claims.ts
   lTheanineMg:         number
   upc:                 12-14 digits
-  nutrition:           see the schema in src/content.config.ts]]
+  nutrition:           see the schema in src/content.config.ts
+
+Anything describing an effect on the body belongs in src/data/claims.ts, not here.]]

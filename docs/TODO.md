@@ -2,7 +2,7 @@
 
 **Generated file — do not edit by hand.** Regenerate with `npm run todo:doc`.
 
-Counts as of the last run: **52 placeholder strings**,
+Counts as of the last run: **22 placeholder strings**,
 **15 unfulfilled asset slots**, **6 unconfirmed claims**.
 
 ## Blocking before launch
@@ -32,65 +32,27 @@ These are decisions and inputs only you can supply. Ordered by what blocks the m
 
 ## Placeholder copy and data
 
-### `src/content/faq.yaml`
-
-- **L15** — how much caffeine is in a can?
-- **L16** — factual amount and source. Composition only.
-- **L21** — what is the case pack and MOQ?
-- **L22** — point at the specs table or state directly
-
-### `src/content/flavors/cranberry.md`
-
-- **L5** — short flavor tagline. The line on the can is brand-level, not per-flavor.
-- **L6** — one or two sentences. Composition and taste, not effect.
-
-### `src/content/flavors/lime.md`
-
-- **L5** — short flavor tagline. The line on the can is brand-level, not per-flavor.
-- **L6** — one or two sentences. Composition and taste, not effect.
-
-### `src/content/flavors/pineapple.md`
-
-- **L5** — short flavor tagline. The line on the can is brand-level, not per-flavor.
-- **L6** — one or two sentences. Composition and taste, not effect.
-
 ### `src/data/claims.ts`
 
 - **L126** — one sentence describing what is in the can. Composition only, no effect language.
-- **L145** — L-theanine amount and source. Sourcing still open.
-- **L149** — juice percentage. Also the open question for the "healthy" claim.
-- **L153** — sweetener approach, stated as composition
-- **L159** — e.g. "No artificial colors"
-- **L160** — e.g. "No artificial flavors"
-- **L161** — carbohydrate/sugar statement, stated factually
-- **L168** — standard category advisory. Confirm exact wording with counsel.
+- **L150** — L-theanine amount and source. Sourcing still open.
+- **L154** — juice percentage. Also the open question for the "healthy" claim.
+- **L158** — sweetener approach, stated as composition
+- **L164** — e.g. "No artificial colors"
+- **L165** — e.g. "No artificial flavors"
+- **L166** — carbohydrate/sugar statement, stated factually
 
 ### `src/data/copy.ts`
 
-- **L7** — ...
-- **L79** — home meta title, under 60 chars
-- **L80** — home meta description, under 155 chars
-- **L87** — one supporting sentence. Composition only; see src/data/claims.ts before writing.
-- **L89** — brand story section heading
-- **L91** — brand story paragraph 1
-- **L92** — brand story paragraph 2
-- **L101** — product meta title
-- **L102** — product meta description
-- **L105** — one or two sentences introducing the range
-- **L110** — where to buy meta title
-- **L111** — where to buy meta description
-- **L122** — wholesale meta title
-- **L123** — wholesale meta description
-- **L126** — one paragraph aimed at category buyers and distributors
-- **L136** — about meta title
-- **L137** — about meta description
-- **L141** — founder story paragraph
-- **L142** — why this product exists paragraph
-- **L143** — Colorado provenance paragraph
-- **L149** — contact meta title
-- **L150** — contact meta description
-- **L162** — privacy policy. Must describe the email/ZIP capture and the form data retained.
-- **L169** — terms of use
+- **L13** — ...
+- **L154** — launch timing, and whether you are taking orders yet. One sentence.
+- **L170** — founder story. Who started SANS, when, and what you were doing before. Two or three specific sentences. A category buyer reads this as evidence that there is a real operator behind the brand, so specifics matter more than polish.
+- **L172** — where specifically, and where the product is produced. Buyers ask this early; answer it plainly here.
+- **L195** — date this was last reviewed
+- **L225** — the address people should write to in order to be removed. Set the contact addresses in src/data/site.ts, then name the general one here.
+- **L234** — REVIEW REQUIRED. This policy was written to describe accurately what the site actually does, but it has not been reviewed by counsel and does not attempt to address state-specific privacy obligations. Have it reviewed before launch.
+- **L246** — date this was last reviewed
+- **L281** — REVIEW REQUIRED. These terms are a plain-language starting point, not a complete or jurisdiction-specific agreement. They deliberately omit warranty disclaimers, limitation of liability, and governing law, all of which counsel should decide. Have this reviewed before launch.
 
 ### `src/data/site.ts`
 
@@ -100,13 +62,6 @@ These are decisions and inputs only you can supply. Ordered by what blocks the m
 - **L90** — press address
 - **L94** — business address for LocalBusiness JSON-LD
 - **L99** — Cloudflare Web Analytics token
-
-### `src/data/trade.ts`
-
-- **L71** — channel 1, e.g. Natural grocery
-- **L72** — channel 2, e.g. Independent markets
-- **L73** — channel 3, e.g. Convenience
-- **L91** — response commitment, e.g. "We reply within two business days."
 
 ## Photography and artwork
 

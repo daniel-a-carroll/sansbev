@@ -42,6 +42,15 @@ const specs = [
 ].filter((s): s is { label: string; value: string } => Boolean(s));
 
 const fieldStyle = d.color ? `--field: ${d.color.field}; --on-field: ${d.color.onText}` : undefined;
+
+// Caffeine disclosure and the category advisory. Shown whenever a caffeine
+// amount is declared -- these must not depend on ingredient data that has not
+// been supplied yet. Placeholder strings are filtered out.
+const written = (value?: string) => Boolean(value && !value.startsWith('[['));
+const disclosures = [
+  claims.disclosures.caffeine,
+  claims.disclosures.notRecommendedFor,
+].filter((line): line is string => written(line));
 ---
 
 <BaseLayout title={title} description={description}>
@@ -120,14 +129,24 @@ const fieldStyle = d.color ? `--field: ${d.color.field}; --on-field: ${d.color.o
               <p class="prose flavor__allergen">{d.allergenStatement}</p>
             )}
 
-            {claims.disclosures.caffeine && !claims.disclosures.caffeine.startsWith('[[') && (
-              <p class="caption flavor__disclosure">{claims.disclosures.caffeine}</p>
-            )}
           </div>
 
           <div class="flavor__panel">
             <NutritionPanel nutrition={d.nutrition} flavorName={d.name} />
           </div>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    d.caffeineMg !== undefined && disclosures.length > 0 && (
+      <section class="section">
+        <div class="container">
+          <h2 class="visually-hidden">Caffeine</h2>
+          {disclosures.map((line) => (
+            <p class="flavor__disclosure">{line}</p>
+          ))}
         </div>
       </section>
     )
@@ -197,6 +216,13 @@ const fieldStyle = d.color ? `--field: ${d.color.field}; --on-field: ${d.color.o
   }
 
   .flavor__disclosure {
-    margin-block-start: var(--space-sm);
+    max-inline-size: var(--measure);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .flavor__disclosure + .flavor__disclosure {
+    margin-block-start: var(--space-2xs);
+    font-weight: var(--font-weight-body);
+    color: var(--color-ink-muted);
   }
 </style>

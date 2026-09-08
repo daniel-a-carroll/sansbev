@@ -128,7 +128,7 @@ export const claims = claimsSchema.parse({
   compositionPoints: [
     // Confirmed: printed on all three packaging renders.
     {
-      label: '160mg caffeine from green coffee',
+      label: '200mg caffeine from green coffee',
       detail: 'Per 12 fl oz can.',
       confirmed: true,
     },
@@ -137,10 +137,15 @@ export const claims = claimsSchema.parse({
       detail: undefined,
       confirmed: true,
     },
-    // NOTE: the packaging says 160mg from GREEN COFFEE. The figure discussed
-    // earlier was 150mg. The can art is the more authoritative source, so it
-    // is used here -- but confirm against the finished formula before launch,
-    // because this is a labeling number and the two must agree exactly.
+    // !! ARTWORK MISMATCH -- RESOLVE BEFORE THE LABEL GOES TO PRINT !!
+    // The site states 200mg per founder direction. The packaging renders in
+    // assets/ print "160MG CAFFEINE FROM GREEN COFFEE" on all three SKUs.
+    // (A figure of 150mg was also discussed earlier in development.)
+    //
+    // FDA treats this site as labeling, so the number here and the number on
+    // the can must be identical. Right now they are not. Either the artwork is
+    // updated to 200mg or this value comes back down -- but they cannot ship
+    // apart. This is the single highest-risk inconsistency in the project.
     {
       label: '[[PLACEHOLDER — L-theanine amount and source. Sourcing still open.]]',
       confirmed: false,
@@ -163,9 +168,11 @@ export const claims = claimsSchema.parse({
 
   disclosures: {
     // Matches the packaging exactly. Keep these two in sync.
-    caffeine: 'Contains 160mg caffeine per 12 fl oz can.',
+    caffeine: 'Contains 200mg caffeine per 12 fl oz can.',
+    // Category-standard advisory. At 200mg per can this is worth carrying
+    // whether or not it is strictly required. Confirm exact wording with counsel.
     notRecommendedFor:
-      '[[PLACEHOLDER — standard category advisory. Confirm exact wording with counsel.]]',
+      'Not recommended for children, or for people sensitive to caffeine.',
     general: undefined,
   },
 

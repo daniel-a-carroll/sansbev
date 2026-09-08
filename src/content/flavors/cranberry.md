@@ -2,29 +2,30 @@
 name: Cranberry
 order: 3
 status: in-development
-tagline: '[[PLACEHOLDER — short flavor tagline. The line on the can is brand-level, not per-flavor.]]'
-description: '[[PLACEHOLDER — one or two sentences. Composition and taste, not effect.]]'
+tagline: 'Tart and dry.'
+description: 'Tart cranberry with the astringency intact, made with real fruit juice.'
+tastingNotes:
+  - 'Tart cranberry'
+  - 'Dry and astringent'
+  - 'Crisp finish'
 canSizeFlOz: 12
-caffeineMg: 160
+caffeineMg: 200
 color:
   field: '#A7172B'
   onText: '#EEE2D0'
   ink: '#A7172B'
 ---
 
-[[PLACEHOLDER — longer flavor description for the Cranberry SKU. Composition and taste
-only; anything describing an effect on the body belongs in src/data/claims.ts.
+Cranberry is the tart one. The astringency is left in rather than sweetened out, because it is the part that makes the fruit recognizable and the part that makes the can worth finishing.
 
-Confirmed from the packaging render and carried in the frontmatter above:
-12 fl oz (355 mL), 160mg caffeine from green coffee, made with real fruit juice.
+[[PLACEHOLDER — still needed for the Cranberry SKU. Each is optional and its row or
+section does not render until it exists:
 
-Still needed — add to the frontmatter as they are decided. Each is optional and
-its row or section simply does not render until it exists:
-
-  tastingNotes:        list of strings
   ingredients:         full declared ingredient list, in label order
   allergenStatement:   string
   juicePercent:        number — also gates the nutrient-content claim; see src/data/claims.ts
   lTheanineMg:         number
   upc:                 12-14 digits
-  nutrition:           see the schema in src/content.config.ts]]
+  nutrition:           see the schema in src/content.config.ts
+
+Anything describing an effect on the body belongs in src/data/claims.ts, not here.]]
