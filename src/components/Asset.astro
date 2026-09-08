@@ -11,6 +11,22 @@
  * real photography causes zero layout shift.
  *
  * There are no <img> tags anywhere else in this codebase.
+ *
+ * ---------------------------------------------------------------------------
+ * STYLING GOTCHA — read this before adding a `class` here.
+ *
+ * Astro scopes a component's <style> to elements in THAT component's template.
+ * The element below is rendered here, so it carries THIS component's scope id,
+ * not the caller's. A plain scoped rule in the calling page will silently match
+ * nothing, and the image will render unsized.
+ *
+ * From a caller, reach it with :global() nested under a locally-scoped
+ * ancestor, which keeps the selector contained:
+ *
+ *     .hero__figure :global(.asset) { max-inline-size: 20rem; }
+ *
+ * Every existing caller does this. It is a silent failure, not a build error.
+ * ---------------------------------------------------------------------------
  */
 import { Image } from 'astro:assets';
 import { getSlot } from '../lib/assets';

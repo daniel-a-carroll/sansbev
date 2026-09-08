@@ -16,18 +16,17 @@ the exact final dimensions, there is no layout shift when it swaps.
 Deliver at the listed dimensions or larger, at the exact aspect ratio. Larger is
 fine; the build downscales. Wrong ratio is not fine; it will letterbox.
 
-**0 of 19 slots fulfilled. 19 still needed.**
+**3 of 18 slots fulfilled. 15 still needed.**
 
 ## Site-wide and page slots
 
 | Slot | Status | Dimensions | Ratio | Format | Appears | What the shot should contain |
 |---|---|---|---|---|---|---|
-| `logo-wordmark` | NEEDED | 640×128 | 5:1 | SVG | Site header, footer | Horizontal wordmark, transparent background, single color so it can be recolored via CSS. Until this exists the header renders a typographic wordmark. |
+| `logo-wordmark` | NEEDED | 640×128 | 5:1 | SVG | Site header, footer | Horizontal SANS wordmark, transparent background, single color so it can be recolored via CSS. Until this exists the header sets the wordmark in Archivo heavy condensed, which closely matches the can. |
 | `logo-mark` | NEEDED | 512×512 | 1:1 | SVG | Favicon, app icons, social profile | Square standalone mark, no wordmark, legible at 32px. |
-| `og-default` | NEEDED | 1200×630 | 40:21 | PNG | Open Graph / social preview for any page without its own image | Brand lockup on a flat field. Keep text large; this is rendered small in feeds. |
-| `home-hero-can` | NEEDED | 1400×1750 | 4:5 | PNG | Home hero | Single can, three-quarter angle, transparent background. The hero product shot. Studio lighting, no props, no ice, no condensation styling. This is the LCP image — the most important shot on the site. |
+| `og-default` | NEEDED | 1200×630 | 40:21 | PNG | Open Graph / social preview for any page without its own image | Brand lockup on a flat field, ideally the cranberry can on paper. Keep text large; this renders small in feeds. |
 | `home-story` | NEEDED | 1800×1200 | 3:2 | JPG | Home, brand story section | Environmental Front Range shot or ingredient still. No people holding cans. Should read as place, not as lifestyle stock. |
-| `product-lineup` | NEEDED | 2000×1250 | 8:5 | PNG | Product index page | All three SKUs together, straight-on, evenly spaced, transparent background. Reshoot whenever the lineup changes. |
+| `product-lineup` | NEEDED | 2000×1250 | 8:5 | PNG | Product index page | All three cans together — lime, pineapple, cranberry — straight-on, evenly spaced. The existing renders are individual cans; this needs one composed shot of the line. |
 | `about-founder` | NEEDED | 1400×1750 | 4:5 | JPG | About page | Founder portrait, natural light, working context rather than posed studio. Buyers read this as evidence of a real operator. |
 | `about-colorado` | NEEDED | 2400×1200 | 2:1 | JPG | About page, provenance section | Wide Colorado landscape or production facility exterior. Avoid the generic mountain-range stock crop. |
 | `wholesale-case` | NEEDED | 1600×1200 | 4:3 | JPG | Wholesale page, near the specs table | The shipper case, and a pallet if one exists. Plain background. This is an operational photo for buyers, not a beauty shot — it should show the case as it arrives on a dock. |
@@ -42,15 +41,15 @@ final.
 
 | Slot | Status | Dimensions | Ratio | Format | Appears | What the shot should contain |
 |---|---|---|---|---|---|---|
-| `flavor-flavor-one-can-front` | NEEDED | 1000×1600 | 5:8 | PNG | Flavor page hero, product index card (flavor-one) | Single can, straight-on, label centered and fully legible, transparent background. Slim 12oz can. |
-| `flavor-flavor-one-can-angle` | NEEDED | 1400×1400 | 1:1 | PNG | Flavor page secondary (flavor-one) | Same can, three-quarter angle, transparent background. |
-| `flavor-flavor-one-ingredient-still` | NEEDED | 1600×1200 | 4:3 | JPG | Flavor page, tasting notes section (flavor-one) | The actual fruit for this SKU, styled simply on a plain surface. Real fruit, matching the flavor. No syrup splashes, no motion photography. |
-| `flavor-flavor-three-can-front` | NEEDED | 1000×1600 | 5:8 | PNG | Flavor page hero, product index card (flavor-three) | Single can, straight-on, label centered and fully legible, transparent background. Slim 12oz can. |
-| `flavor-flavor-three-can-angle` | NEEDED | 1400×1400 | 1:1 | PNG | Flavor page secondary (flavor-three) | Same can, three-quarter angle, transparent background. |
-| `flavor-flavor-three-ingredient-still` | NEEDED | 1600×1200 | 4:3 | JPG | Flavor page, tasting notes section (flavor-three) | The actual fruit for this SKU, styled simply on a plain surface. Real fruit, matching the flavor. No syrup splashes, no motion photography. |
-| `flavor-flavor-two-can-front` | NEEDED | 1000×1600 | 5:8 | PNG | Flavor page hero, product index card (flavor-two) | Single can, straight-on, label centered and fully legible, transparent background. Slim 12oz can. |
-| `flavor-flavor-two-can-angle` | NEEDED | 1400×1400 | 1:1 | PNG | Flavor page secondary (flavor-two) | Same can, three-quarter angle, transparent background. |
-| `flavor-flavor-two-ingredient-still` | NEEDED | 1600×1200 | 4:3 | JPG | Flavor page, tasting notes section (flavor-two) | The actual fruit for this SKU, styled simply on a plain surface. Real fruit, matching the flavor. No syrup splashes, no motion photography. |
+| `flavor-cranberry-can-front` | have | 460×1186 | 230:593 | PNG | Flavor page hero, product index card (cranberry) | FULFILLED by the packaging renders in assets/. These are 460x1186 on the render's studio background (which is why the page background is that same #E6E3DF — the cans sit on it almost seamlessly). Replace later with a higher-resolution transparent cutout: 460px is adequate at 1x but soft on high-DPI screens at hero size. |
+| `flavor-cranberry-can-angle` | NEEDED | 460×1186 | 230:593 | PNG | Flavor page secondary (cranberry) | Same can, three-quarter angle, matching the front render's treatment and framing. |
+| `flavor-cranberry-ingredient-still` | NEEDED | 1600×1200 | 4:3 | JPG | Flavor page, tasting notes section (cranberry) | The actual fruit for this SKU — lime wedge, pineapple wedge, cranberries — styled to match the fruit already composited on the can. Plain surface, no syrup splashes. |
+| `flavor-lime-can-front` | have | 460×1186 | 230:593 | PNG | Flavor page hero, product index card (lime) | FULFILLED by the packaging renders in assets/. These are 460x1186 on the render's studio background (which is why the page background is that same #E6E3DF — the cans sit on it almost seamlessly). Replace later with a higher-resolution transparent cutout: 460px is adequate at 1x but soft on high-DPI screens at hero size. |
+| `flavor-lime-can-angle` | NEEDED | 460×1186 | 230:593 | PNG | Flavor page secondary (lime) | Same can, three-quarter angle, matching the front render's treatment and framing. |
+| `flavor-lime-ingredient-still` | NEEDED | 1600×1200 | 4:3 | JPG | Flavor page, tasting notes section (lime) | The actual fruit for this SKU — lime wedge, pineapple wedge, cranberries — styled to match the fruit already composited on the can. Plain surface, no syrup splashes. |
+| `flavor-pineapple-can-front` | have | 460×1186 | 230:593 | PNG | Flavor page hero, product index card (pineapple) | FULFILLED by the packaging renders in assets/. These are 460x1186 on the render's studio background (which is why the page background is that same #E6E3DF — the cans sit on it almost seamlessly). Replace later with a higher-resolution transparent cutout: 460px is adequate at 1x but soft on high-DPI screens at hero size. |
+| `flavor-pineapple-can-angle` | NEEDED | 460×1186 | 230:593 | PNG | Flavor page secondary (pineapple) | Same can, three-quarter angle, matching the front render's treatment and framing. |
+| `flavor-pineapple-ingredient-still` | NEEDED | 1600×1200 | 4:3 | JPG | Flavor page, tasting notes section (pineapple) | The actual fruit for this SKU — lime wedge, pineapple wedge, cranberries — styled to match the fruit already composited on the can. Plain surface, no syrup splashes. |
 
 ## Notes for whoever shoots this
 

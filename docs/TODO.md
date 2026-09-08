@@ -2,8 +2,8 @@
 
 **Generated file — do not edit by hand.** Regenerate with `npm run todo:doc`.
 
-Counts as of the last run: **60 placeholder strings**,
-**19 unfulfilled asset slots**, **7 unconfirmed claims**.
+Counts as of the last run: **52 placeholder strings**,
+**15 unfulfilled asset slots**, **6 unconfirmed claims**.
 
 ## Blocking before launch
 
@@ -39,75 +39,67 @@ These are decisions and inputs only you can supply. Ordered by what blocks the m
 - **L21** — what is the case pack and MOQ?
 - **L22** — point at the specs table or state directly
 
-### `src/content/flavors/flavor-one.md`
+### `src/content/flavors/cranberry.md`
 
-- **L2** — SKU 1 flavor name
-- **L5** — short flavor tagline
+- **L5** — short flavor tagline. The line on the can is brand-level, not per-flavor.
 - **L6** — one or two sentences. Composition and taste, not effect.
 
-### `src/content/flavors/flavor-three.md`
+### `src/content/flavors/lime.md`
 
-- **L2** — SKU 3 flavor name
-- **L5** — short flavor tagline
+- **L5** — short flavor tagline. The line on the can is brand-level, not per-flavor.
 - **L6** — one or two sentences. Composition and taste, not effect.
 
-### `src/content/flavors/flavor-two.md`
+### `src/content/flavors/pineapple.md`
 
-- **L2** — SKU 2 flavor name
-- **L5** — short flavor tagline
+- **L5** — short flavor tagline. The line on the can is brand-level, not per-flavor.
 - **L6** — one or two sentences. Composition and taste, not effect.
 
 ### `src/data/claims.ts`
 
 - **L126** — one sentence describing what is in the can. Composition only, no effect language.
-- **L130** — caffeine source and amount, e.g. "150mg caffeine from green tea"
-- **L131** — source detail, needed for any natural positioning
-- **L135** — L-theanine amount and source
-- **L139** — juice content, e.g. "X% real fruit juice"
-- **L143** — sweetener approach, stated as composition
-- **L149** — e.g. "No artificial colors"
-- **L150** — e.g. "No artificial flavors"
-- **L151** — carbohydrate/sugar statement, stated factually
-- **L156** — caffeine per can disclosure, e.g. "Contains 150mg caffeine per 12 fl oz can."
-- **L158** — standard category advisory. Confirm exact wording with counsel.
+- **L145** — L-theanine amount and source. Sourcing still open.
+- **L149** — juice percentage. Also the open question for the "healthy" claim.
+- **L153** — sweetener approach, stated as composition
+- **L159** — e.g. "No artificial colors"
+- **L160** — e.g. "No artificial flavors"
+- **L161** — carbohydrate/sugar statement, stated factually
+- **L168** — standard category advisory. Confirm exact wording with counsel.
 
 ### `src/data/copy.ts`
 
 - **L7** — ...
 - **L79** — home meta title, under 60 chars
 - **L80** — home meta description, under 155 chars
-- **L82** — hero headline. Short. Sentence case.
-- **L83** — one supporting sentence
-- **L85** — brand story section heading
-- **L87** — brand story paragraph 1
-- **L88** — brand story paragraph 2
-- **L97** — product meta title
-- **L98** — product meta description
-- **L101** — one or two sentences introducing the range
-- **L106** — where to buy meta title
-- **L107** — where to buy meta description
-- **L118** — wholesale meta title
-- **L119** — wholesale meta description
-- **L122** — one paragraph aimed at category buyers and distributors
-- **L132** — about meta title
-- **L133** — about meta description
-- **L137** — founder story paragraph
-- **L138** — why this product exists paragraph
-- **L139** — Colorado provenance paragraph
-- **L145** — contact meta title
-- **L146** — contact meta description
-- **L158** — privacy policy. Must describe the email/ZIP capture and the form data retained.
-- **L165** — terms of use
+- **L87** — one supporting sentence. Composition only; see src/data/claims.ts before writing.
+- **L89** — brand story section heading
+- **L91** — brand story paragraph 1
+- **L92** — brand story paragraph 2
+- **L101** — product meta title
+- **L102** — product meta description
+- **L105** — one or two sentences introducing the range
+- **L110** — where to buy meta title
+- **L111** — where to buy meta description
+- **L122** — wholesale meta title
+- **L123** — wholesale meta description
+- **L126** — one paragraph aimed at category buyers and distributors
+- **L136** — about meta title
+- **L137** — about meta description
+- **L141** — founder story paragraph
+- **L142** — why this product exists paragraph
+- **L143** — Colorado provenance paragraph
+- **L149** — contact meta title
+- **L150** — contact meta description
+- **L162** — privacy policy. Must describe the email/ZIP capture and the form data retained.
+- **L169** — terms of use
 
 ### `src/data/site.ts`
 
-- **L73** — registered legal entity name
-- **L74** — one-line tagline, sentence case, no filler
-- **L83** — trade/wholesale inquiry address
-- **L84** — general address
-- **L85** — press address
-- **L89** — business address for LocalBusiness JSON-LD
-- **L94** — Cloudflare Web Analytics token
+- **L77** — registered legal entity name
+- **L88** — trade/wholesale inquiry address
+- **L89** — general address
+- **L90** — press address
+- **L94** — business address for LocalBusiness JSON-LD
+- **L99** — Cloudflare Web Analytics token
 
 ### `src/data/trade.ts`
 
@@ -118,28 +110,24 @@ These are decisions and inputs only you can supply. Ordered by what blocks the m
 
 ## Photography and artwork
 
-19 slots still need real files. Full shot list with dimensions and
+15 slots still need real files. Full shot list with dimensions and
 direction is in [ASSETS.md](../ASSETS.md).
 
 - `logo-wordmark`
 - `logo-mark`
 - `og-default`
-- `home-hero-can`
 - `home-story`
 - `product-lineup`
 - `about-founder`
 - `about-colorado`
 - `wholesale-case`
 - `wholesale-shelf`
-- `flavor-flavor-one-can-front`
-- `flavor-flavor-one-can-angle`
-- `flavor-flavor-one-ingredient-still`
-- `flavor-flavor-three-can-front`
-- `flavor-flavor-three-can-angle`
-- `flavor-flavor-three-ingredient-still`
-- `flavor-flavor-two-can-front`
-- `flavor-flavor-two-can-angle`
-- `flavor-flavor-two-ingredient-still`
+- `flavor-cranberry-can-angle`
+- `flavor-cranberry-ingredient-still`
+- `flavor-lime-can-angle`
+- `flavor-lime-ingredient-still`
+- `flavor-pineapple-can-angle`
+- `flavor-pineapple-ingredient-still`
 
 ## How to work through this
 

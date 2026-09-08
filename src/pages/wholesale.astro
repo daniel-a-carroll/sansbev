@@ -182,7 +182,8 @@ const sellSheetIsPublic =
     padding-block: var(--space-3xs);
   }
 
-  .wholesale__photo {
+  /* :global() — rendered inside <Asset>. See index.astro. */
+  .wholesale__aside :global(.asset) {
     margin-block-start: var(--space-md);
   }
 

@@ -80,11 +80,10 @@ li {
   text-wrap: pretty;
 }
 
-/* The display register. One family, width axis open. */
+/* The display register. */
 .display {
   font-size: var(--text-display);
   font-weight: var(--font-weight-display);
-  font-stretch: var(--font-width-display);
   line-height: var(--leading-display);
   letter-spacing: var(--tracking-display);
   text-wrap: balance;
@@ -105,6 +104,16 @@ li {
 .caption {
   font-size: var(--text-caption);
   line-height: var(--leading-tight);
+  color: var(--color-ink-muted);
+}
+
+/* Small tracked caps, taken from the can. This is the one place the pattern is
+ * earned: it is the packaging's own device, not a decorative eyebrow. */
+.label {
+  font-size: var(--text-caption);
+  font-weight: var(--font-weight-heading);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
   color: var(--color-ink-muted);
 }
 
@@ -192,14 +201,8 @@ a.accent {
 }
 
 .band--accent {
-  background-color: var(--color-accent-field);
-  color: var(--color-on-accent-field);
-}
-
-/* Enforces the contrast rule from tokens.css rather than trusting discipline:
- * text on an accent field cannot render below the large-text threshold. */
-.band--accent :is(p, li, span, a, dt, dd, small) {
-  font-size: max(var(--font-size-min-on-accent), 1em);
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
 }
 
 /* --- Data -------------------------------------------------------------- */

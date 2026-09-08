@@ -81,13 +81,18 @@ Rename the `.md` file, then rename its asset files in `src/assets/` to match the
 new slot names (`flavor-<new-id>-can-front.png`, etc). Run
 `npm run assets:manifest` to update the shot list.
 
+The home page hero uses whichever flavor has the lowest `order`, so changing
+`order: 1` to another SKU reskins the hero — no code change and no duplicate
+hero image to keep in sync.
+
 ### Add real photography
 
 Drop the file into `src/assets/` named exactly for its slot:
 
 ```
-src/assets/home-hero-can.png
-src/assets/flavor-citrus-can-front.png
+src/assets/flavor-lime-can-front.png
+src/assets/product-lineup.png
+src/assets/logo-wordmark.svg
 ```
 
 That is the entire operation. No import, no code change. The build generates a
@@ -102,13 +107,16 @@ moves when the real image appears.
 `src/styles/tokens.css` is the only file. Change the six color values at the top
 and the whole site follows.
 
-Two rules if you change colors:
+Three rules if you change colors:
 
 - **Check contrast.** Body text needs 4.5:1 against its background. The file
-  documents the current ratios; if you change a value, verify the new one.
-- `--c-sunbreak` is a field color only — nothing smaller than 24px sits on it.
-  `--c-ember` is its text-safe sibling. Keep that split or the accent will fail
-  contrast on links and buttons.
+  documents every current ratio; if you change a value, verify the new one.
+- **Do not change `--c-paper` casually.** It is the exact background the can
+  renders were shot on, which is why the cans sit on the page seamlessly.
+  Change it and every product image grows a visible rectangle around it.
+- **Cranberry is both a flavor color and the house accent.** It is the only
+  packaging color dark enough to carry text. Lime and pineapple are field-only
+  and fail badly as text — 1.50 and 1.24 against paper.
 
 ### Publish a sell sheet publicly
 
@@ -151,6 +159,17 @@ finished formula supports the statement.
 **Empty is a valid state everywhere.** No component renders an empty heading, a
 dangling label, or `undefined`. If you see one, that is a bug, not something you
 need to fill in to hide.
+
+**Cans must not sit on color fields.** The renders are not transparent cutouts;
+each carries its own studio background, which shows as a pale rectangle on any
+saturated color. Flavor color goes on rules and bands the cans do not overlap.
+This changes the day real cutouts exist — see ASSETS.md.
+
+**Passing a class to `<Asset>` needs `:global()`.** Astro scopes styles to a
+component's own template, so a class handed to `<Asset>` lands on an element
+with Asset's scope id, not yours, and a plain scoped rule silently matches
+nothing. Write `.your-wrapper :global(.asset) { ... }`. It fails silently, not
+loudly — the header comment in `Asset.astro` explains it.
 
 **Local dev needs Node 20.** Wrangler 4.129+ requires Node 22; this project pins
 wrangler 4.86 so it runs on Node 20. If you upgrade Node to 22, you can upgrade

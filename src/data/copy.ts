@@ -79,8 +79,12 @@ export const copy = copySchema.parse({
       title: '[[PLACEHOLDER — home meta title, under 60 chars]]',
       description: '[[PLACEHOLDER — home meta description, under 155 chars]]',
     },
-    heroHeadline: '[[PLACEHOLDER — hero headline. Short. Sentence case.]]',
-    heroSubhead: '[[PLACEHOLDER — one supporting sentence]]',
+    // The line printed on every can. It is the strongest copy the brand has,
+    // it makes no claim about the body, and it is already on the packaging --
+    // so it leads.
+    heroHeadline: "What's important is what's not in it",
+    heroSubhead:
+      '[[PLACEHOLDER — one supporting sentence. Composition only; see src/data/claims.ts before writing.]]',
     heroTradeLinkLabel: 'See wholesale specs',
     storyHeading: '[[PLACEHOLDER — brand story section heading]]',
     storyBody: [
@@ -97,7 +101,7 @@ export const copy = copySchema.parse({
       title: '[[PLACEHOLDER — product meta title]]',
       description: '[[PLACEHOLDER — product meta description]]',
     },
-    heading: 'The lineup',
+    heading: 'Three flavors',
     intro: '[[PLACEHOLDER — one or two sentences introducing the range]]',
   },
 

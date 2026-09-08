@@ -2,18 +2,33 @@
 /**
  * Home. Consumer-facing, with the trade path present in the hero rather than
  * buried at the bottom — the layout admitting who the site is actually for.
+ *
+ * The hero can and its color field both come from the lead flavor (lowest
+ * `order`), so there is no duplicate hero asset to keep in sync and reordering
+ * the SKUs reskins the hero automatically.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Asset from '../components/Asset.astro';
 import JsonLd from '../components/JsonLd.astro';
 import SubscribeForm from '../components/forms/SubscribeForm.astro';
+import { getCollection } from 'astro:content';
 import { copy } from '../data/copy';
 import { claims } from '../data/claims';
+import { flavorSlot } from '../lib/assets';
 import { organizationSchema } from '../lib/schema';
+
+const flavors = (await getCollection('flavors', ({ data }) => !data.draft)).sort(
+  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99)
+);
+const lead = flavors[0];
 
 // Unconfirmed claims never render. See src/data/claims.ts.
 const composition = claims.compositionPoints.filter((p) => p.confirmed);
 const absence = claims.absencePoints.filter((p) => p.confirmed);
+
+const fieldStyle = lead?.data.color
+  ? `--field: ${lead.data.color.field}`
+  : undefined;
 ---
 
 <BaseLayout title={copy.home.seo.title} description={copy.home.seo.description}>
@@ -22,6 +37,7 @@ const absence = claims.absencePoints.filter((p) => p.confirmed);
   <section class="hero">
     <div class="container grid hero__inner">
       <div class="hero__text">
+        <p class="label">Energy drink</p>
         <h1 class="display">{copy.home.heroHeadline}</h1>
         {copy.home.heroSubhead && <p class="hero__sub">{copy.home.heroSubhead}</p>}
         <p class="hero__trade">
@@ -29,17 +45,51 @@ const absence = claims.absencePoints.filter((p) => p.confirmed);
         </p>
       </div>
 
-      <div class="hero__figure">
-        <div class="hero__field" aria-hidden="true"></div>
-        <Asset
-          slot="home-hero-can"
-          alt=""
-          sizes="(min-width: 48rem) 34vw, 70vw"
-          class="hero__can"
-        />
+      <div class="hero__figure" style={fieldStyle}>
+        {
+          lead && (
+            <Asset
+              slot={flavorSlot(lead.id, 'can-front')}
+              alt=""
+              sizes="(min-width: 48rem) 30vw, 65vw"
+              class="hero__can"
+            />
+          )
+        }
+        <!-- The one orchestrated motion moment on the site: this rule draws
+             across once on load. Collapsed by prefers-reduced-motion. -->
+        <div class="hero__rule" aria-hidden="true"></div>
       </div>
     </div>
   </section>
+
+  {
+    flavors.length > 0 && (
+      <section class="section section--tight">
+        <div class="container">
+          <h2 class="visually-hidden">The flavors</h2>
+          <ul class="flavors">
+            {flavors.map((flavor) => (
+              <li>
+                <a
+                  href={`/product/${flavor.id}`}
+                  class="plain flavors__link"
+                  style={
+                    flavor.data.color
+                      ? `--swatch: ${flavor.data.color.field}`
+                      : undefined
+                  }
+                >
+                  <span class="flavors__swatch" aria-hidden="true" />
+                  {flavor.data.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
 
   <section class="section">
     <div class="container grid">
@@ -86,7 +136,7 @@ const absence = claims.absencePoints.filter((p) => p.confirmed);
 
 <style>
   .hero {
-    padding-block: var(--space-2xl) var(--space-3xl);
+    padding-block: var(--space-xl) var(--space-lg);
   }
 
   .hero__inner {
@@ -94,7 +144,11 @@ const absence = claims.absencePoints.filter((p) => p.confirmed);
   }
 
   .hero__text {
-    grid-column: 1 / span 7;
+    grid-column: 1 / span 6;
+  }
+
+  .hero__text .label {
+    margin-block-end: var(--space-2xs);
   }
 
   .hero__sub {
@@ -111,35 +165,70 @@ const absence = claims.absencePoints.filter((p) => p.confirmed);
   }
 
   .hero__figure {
-    grid-column: 9 / span 4;
-    position: relative;
+    grid-column: 8 / span 4;
     display: grid;
-    place-items: end center;
+    justify-items: center;
+    align-content: end;
   }
 
-  /* Flat, unbounded color. Not a card, not a container around the product. */
-  .hero__field {
-    position: absolute;
-    inset-block-end: 0;
-    inset-inline: -12%;
-    block-size: 62%;
-    background-color: var(--color-accent-field);
-    transform-origin: bottom;
-    animation: field-settle var(--duration-considered) var(--ease-out) both;
+  /* The can render carries its own studio background, so it must never sit on
+     a color field. The flavor color appears as a rule beneath it instead. */
+  .hero__rule {
+    inline-size: 100%;
+    block-size: 6px;
+    background-color: var(--field, var(--color-accent));
+    transform-origin: left;
+    animation: rule-draw var(--duration-considered) var(--ease-out) both;
   }
 
-  .hero__can {
-    position: relative;
-    max-inline-size: 26rem;
+  /* :global() because the <img> is rendered inside <Asset>, so it does not
+     carry this component's scope id. Nested under .hero__figure to contain it. */
+  .hero__figure :global(.asset) {
+    max-inline-size: 17rem;
   }
 
-  @keyframes field-settle {
-    from { transform: scaleY(0); }
-    to { transform: scaleY(1); }
+  @keyframes rule-draw {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero__field { animation: none; }
+    .hero__rule { animation: none; }
+  }
+
+  /* Flavor row. Swatches carry the packaging colors; the name carries the
+     meaning, so this is not color-only information. */
+  .flavors {
+    display: flex;
+    padding-block-start: 0;
+    flex-wrap: wrap;
+    gap: var(--space-md) var(--space-lg);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-h3);
+  }
+
+  .flavors__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2xs);
+  }
+
+  .flavors__swatch {
+    inline-size: 0.85em;
+    block-size: 0.85em;
+    background-color: var(--swatch, var(--color-surface));
+    border-radius: 50%;
+  }
+
+  .flavors__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  .section--tight {
+    padding-block: var(--space-lg) var(--space-2xl);
   }
 
   .hero__story {
@@ -174,11 +263,9 @@ const absence = claims.absencePoints.filter((p) => p.confirmed);
 
   @media (max-width: 48rem) {
     .hero__figure {
-      margin-block-start: var(--space-xl);
+      margin-block-start: var(--space-lg);
       justify-items: start;
     }
-    .hero__field {
-      inset-inline: -8% 40%;
-    }
+
   }
 </style>

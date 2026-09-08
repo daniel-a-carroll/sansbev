@@ -1,6 +1,7 @@
-# SansBev
+# SANS
 
-Marketing site for SansBev, a Colorado natural functional energy drink brand.
+Marketing site for SANS, a Colorado natural functional energy drink brand, at
+sansbev.com. Three SKUs: Lime, Pineapple, Cranberry.
 Static Astro site on Cloudflare Workers, with three form endpoints handled by
 the Worker that serves it.
 
@@ -73,9 +74,12 @@ lead is silently lost.** For local development put the same keys in `.dev.vars`
 
 ### Custom domain
 
-Attach `sansbev.com` in the Cloudflare dashboard under the Worker's Settings →
-Domains & Routes. Do this **last** — before then the site is placeholder content
-and a buyer finding it is worse than them finding nothing.
+`sansbev.com` is bound to the Worker in `wrangler.jsonc` under `routes`, so
+Cloudflare creates the DNS record and provisions TLS on deploy. Nothing to click.
+
+`www` is not configured. If you want it, add a proxied `CNAME www → sansbev.com`
+and a Redirect Rule to 301 it to the apex — the apex is canonical everywhere in
+the site config.
 
 ## How it is built
 
@@ -87,7 +91,7 @@ and a buyer finding it is worse than them finding nothing.
 | **Zod** | Server-side validation in the Worker; also types the content collections. |
 | **Wrangler** | Deploy tooling. |
 
-Four dependencies total. No UI framework, no component library, no CSS
+Two runtime dependencies. No UI framework, no component library, no CSS
 framework. `sitemap.xml` and `robots.txt` are twenty-line endpoints rather than
 an integration.
 
@@ -113,8 +117,8 @@ live in typed data files so that filling the site in later is a data drop, not a
 refactor. Every field that has not been supplied yet is optional, and components
 hide themselves rather than rendering empty.
 
-**Images are slots, not paths.** `<Asset slot="home-hero-can" />` renders a real
-responsive image if `src/assets/home-hero-can.png` exists, and a
+**Images are slots, not paths.** `<Asset slot="flavor-lime-can-front" />` renders
+a real responsive image if `src/assets/flavor-lime-can-front.png` exists, and a
 dimension-exact labeled placeholder if it does not. Placeholders reserve the
 same intrinsic dimensions as the real file, so swapping one in causes no layout
 shift. There are no `<img>` tags anywhere else.
@@ -144,7 +148,9 @@ changes. See [docs/EXPORT.md](docs/EXPORT.md).
 
 ## Design
 
-Provisional. There is no brand identity yet — the palette, typeface, and layout
-are deliberate placeholder choices, documented with reasoning and a written
-self-review in [docs/DESIGN.md](docs/DESIGN.md). Information architecture and
-the content model are in [docs/IA.md](docs/IA.md).
+Derived from the packaging renders in `assets/` — palette sampled from the cans,
+all contrast independently verified, typeface split so the wordmark matches the
+can's heavy condensed lockup for 2KB. Reasoning, verified ratios, and an honest
+record of what the real artwork overturned are in
+[docs/DESIGN.md](docs/DESIGN.md). Information architecture and the content model
+are in [docs/IA.md](docs/IA.md).

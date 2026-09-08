@@ -41,7 +41,7 @@ const faq = (await getCollection('faq'))
               <li class="lineup__item">
                 <a href={`/product/${flavor.id}`} class="plain lineup__link">
                   <div
-                    class="lineup__field"
+                    class="lineup__figure"
                     style={
                       flavor.data.color
                         ? `--field: ${flavor.data.color.field}`
@@ -109,24 +109,24 @@ const faq = (await getCollection('faq'))
     gap: var(--space-2xs);
   }
 
-  /* The SKU color field. Flat and unbounded within the cell — no border,
-     no radius, no shadow. */
-  .lineup__field {
-    background-color: var(--field, var(--color-surface));
+  /* The can renders carry their own studio background, so they sit on the page
+     ground — which is that same background — rather than on a color field.
+     The SKU color is carried by the rule beneath, in keeping with
+     rules-not-cards. */
+  .lineup__figure {
     display: grid;
-    place-items: center;
-    padding: var(--space-lg) var(--space-md) 0;
-    aspect-ratio: 4 / 5;
-    overflow: hidden;
+    place-items: end center;
+    border-block-end: 6px solid var(--field, var(--color-rule-strong));
   }
 
-  .lineup__can {
-    max-inline-size: 62%;
-    align-self: end;
+  /* :global() — rendered inside <Asset>. See index.astro. */
+  .lineup__figure :global(.asset) {
+    max-inline-size: 72%;
   }
 
   .lineup__name {
     font-size: var(--text-h3);
+    margin-block-start: var(--space-2xs);
   }
 
   .lineup__link:hover .lineup__name {

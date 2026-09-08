@@ -41,31 +41,35 @@ const hasLogo = hasAsset('logo-wordmark');
 <style>
   .wordmark {
     display: inline-block;
-    font-weight: var(--font-weight-display);
-    font-stretch: var(--font-width-display);
-    letter-spacing: -0.02em;
+    /* Heavy condensed, matching the SANS lockup on the packaging. This is a
+       2KB uppercase-only subset -- see scripts/build-font.sh. Set uppercase
+       because the can is uppercase and the subset carries no lowercase. */
+    font-family: var(--font-family-wordmark);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
     line-height: 1;
-    /* Provisional treatment: plain, confident, and clearly not a logo.
-       Nothing here pretends to be brand identity. */
   }
 
   .wordmark--md {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
 
   .wordmark--sm {
     font-size: 1.125rem;
   }
 
-  .wordmark-img {
+  /* :global() — rendered inside <Asset>, so it carries Asset's scope id
+     rather than this component's. */
+  :global(.wordmark-img) {
     width: auto;
   }
 
-  .wordmark-img.wordmark--md {
+  :global(.wordmark-img.wordmark--md) {
     height: 1.75rem;
   }
 
-  .wordmark-img.wordmark--sm {
+  :global(.wordmark-img.wordmark--sm) {
     height: 1.25rem;
   }
 </style>

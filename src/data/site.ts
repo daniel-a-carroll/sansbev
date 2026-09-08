@@ -69,9 +69,14 @@ const siteSchema = z.object({
 
 export const site = siteSchema.parse({
   brand: {
-    name: 'SansBev',
+    // The packaging renders read SANS, so that is the product brand and what
+    // the wordmark sets. SansBev is treated as the company/domain. CONFIRM
+    // this split -- if the brand is meant to be SansBev everywhere, this one
+    // line is the only change needed.
+    name: 'SANS',
     legalName: '[[PLACEHOLDER — registered legal entity name]]',
-    tagline: '[[PLACEHOLDER — one-line tagline, sentence case, no filler]]',
+    // Printed on all three cans.
+    tagline: "what's important is what's not in it",
     domain: 'https://sansbev.com',
     nameIsFinal: false,
   },

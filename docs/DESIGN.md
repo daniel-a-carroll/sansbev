@@ -1,173 +1,172 @@
-# SansBev — provisional design plan
+# SANS — design record
 
-Status: **provisional.** No brand identity exists yet. Every choice here is a deliberate
-placeholder made to be replaced, and all of it is expressed through the tokens in
-`src/styles/tokens.css`. Changing that one file re-skins the site.
+Status: **derived from the packaging.** This document previously held a provisional
+palette invented in the absence of brand assets. That is superseded. Everything below is
+sampled from the can renders in `assets/`, cross-checked against
+`assets/sans-palette.json`, and independently verified for contrast.
 
-Audience priority, per the brief: **trade first, consumers second.** A category buyer at
-Natural Grocers or an independent market should read this site as a real, fundable,
-fulfillable company inside about eight seconds. Everything below is downstream of that.
+The provisional plan and its reasoning are preserved in git history at commit `5bc2116`,
+if you ever want to see what was replaced and why.
+
+Audience priority is unchanged: **trade first, consumers second.** A category buyer should
+read this site as a real, fundable, fulfillable company inside about eight seconds.
 
 ---
 
-## 1. Palette
+## 1. What the packaging established
 
-Five named colors plus a per-SKU accent slot. Named for Front Range conditions, not for
-their hex values, so the names survive a re-skin.
+Facts taken directly off the can art, not invented here:
+
+| | |
+|---|---|
+| Brand | **SANS** — set in heavy condensed caps |
+| Descriptor | Energy drink |
+| Line | Made with real fruit juice |
+| Tagline | *what's important is what's not in it* |
+| Caffeine | 160mg from green coffee |
+| Format | 12 fl oz (355 mL) slim can |
+| Flavors | Lime, Pineapple, Cranberry |
+| Signature device | Lens flare with hexagonal bokeh |
+
+**Two of these contradict earlier conversation and need confirming:** the caffeine figure
+(160mg on the can vs 150mg discussed) and the brand name (SANS on the can vs SansBev as
+the working name). Both are flagged in `docs/TODO.md`. The site follows the can, on the
+principle that printed artwork outranks a remembered number — but a labeling figure has
+to be right, so confirm it.
+
+## 2. Palette
+
+Every value sampled from the renders. Every ratio below computed, not estimated —
+including re-verifying the ones the palette file supplied. All eleven matched exactly.
 
 | Token | Hex | Role |
 |---|---|---|
-| `--c-snowfield` | `#F1F3EF` | Page ground. Cool near-white with a faint green cast. |
-| `--c-spruce` | `#13241D` | Primary ink, dark bands, buttons. A green-black, not a neutral black. |
-| `--c-granite` | `#5A635C` | Secondary text, captions, hairline rules. |
-| `--c-mist` | `#E2E6E0` | Recessed surfaces: table banding, form fields, asset placeholders. |
-| `--c-sunbreak` | `#D6451B` | **The one loud color.** Full-bleed fields and display type only. |
-| `--c-ember` | `#B63510` | Text-safe sibling of sunbreak. Links, buttons, focus rings, small accent text. |
+| `--c-ink` | `#0A0A08` | Body text, wordmark. The can's own ink. |
+| `--c-cream` | `#EEE2D0` | Text on dark grounds. The cranberry can's wordmark color. |
+| `--c-paper` | `#E6E3DF` | Page ground. **This is the render's studio background** — see §4. |
+| `--c-surface` | `#CBC6BC` | Recessed surfaces, table banding. |
+| `--c-slate` | `#54524F` | Secondary text. Darkened from the aluminum mid to clear AA. |
+| `--c-lime` | `#7ED02C` | Lime SKU field |
+| `--c-pineapple` | `#F6C90C` | Pineapple SKU field |
+| `--c-cranberry` | `#A7172B` | Cranberry SKU field **and the house accent** |
 
-Sunbreak and ember are the same hue at two depths, so they read as one brand color while
-letting every use pass contrast. The split exists because `#D6451B` cannot carry small
-text against either ink — rather than compromise the color or the accessibility floor,
-the system separates "color as field" from "color as text."
+**Cranberry does double duty.** It is the only packaging color dark enough to work as
+text, which means links, buttons, and focus rings can use a real brand color instead of a
+neutral. Lime and pineapple are near-white in luminance and stay field-only.
 
-**Verified contrast** (computed, not eyeballed):
+### Verified contrast
 
-| Pair | Ratio | Verdict |
+| Pair | Ratio | |
 |---|---|---|
-| spruce on snowfield | 14.49 | AAA |
-| granite on snowfield | 5.57 | AA |
-| granite on mist | 4.93 | AA |
-| snowfield on spruce | 14.49 | AAA |
-| ember on snowfield | 5.36 | AA — links, focus ring |
-| snowfield on ember | 5.99 | AA — filled buttons |
-| spruce on sunbreak | 3.64 | AA large type + non-text UI **only** |
+| ink on paper | 15.49 | AAA — body |
+| slate on paper | 6.09 | AA — secondary |
+| slate on surface | 4.58 | AA |
+| cranberry on paper | 5.86 | AA — links, focus |
+| white on cranberry | 7.50 | AAA — filled buttons |
+| cream on ink | 15.50 | AAA — dark bands |
+| ink on lime | 10.33 | AAA — lime band |
+| ink on pineapple | 12.53 | AAA — pineapple band |
+| cream on cranberry | 5.86 | AA — cranberry band |
 
-The binding rule: **nothing smaller than 24px (or 19px bold) ever sits on sunbreak.**
-Enforced by giving the sunbreak field its own type scale floor rather than by discipline.
+**Never:** ink on cranberry (2.64), or any flavor base as small text on paper — lime is
+1.50 and pineapple 1.24.
 
-### Per-SKU accent
+Two values needed inventing because the packaging had no equivalent, both derived by
+darkening a sampled color until it cleared AA: `--c-slate` `#54524F` for secondary text,
+and `--c-pineapple-ink` `#875514` for pineapple as text.
 
-Each of the three launch SKUs gets one saturated color, supplied as data on the flavor
-entry, not hardcoded. Each declares its own text color so contrast holds regardless of
-which hues you eventually choose:
+### The constraint is now data, not discipline
 
-| Slot | Provisional field | On-field ink | Ratio | Text-safe variant |
-|---|---|---|---|---|
-| SKU A | `#A8123A` | snowfield | 6.69 AA | `#A8123A` (6.69 on snowfield) |
-| SKU B | `#C97A05` | spruce | 4.83 AA | `#8A5203` (5.72 on snowfield) |
-| SKU C | `#2C4B7C` | snowfield | 7.82 AAA | `#2C4B7C` (7.82 on snowfield) |
+Every flavor entry carries `color.field`, `color.onText`, and `color.ink`. A new SKU
+cannot be added without declaring what text is legible on it. The previous approach — a
+global minimum type size on accent fields — has been **removed entirely**, because with
+real colors each field passes AA at any size.
 
-These are placeholders keyed to nothing — the flavors aren't chosen yet. When they are,
-each flavor's color derives from the actual fruit, and the schema requires the on-field
-ink alongside it so a new color can't silently break contrast.
+## 3. Type
 
-## 2. Type
+**Archivo** (SIL OFL), self-hosted, split into two files:
 
-**One family: Archivo** (Omnibus-Type, SIL Open Font License), self-hosted as a subset
-variable font with weight and width axes.
+| File | Size | Role |
+|---|---|---|
+| `archivo-text-var.woff2` | 34KB | Variable weight 400–900, normal width. Everything. |
+| `archivo-wordmark.woff2` | 2KB | Static 900 weight at 82% width, uppercase only. The wordmark. |
 
-| Role | Setting |
-|---|---|
-| Display | Archivo, wdth 112, wght 700, tight tracking |
-| Headings | Archivo, wdth 100, wght 600 |
-| Body | Archivo, wdth 100, wght 400 |
-| Data / tabular | Archivo, wght 400, `font-variant-numeric: tabular-nums` |
+The split is the interesting decision. The can's SANS lockup is heavy *and* condensed, so
+matching it needs the width axis — but carrying that axis across the full range cost
+42KB. Since only the wordmark needs condensed, it gets a static instance subset to A–Z.
 
-One family, two registers. The width axis gives a genuine display voice without
-introducing a second typeface, so the wordmark, the nutrition panel, and the case-spec
-table all speak in the same accent. Archivo has proper tabular lining figures, which is
-the actual requirement here — this site is going to be full of numbers a buyer reads in
-columns (caffeine mg, case dimensions, Ti/Hi, MOQ, ZIP codes), and figures that don't
-align make a brand look unserious.
+**Total 36KB, down from 52KB before**, while gaining a wordmark that matches the
+packaging instead of approximating it.
 
-One variable file, subset to Latin, roughly 40–60KB. No second family to load, no
-network request to Google.
+Tabular figures remain the load-bearing feature for the spec and nutrition tables.
 
-## 3. Layout concept: the listing sheet
+## 4. Layout
 
-The site is organized like a well-made spec document, not like a consumer beverage
-landing page.
+**The ground is the product photography's background.** `--c-paper` `#E6E3DF` is not a
+taste decision — it is the exact studio background the cans were rendered on, so the
+product sits on the page almost seamlessly.
 
-- **Rules, not cards.** Sections are separated by 1px granite hairlines at low alpha,
-  running the full measure. No uniform rounded boxes, no soft shadows anywhere.
-- **One asymmetric grid.** 12 columns, left-weighted. Prose sits in a ~66ch measure
-  offset from the left edge; data tables span wider. The asymmetry is consistent enough
-  to feel structural rather than decorative.
-- **Data is rendered, never pictured.** Nutrition panels and trade specs are real
-  semantic tables built from the content collections — indexable, screen-readable, and
-  incapable of drifting from the JSON-LD, because both read the same source.
-- **The loud field.** Sunbreak (or a SKU color) appears as an unbounded full-bleed band
-  behind large display type. It is never a box around a photo, never a card, never a
-  button fill. It appears at most twice per page.
-- **Motion:** exactly one orchestrated moment — the home hero's color field settling once
-  on load. Nothing else animates on scroll. Nothing animates on hover except the
-  underline offset on links. Fully suppressed under `prefers-reduced-motion`.
+This turned out to be the governing constraint. The renders are **not transparent
+cutouts**; each carries its own background. The first build put cans on saturated flavor
+fields and the render backgrounds showed as pale rectangles inside the color — it looked
+broken. So:
 
-## 4. Principles
+- **Cans always sit on `--color-bg`.** Never on a color field.
+- **Flavor color appears as rules and full-bleed bands the cans never overlap.** A 6px
+  flavor rule under each can on the home and product pages; a full-bleed flavor band on
+  each flavor page carrying the name and tagline, with the can below it on paper.
 
-**1. Data is the ornament.**
-For the primary audience, the case-pack table *is* the brand asset. Specs get the same
-typographic care as the hero, and they are not hidden behind a PDF download or a form.
+When transparent cutouts exist, cans can move onto color fields and the bands can carry
+product. Noted in `ASSETS.md`.
 
-**2. Quiet ground, one loud field.**
-Neutral document everywhere; saturation appears in one unbounded band per view. If a
-page needs a second bold element to work, the page is wrong.
+Otherwise unchanged: hairline rules instead of cards, no shadows anywhere, asymmetric
+left-weighted 12-column grid, data rendered as real semantic tables.
 
-**3. Rules, not cards.**
-Hairlines and whitespace carry the structure. Nothing gets a shadow. This is the single
-most load-bearing anti-default in the plan.
+**Motion:** one moment — the flavor rule under the hero can drawing across once on load.
+Collapsed by `prefers-reduced-motion`.
 
-**4. Every claim is a sentence someone can defend.**
-FDA treats this site as labeling (see `src/data/claims.ts`). Copy describes what is in
-the can, not what it does to a body. Constraint drives voice: plain, specific, no filler.
+## 5. Principles
 
----
+**1. Data is the ornament.** Unchanged, and now carrying more weight, since the wholesale
+page publishes no specifications — the list of what you'll send is doing that job.
 
-## 5. Self-review — what I changed and why
+**2. The can is the boldness.** Superseding "quiet ground, one loud field." The packaging
+is already extremely saturated. Adding a second bold element competes with it. The page
+stays quiet and lets the product be loud.
 
-The brief asked me to write the plan, then attack it for generic defaults. Five things
-did not survive.
+**3. Rules, not cards.** Unchanged, and now doing more: rules carry flavor color where
+fields would have fought the photography.
 
-**Sage-green "wellness natural" accent → green moved into the ink.**
-Muted sage as the natural-products signal is the single most exhausted move in this
-category. I killed it as an accent and pushed the green into `--c-spruce` instead, so the
-whole page is subtly green-cast without ever announcing it. The brand color became a
-warm, high-chroma sunbreak — fruit and altitude, not a supplement bottle.
+**4. Every claim is a sentence someone can defend.** Unchanged and enforced — the build
+fails if prohibited claims language reaches the HTML.
 
-**Warm cream ground → cool snowfield.**
-My first ground was `#F7F4EC`. That is the exact cream the brief flagged, and it drags
-everything toward the terracotta-and-serif tell. `#F1F3EF` is cooler and slightly green,
-which reads high-altitude light rather than artisanal bakery.
+## 6. What the packaging overturned
 
-**Two families (grotesque + mono for data) → one superfamily.**
-Reaching for a mono to make specs "look technical" is costume. Archivo's tabular figures
-do the real job — alignment — without a second voice, one less font file, and no
-developer-tooling connotation on a beverage site.
+Honest record of what I got wrong when guessing.
 
-**Centered consumer hero → left-aligned hero with the trade path in it.**
-A big centered statement over a can is the category default and it buries the audience
-that actually matters. The hero is now left-aligned and asymmetric, and the wholesale
-entry point sits inside it rather than at the end of the page. That is the layout
-admitting out loud who the site is for.
+**Cool ground → warm paper.** I chose `#F1F3EF`, a cool near-white, and explicitly
+rejected warm off-white as a category tell. The packaging's own background is `#E6E3DF`,
+warm. I was right that warm cream is overused and wrong that it was wrong *here* — the
+photography decides the ground, not taste.
 
-**Per-flavor color as decoration → color as data with a contrast contract.**
-Full-bleed fruit color fields put this in Waterloo/Spindrift territory, which is on-brief
-but risks becoming the whole idea. Two changes: the field is flat and unbounded (never a
-container around product photography, which is the actual sparkling-water tell), and each
-color ships with its required on-color in the schema, so contrast is a validated data
-constraint instead of a thing I promised to remember.
+**Invented accent → cranberry.** The provisional `#D6451B` was a reasonable guess at a
+warm high-chroma accent, and it needed a second darker value to pass contrast as text.
+Cranberry does both jobs at one value.
 
-### Known risk, flagged rather than hidden
+**Green-black ink → true near-black.** I pushed green into the ink so "natural" was felt
+rather than stated. The packaging uses a plain `#0A0A08`. The fruit carries the color;
+the ink stays out of the way.
 
-Archivo is well-used in startup design. It is not as tired as Inter or Space Grotesk, and
-the width axis is doing specific work here that most Archivo users never touch. But if it
-reads generic to you, the swap is one `@font-face` block and one token — say so at review
-and I'll move to something with more character in the display register.
+**Width axis everywhere → width only where it earns it.** Applying it site-wide would
+have cost 42KB for one element.
 
----
+**Tracked-out caps, reconsidered.** The provisional plan listed these as a tell to avoid.
+The can sets ENERGY DRINK exactly that way, so they are now the `.label` style. A pattern
+is only generic when it is unmotivated; on the packaging it is motivated.
 
-## 6. What is deliberately not decided
+## 7. Still open
 
-- Logo and wordmark — typographic placeholder in Archivo display until identity exists.
-- Actual flavor names, colors, and photography — all placeholder slots.
-- Whether the sunbreak accent survives contact with a real brand identity. It probably
-  does not. That is fine; it is one token.
+- Brand name: SANS vs SansBev (site uses SANS as product brand, SansBev as company/domain)
+- Caffeine: 160mg on the can vs 150mg discussed
+- Transparent can cutouts at higher resolution — 460px is soft on high-DPI at hero size
+- The lens-flare device is on the cans but not yet used anywhere in the page design

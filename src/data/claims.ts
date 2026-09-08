@@ -126,17 +126,27 @@ export const claims = claimsSchema.parse({
     '[[PLACEHOLDER — one sentence describing what is in the can. Composition only, no effect language.]]',
 
   compositionPoints: [
+    // Confirmed: printed on all three packaging renders.
     {
-      label: '[[PLACEHOLDER — caffeine source and amount, e.g. "150mg caffeine from green tea"]]',
-      detail: '[[PLACEHOLDER — source detail, needed for any natural positioning]]',
+      label: '160mg caffeine from green coffee',
+      detail: 'Per 12 fl oz can.',
+      confirmed: true,
+    },
+    {
+      label: 'Made with real fruit juice',
+      detail: undefined,
+      confirmed: true,
+    },
+    // NOTE: the packaging says 160mg from GREEN COFFEE. The figure discussed
+    // earlier was 150mg. The can art is the more authoritative source, so it
+    // is used here -- but confirm against the finished formula before launch,
+    // because this is a labeling number and the two must agree exactly.
+    {
+      label: '[[PLACEHOLDER — L-theanine amount and source. Sourcing still open.]]',
       confirmed: false,
     },
     {
-      label: '[[PLACEHOLDER — L-theanine amount and source]]',
-      confirmed: false,
-    },
-    {
-      label: '[[PLACEHOLDER — juice content, e.g. "X% real fruit juice"]]',
+      label: '[[PLACEHOLDER — juice percentage. Also the open question for the "healthy" claim.]]',
       confirmed: false,
     },
     {
@@ -152,8 +162,8 @@ export const claims = claimsSchema.parse({
   ],
 
   disclosures: {
-    caffeine:
-      '[[PLACEHOLDER — caffeine per can disclosure, e.g. "Contains 150mg caffeine per 12 fl oz can."]]',
+    // Matches the packaging exactly. Keep these two in sync.
+    caffeine: 'Contains 160mg caffeine per 12 fl oz can.',
     notRecommendedFor:
       '[[PLACEHOLDER — standard category advisory. Confirm exact wording with counsel.]]',
     general: undefined,

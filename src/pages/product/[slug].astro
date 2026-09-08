@@ -15,6 +15,7 @@ import { getCollection, render } from 'astro:content';
 import { flavorSlot } from '../../lib/assets';
 import { productSchema } from '../../lib/schema';
 import { claims } from '../../data/claims';
+import { site } from '../../data/site';
 
 export const getStaticPaths = (async () => {
   const flavors = await getCollection('flavors', ({ data }) => !data.draft);
@@ -30,7 +31,7 @@ const { Content } = await render(flavor);
 
 const title = d.seo?.title ?? `${d.name}`;
 const description =
-  d.seo?.description ?? d.description ?? `${d.name} from SansBev.`;
+  d.seo?.description ?? d.description ?? `${d.name} from ${site.brand.name}.`;
 
 const specs = [
   d.canSizeFlOz !== undefined && { label: 'Can size', value: `${d.canSizeFlOz} fl oz` },
@@ -46,20 +47,24 @@ const fieldStyle = d.color ? `--field: ${d.color.field}; --on-field: ${d.color.o
 <BaseLayout title={title} description={description}>
   <JsonLd schema={productSchema(flavor)} />
 
+  <!-- Full-bleed flavor band. Text only: the can render is not a transparent
+       cutout, so it sits on the page ground in the next section instead of on
+       the color, where its studio background would show as a pale box. -->
   <section class="flavor-hero" style={fieldStyle}>
-    <div class="container grid flavor-hero__inner">
-      <div class="flavor-hero__text">
-        <h1 class="display">{d.name}</h1>
-        {d.tagline && <p class="flavor-hero__tagline">{d.tagline}</p>}
-      </div>
-      <div class="flavor-hero__figure">
-        <Asset
-          slot={flavorSlot(flavor.id, 'can-front')}
-          alt=""
-          sizes="(min-width: 48rem) 28vw, 60vw"
-          class="flavor-hero__can"
-        />
-      </div>
+    <div class="container">
+      <p class="flavor-hero__eyebrow">Energy drink</p>
+      <h1 class="display">{d.name}</h1>
+      {d.tagline && <p class="flavor-hero__tagline">{d.tagline}</p>}
+    </div>
+  </section>
+
+  <section class="flavor-figure">
+    <div class="container">
+      <Asset
+        slot={flavorSlot(flavor.id, 'can-front')}
+        alt={`${d.name} can`}
+        sizes="(min-width: 48rem) 22vw, 55vw"
+      />
     </div>
   </section>
 
@@ -142,29 +147,27 @@ const fieldStyle = d.color ? `--field: ${d.color.field}; --on-field: ${d.color.o
     padding-block: var(--space-2xl);
   }
 
-  .flavor-hero__inner {
-    align-items: end;
-  }
-
-  .flavor-hero__text {
-    grid-column: 1 / span 7;
+  .flavor-hero__eyebrow {
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-heading);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    margin-block-end: var(--space-2xs);
   }
 
   .flavor-hero__tagline {
     margin-block-start: var(--space-sm);
-    /* Large-text floor: this sits on a color field. See tokens.css. */
-    font-size: max(var(--font-size-min-on-accent), var(--text-h3));
+    font-size: var(--text-h3);
     line-height: var(--leading-tight);
   }
 
-  .flavor-hero__figure {
-    grid-column: 9 / span 4;
-    display: grid;
-    justify-items: center;
+  .flavor-figure {
+    padding-block: var(--space-lg) 0;
   }
 
-  .flavor-hero__can {
-    max-inline-size: 16rem;
+  /* :global() — rendered inside <Asset>. See index.astro. */
+  .flavor-figure :global(.asset) {
+    max-inline-size: 15rem;
   }
 
   .lede {
