@@ -16,13 +16,13 @@ the exact final dimensions, there is no layout shift when it swaps.
 Deliver at the listed dimensions or larger, at the exact aspect ratio. Larger is
 fine; the build downscales. Wrong ratio is not fine; it will letterbox.
 
-**4 of 18 slots fulfilled. 14 still needed.**
+**5 of 18 slots fulfilled. 13 still needed.**
 
 ## Site-wide and page slots
 
 | Slot | Status | Dimensions | Ratio | Format | Appears | What the shot should contain |
 |---|---|---|---|---|---|---|
-| `logo-wordmark` | NEEDED | 640×128 | 5:1 | SVG | Site header, footer | Horizontal SANS wordmark as SVG, transparent, single color so CSS can recolor it. NOW THE HIGHEST-VALUE MISSING ASSET: the brand board uses a distinct high-contrast display face with tapered stems and a trademark mark, which the site's Archivo fallback only approximates. Export it from the source artwork. |
+| `logo-wordmark` | have | 450×200 | 9:4 | SVG | Site header, footer | FULFILLED. Single-path SVG with fill="currentColor", so CSS recolors it: ink on cream in the header, cream on the dark bands. Dimensions match the file's own viewBox (450x200) so nothing distorts. The served copy has the C2PA content-credential metadata stripped (44% of the original file, never displayed, fetched on every page); the untouched original with its credentials is kept at assets/logo-wordmark-original.svg. |
 | `logo-mark` | NEEDED | 512×512 | 1:1 | SVG | Favicon, app icons, social profile | Square standalone mark, no wordmark, legible at 32px. |
 | `og-default` | NEEDED | 1200×630 | 40:21 | PNG | Open Graph / social preview for any page without its own image | Brand lockup on a flat field, ideally the cranberry can on paper. Keep text large; this renders small in feeds. |
 | `brand-board` | have | 1536×1024 | 3:2 | PNG | Product index page, above the flavor cards | FULFILLED. The three cans with the brand lockup and positioning copy. TWO THINGS TO KNOW. (1) It carries claim copy in the pixels, so it is transcribed into imageClaims in src/data/claims.ts and the build lint scans that transcript; if you replace this image, update the transcript in the same commit. (2) 1536px wide is enough at desktop container width but soft on high-DPI screens. A 2400px+ export would sharpen it. |

@@ -79,11 +79,22 @@ the tagline in it, so it reads as brand rather than as one SKU.
 **Archivo** (SIL OFL), self-hosted, 36KB total across two files: a 34KB variable text face
 and a 2KB uppercase-only condensed instance for the wordmark.
 
-**The wordmark face is now a known stand-in.** The packaging uses a distinct
-high-contrast display face with tapered stems that Archivo only approximates. Fulfilling
-the `logo-wordmark` slot with a proper SVG export is the highest-value missing asset —
-higher than any photography, because the identity has clearly firmed up and the header is
-the first thing a buyer sees.
+**The real wordmark has landed.** `logo-wordmark.svg` is a single-path SVG authored with
+`fill="currentColor"`, and `Wordmark.astro` **inlines** it rather than rendering it through
+`<img>`. That matters: an `<img>` loads the SVG in an isolated context page CSS cannot
+reach, so it would be locked to black and would ignore the tokens. Inlined, it inherits
+`color`, which is what lets one file render ink-on-cream in the header and cream-on-dark
+on a color band, exactly as the packaging does.
+
+Cost is about 3KB gzipped per instance against one cached request. Worth it for a logo
+that has to change color.
+
+Archivo's condensed instance is kept purely as a fallback if the SVG ever goes missing,
+and is no longer preloaded.
+
+The served SVG has its C2PA content-credential metadata stripped: 44% of the original
+file, never displayed, and fetched on every page. The untouched original with its
+credentials is kept at `assets/logo-wordmark-original.svg`.
 
 ## 4. Layout
 
@@ -153,5 +164,4 @@ their own.
 - **Organic** is a USDA-regulated claim now printed on the cans. Certification records
   need to exist before this ships.
 - 400mg L-theanine is high for the category. A formulation call, but reviewers will notice.
-- A real SVG wordmark.
 - Juice percentage, still the open question for any nutrient-content claim.

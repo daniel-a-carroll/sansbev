@@ -3,7 +3,7 @@
 **Generated file — do not edit by hand.** Regenerate with `npm run todo:doc`.
 
 Counts as of the last run: **20 placeholder strings**,
-**14 unfulfilled asset slots**, **5 unconfirmed claims**.
+**13 unfulfilled asset slots**, **5 unconfirmed claims**.
 
 ## Blocking before launch
 
@@ -24,22 +24,19 @@ These are decisions and inputs only you can supply. Ordered by what blocks the m
 5. **Legal review of src/data/claims.ts, including the About page language**
    FDA treats this site as labeling. Review that one file, not the whole repo. It records which phrases were removed from the founder story and why.
 
-6. **Export a real SVG wordmark to fulfil the logo-wordmark slot**
-   Highest-value missing asset. The packaging uses a distinct display face the sites Archivo fallback only approximates, and the header is the first thing a buyer sees.
-
-7. **Legal review of the privacy policy and terms**
+6. **Legal review of the privacy policy and terms**
    Both are written and accurate about what the site does, but neither has been reviewed. Each carries a REVIEW REQUIRED marker in src/data/copy.ts.
 
-8. **Write the founder biography and production location on the About page**
+7. **Write the founder biography and production location on the About page**
    The story is written; the specifics only you have are still marked.
 
-9. **Set the three contact email addresses in src/data/site.ts**
+8. **Set the three contact email addresses in src/data/site.ts**
    The contact page falls back to a form-only message until they exist.
 
-10. **Set RESEND_API_KEY, NOTIFY_FROM, NOTIFY_TO as Wrangler secrets**
+9. **Set RESEND_API_KEY, NOTIFY_FROM, NOTIFY_TO as Wrangler secrets**
    Without them the Worker logs submissions instead of delivering them. Every lead is silently lost.
 
-11. **Flip `launched` to true in src/data/site.ts**
+10. **Flip `launched` to true in src/data/site.ts**
    The entire site is noindex and robots.txt disallows everything until you do. This is the last step before going live.
 
 ## Placeholder copy and data
@@ -75,10 +72,9 @@ These are decisions and inputs only you can supply. Ordered by what blocks the m
 
 ## Photography and artwork
 
-14 slots still need real files. Full shot list with dimensions and
+13 slots still need real files. Full shot list with dimensions and
 direction is in [ASSETS.md](../ASSETS.md).
 
-- `logo-wordmark`
 - `logo-mark`
 - `og-default`
 - `home-story`

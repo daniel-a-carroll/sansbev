@@ -12,11 +12,11 @@
   "slots": [
     {
       "slot": "logo-wordmark",
-      "width": 640,
-      "height": 128,
+      "width": 450,
+      "height": 200,
       "format": "svg",
       "where": "Site header, footer",
-      "note": "Horizontal SANS wordmark as SVG, transparent, single color so CSS can recolor it. NOW THE HIGHEST-VALUE MISSING ASSET: the brand board uses a distinct high-contrast display face with tapered stems and a trademark mark, which the site's Archivo fallback only approximates. Export it from the source artwork.",
+      "note": "FULFILLED. Single-path SVG with fill=\"currentColor\", so CSS recolors it: ink on cream in the header, cream on the dark bands. Dimensions match the file's own viewBox (450x200) so nothing distorts. The served copy has the C2PA content-credential metadata stripped (44% of the original file, never displayed, fetched on every page); the untouched original with its credentials is kept at assets/logo-wordmark-original.svg.",
       "priority": true
     },
     {

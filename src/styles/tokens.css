@@ -18,9 +18,11 @@
  *   archivo-text-var    variable weight 400-900 at normal width. 34KB.
  *   archivo-wordmark    static weight 900 / width 82%, uppercase only. 2KB.
  *
- * The wordmark face is a STAND-IN. The packaging uses a distinct high-contrast
- * display face with tapered stems that Archivo only approximates. Fulfilling
- * the logo-wordmark asset slot replaces it; see ASSETS.md. */
+ * The wordmark face is now only a FALLBACK. The real SVG wordmark is inlined by
+ * Wordmark.astro and inherits `color`, so the logo follows --color-ink rather
+ * than being locked to whatever an <img> would render. Archivo's version is
+ * kept, undeclared in any preload, purely so the header still reads correctly
+ * if the SVG is ever removed. */
 
 @font-face {
   font-family: 'Archivo';

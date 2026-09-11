@@ -101,10 +101,6 @@ const decisions = [
     why: 'FDA treats this site as labeling. Review that one file, not the whole repo. It records which phrases were removed from the founder story and why.',
   },
   {
-    item: 'Export a real SVG wordmark to fulfil the logo-wordmark slot',
-    why: 'Highest-value missing asset. The packaging uses a distinct display face the sites Archivo fallback only approximates, and the header is the first thing a buyer sees.',
-  },
-  {
     item: 'Legal review of the privacy policy and terms',
     why: 'Both are written and accurate about what the site does, but neither has been reviewed. Each carries a REVIEW REQUIRED marker in src/data/copy.ts.',
   },

@@ -2,16 +2,22 @@
 /**
  * The brand wordmark.
  *
- * Falls back to a typographic setting rather than to the gray Asset
- * placeholder — a placeholder box in the header would make every page look
- * broken, and the wordmark is one of the few slots where the interim state
- * has to be presentable rather than obviously empty.
+ * The real SVG is INLINED rather than rendered through <Asset> as an <img>.
+ * That is deliberate: the artwork is authored with fill="currentColor", and an
+ * <img> loads the SVG in an isolated context where page CSS cannot reach it,
+ * so it would be locked to black and would ignore the design tokens. Inlined,
+ * it inherits `color` from whatever it sits on, which is what lets the same
+ * file render ink-on-cream in the header and cream-on-dark on a color band,
+ * exactly as the packaging does.
  *
- * Drop a file at src/assets/logo-wordmark.svg and this swaps automatically.
+ * Cost is about 3KB gzipped per instance, against one cached request. Worth it
+ * for a logo that has to change color.
+ *
+ * If the file is absent it falls back to a typographic setting rather than to
+ * the gray <Asset> placeholder, because a placeholder box in the header would
+ * make every page look broken.
  */
 import { site } from '../data/site';
-import { hasAsset } from '../lib/resolve-asset';
-import Asset from './Asset.astro';
 
 interface Props {
   /** Header uses the larger setting; footer uses the smaller one. */
@@ -20,16 +26,21 @@ interface Props {
 }
 
 const { size = 'md', class: className } = Astro.props;
-const hasLogo = hasAsset('logo-wordmark');
+
+// Build-time lookup so a missing file degrades instead of failing the build.
+const inlined = import.meta.glob<string>('/src/assets/*.svg', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+});
+const markup = inlined['/src/assets/logo-wordmark.svg'];
 ---
 
 {
-  hasLogo ? (
-    <Asset
-      slot="logo-wordmark"
-      alt={site.brand.name}
-      sizes="160px"
-      class:list={['wordmark-img', `wordmark--${size}`, className]}
+  markup ? (
+    <span
+      class:list={['wordmark-svg', `wordmark--${size}`, className]}
+      set:html={markup}
     />
   ) : (
     <span class:list={['wordmark', `wordmark--${size}`, className]}>
@@ -39,11 +50,31 @@ const hasLogo = hasAsset('logo-wordmark');
 }
 
 <style>
+  /* Inline SVG inherits `color`, so the wordmark follows the design tokens
+     wherever it is placed. */
+  .wordmark-svg {
+    display: inline-block;
+    line-height: 0;
+    color: currentColor;
+  }
+
+  .wordmark-svg :global(svg) {
+    display: block;
+    width: auto;
+    height: 1em;
+  }
+
+  .wordmark-svg.wordmark--md {
+    font-size: 2rem;
+  }
+
+  .wordmark-svg.wordmark--sm {
+    font-size: 1.5rem;
+  }
+
+  /* Typographic fallback, used only if the SVG is missing. */
   .wordmark {
     display: inline-block;
-    /* Heavy condensed, matching the SANS lockup on the packaging. This is a
-       2KB uppercase-only subset -- see scripts/build-font.sh. Set uppercase
-       because the can is uppercase and the subset carries no lowercase. */
     font-family: var(--font-family-wordmark);
     font-weight: 900;
     text-transform: uppercase;
@@ -51,25 +82,11 @@ const hasLogo = hasAsset('logo-wordmark');
     line-height: 1;
   }
 
-  .wordmark--md {
+  .wordmark.wordmark--md {
     font-size: 1.6rem;
   }
 
-  .wordmark--sm {
+  .wordmark.wordmark--sm {
     font-size: 1.125rem;
-  }
-
-  /* :global() — rendered inside <Asset>, so it carries Asset's scope id
-     rather than this component's. */
-  :global(.wordmark-img) {
-    width: auto;
-  }
-
-  :global(.wordmark-img.wordmark--md) {
-    height: 1.75rem;
-  }
-
-  :global(.wordmark-img.wordmark--sm) {
-    height: 1.25rem;
   }
 </style>
