@@ -113,15 +113,30 @@
  *    one, but flag it to whoever reviews the label: dose sits alongside the
  *    220mg caffeine figure and both will draw a reviewer's eye.
  *
- *    BRAND BOARD COPY IS NOT CLEARED. The marketing board in assets/ carries
- *    lines the site does NOT use: "clean energy that moves you forward",
- *    "fuel what matters", "clean energy". Those are effect claims. They are
- *    fine on an internal deck and are not published here.
+ *    THE BRAND BOARD IS NOW PUBLISHED, AND ITS COPY IS NOT CLEARED.
+ *    At the founder's direction the marketing board is live on the product
+ *    index page. It carries lines the site's own written copy deliberately
+ *    avoids, because they are effect claims rather than composition:
  *
- *    IMPORTANT AND EASY TO MISS: the build's claims lint reads rendered TEXT.
- *    It cannot read words baked into an image. Publishing the brand board, or
- *    any artwork with claim copy in the pixels, bypasses the guard entirely.
- *    Treat image copy as label copy and review it by eye.
+ *        "clean energy that moves you forward"
+ *        "real ingredients. clean energy. no compromises."
+ *        "fuel what matters"
+ *        "zero artificial anything"
+ *        "made for real life"
+ *
+ *    These are claims made to a reader exactly as if they were typed into the
+ *    page, because FDA does not care whether copy is text or pixels. They are
+ *    listed in imageClaims below and flagged there under needsReview.
+ *
+ *    If counsel objects, the fix is a version of the board WITHOUT those
+ *    lines: the three cans and the ingredient panels carry the argument on
+ *    their own. Do not solve it by removing the transcript.
+ *
+ *    HOW THE GUARD COVERS THIS. The lint reads rendered TEXT and cannot read
+ *    words inside a picture, so images would otherwise walk straight past it.
+ *    Every published image with words on it is therefore transcribed into
+ *    imageClaims, and the lint scans those transcripts exactly as it scans the
+ *    HTML. Publish an image with copy on it and you must transcribe it first.
  *
  * 5. COMPARATIVE CLAIMS ARE ADVERTISING CLAIMS.
  *    Naming or alluding to a competitor invokes Lanham Act exposure on top of
@@ -173,6 +188,33 @@ const claimsSchema = z.object({
   /** Terms banned from generated copy. Referenced by the copy lint in stage 5,
    *  which fails the build if any appear in rendered output. */
   prohibitedTerms: z.array(z.string()),
+
+  /**
+   * CLAIM COPY THAT LIVES INSIDE AN IMAGE.
+   *
+   * The build's claims lint reads rendered TEXT. It cannot read words baked
+   * into a picture, so an image carrying marketing copy would otherwise walk
+   * straight past the guard.
+   *
+   * Every published image with words in it is registered here with a full
+   * transcript. The lint scans these transcripts exactly as it scans the HTML,
+   * which puts image copy back inside the guard and, just as importantly,
+   * means a reviewer reading this one file sees ALL the claims the site makes,
+   * not only the ones that happen to be selectable text.
+   *
+   * RULE: if you publish an image with words on it, transcribe it here first.
+   */
+  imageClaims: z.array(
+    z.object({
+      /** Asset slot name, so it is traceable to ASSETS.md. */
+      asset: z.string(),
+      where: z.string(),
+      /** Every line of copy in the image, verbatim. */
+      transcript: z.array(z.string()),
+      /** Lines a reviewer should look at hardest. */
+      needsReview: z.array(z.string()).default([]),
+    })
+  ).default([]),
 });
 
 export const claims = claimsSchema.parse({
@@ -230,6 +272,47 @@ export const claims = claimsSchema.parse({
       'Not recommended for children, or for people sensitive to caffeine.',
     general: undefined,
   },
+
+  imageClaims: [
+    {
+      asset: 'brand-board',
+      where: 'Product index page, above the flavor cards',
+      // Transcribed from assets/ChatGPT Image Sep 10, 2026, 10_15_07 PM.png
+      transcript: [
+        'SANS',
+        'ENERGY DRINK',
+        "WHAT'S IMPORTANT IS WHAT'S NOT IN IT",
+        'PLANT-BASED CAFFEINE',
+        'ZERO ARTIFICIAL ANYTHING',
+        'REAL INGREDIENTS',
+        'MADE FOR REAL LIFE',
+        'CLEAN ENERGY THAT MOVES YOU FORWARD',
+        'INGREDIENTS',
+        'Carbonated Water',
+        'Organic Lime Juice',
+        'Organic Pineapple Juice',
+        'Organic Cranberry Juice',
+        'Caffeine (from green coffee) 220 MG',
+        'L-Theanine (from green tea) 400 MG',
+        'Salt',
+        'LIME',
+        'PINEAPPLE',
+        'CRANBERRY',
+        'REAL INGREDIENTS. CLEAN ENERGY. NO COMPROMISES.',
+        'FUEL WHAT MATTERS',
+      ],
+      // None of these trip prohibitedTerms, so the build passes. That is not
+      // the same as being cleared. Publishing this image publishes these lines
+      // as labeling, and the site's own written copy deliberately avoids them:
+      needsReview: [
+        'CLEAN ENERGY THAT MOVES YOU FORWARD',
+        'REAL INGREDIENTS. CLEAN ENERGY. NO COMPROMISES.',
+        'FUEL WHAT MATTERS',
+        'ZERO ARTIFICIAL ANYTHING',
+        'MADE FOR REAL LIFE',
+      ],
+    },
+  ],
 
   // Enforced by the build-time copy lint added in stage 5.
   prohibitedTerms: [

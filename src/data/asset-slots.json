@@ -36,20 +36,21 @@
       "note": "Brand lockup on a flat field, ideally the cranberry can on paper. Keep text large; this renders small in feeds."
     },
     {
+      "slot": "brand-board",
+      "width": 1536,
+      "height": 1024,
+      "format": "png",
+      "where": "Product index page, above the flavor cards",
+      "note": "FULFILLED. The three cans with the brand lockup and positioning copy. TWO THINGS TO KNOW. (1) It carries claim copy in the pixels, so it is transcribed into imageClaims in src/data/claims.ts and the build lint scans that transcript; if you replace this image, update the transcript in the same commit. (2) 1536px wide is enough at desktop container width but soft on high-DPI screens. A 2400px+ export would sharpen it.",
+      "priority": true
+    },
+    {
       "slot": "home-story",
       "width": 1800,
       "height": 1200,
       "format": "jpg",
       "where": "Home, brand story section",
       "note": "Environmental Front Range shot or ingredient still. No people holding cans. Should read as place, not as lifestyle stock."
-    },
-    {
-      "slot": "product-lineup",
-      "width": 2000,
-      "height": 1250,
-      "format": "png",
-      "where": "Product index page",
-      "note": "All three cans together on a flavor-neutral ground, transparent or cream. NOTE: the brand board in assets/ is not usable here, because it bakes claim copy into the pixels where the build's claims lint cannot read it."
     },
     {
       "slot": "about-founder",

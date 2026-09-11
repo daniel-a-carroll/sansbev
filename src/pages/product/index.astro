@@ -32,6 +32,23 @@ const faq = (await getCollection('faq'))
     </div>
   </section>
 
+  <section class="section board">
+    <div class="container">
+      <!--
+        The brand board. Its copy lives in the pixels, so it is transcribed
+        into imageClaims in src/data/claims.ts and the build lint scans that
+        transcript. The alt text describes the image factually rather than
+        repeating its marketing lines: republishing effect claims as HTML text
+        would make them site copy, which the written copy deliberately avoids.
+      -->
+      <Asset
+        slot="brand-board"
+        alt="The three SANS flavors side by side, lime, pineapple and cranberry, each can listing its five ingredients."
+        sizes="(min-width: 78rem) 1248px, 100vw"
+      />
+    </div>
+  </section>
+
   {
     flavors.length > 0 && (
       <section class="section">
@@ -93,6 +110,12 @@ const faq = (await getCollection('faq'))
     font-size: var(--text-h3);
     color: var(--color-ink-muted);
     line-height: var(--leading-tight);
+  }
+
+  /* Held to the container rather than bled full width: the source is 1536px,
+     so a true full-bleed would upscale it on a large display. */
+  .board {
+    padding-block-start: 0;
   }
 
   .lineup {

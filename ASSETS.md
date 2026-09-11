@@ -16,7 +16,7 @@ the exact final dimensions, there is no layout shift when it swaps.
 Deliver at the listed dimensions or larger, at the exact aspect ratio. Larger is
 fine; the build downscales. Wrong ratio is not fine; it will letterbox.
 
-**3 of 18 slots fulfilled. 15 still needed.**
+**4 of 18 slots fulfilled. 14 still needed.**
 
 ## Site-wide and page slots
 
@@ -25,8 +25,8 @@ fine; the build downscales. Wrong ratio is not fine; it will letterbox.
 | `logo-wordmark` | NEEDED | 640×128 | 5:1 | SVG | Site header, footer | Horizontal SANS wordmark as SVG, transparent, single color so CSS can recolor it. NOW THE HIGHEST-VALUE MISSING ASSET: the brand board uses a distinct high-contrast display face with tapered stems and a trademark mark, which the site's Archivo fallback only approximates. Export it from the source artwork. |
 | `logo-mark` | NEEDED | 512×512 | 1:1 | SVG | Favicon, app icons, social profile | Square standalone mark, no wordmark, legible at 32px. |
 | `og-default` | NEEDED | 1200×630 | 40:21 | PNG | Open Graph / social preview for any page without its own image | Brand lockup on a flat field, ideally the cranberry can on paper. Keep text large; this renders small in feeds. |
+| `brand-board` | have | 1536×1024 | 3:2 | PNG | Product index page, above the flavor cards | FULFILLED. The three cans with the brand lockup and positioning copy. TWO THINGS TO KNOW. (1) It carries claim copy in the pixels, so it is transcribed into imageClaims in src/data/claims.ts and the build lint scans that transcript; if you replace this image, update the transcript in the same commit. (2) 1536px wide is enough at desktop container width but soft on high-DPI screens. A 2400px+ export would sharpen it. |
 | `home-story` | NEEDED | 1800×1200 | 3:2 | JPG | Home, brand story section | Environmental Front Range shot or ingredient still. No people holding cans. Should read as place, not as lifestyle stock. |
-| `product-lineup` | NEEDED | 2000×1250 | 8:5 | PNG | Product index page | All three cans together on a flavor-neutral ground, transparent or cream. NOTE: the brand board in assets/ is not usable here, because it bakes claim copy into the pixels where the build's claims lint cannot read it. |
 | `about-founder` | NEEDED | 1400×1750 | 4:5 | JPG | About page | Founder portrait, natural light, working context rather than posed studio. Buyers read this as evidence of a real operator. |
 | `about-colorado` | NEEDED | 2400×1200 | 2:1 | JPG | About page, provenance section | Wide Colorado landscape or production facility exterior. Avoid the generic mountain-range stock crop. |
 | `wholesale-case` | NEEDED | 1600×1200 | 4:3 | JPG | Wholesale page, near the specs table | The shipper case, and a pallet if one exists. Plain background. This is an operational photo for buyers, not a beauty shot — it should show the case as it arrives on a dock. |

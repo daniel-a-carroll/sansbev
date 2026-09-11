@@ -160,6 +160,13 @@ finished formula supports the statement.
 dangling label, or `undefined`. If you see one, that is a bug, not something you
 need to fill in to hide.
 
+**Publishing an image with words on it? Transcribe it first.** The build's
+claims check reads page text and cannot read words inside a picture, so an
+image with marketing copy would ship completely unchecked. Add it to
+`imageClaims` in `src/data/claims.ts` with every line transcribed; the check
+scans those transcripts the same way it scans the page. The brand board on the
+product page is the worked example.
+
 **Can renders must keep their alpha channel.** The current cutouts are
 transparent, which is why cans sit directly on flavor color fields across the
 home, product, and flavor pages. Replace one with an opaque render and a pale

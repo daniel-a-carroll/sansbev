@@ -81,6 +81,10 @@ const unconfirmed = (claimsSource.match(/confirmed:\s*false/g) ?? []).length;
 
 const decisions = [
   {
+    item: 'Have counsel review the brand board copy now that it is published',
+    why: 'The board on the product page carries five effect-claim lines the written copy avoids: "clean energy that moves you forward", "real ingredients. clean energy. no compromises.", "fuel what matters", "zero artificial anything", "made for real life". They are transcribed in imageClaims in src/data/claims.ts. If they do not clear, re-export the board without them.',
+  },
+  {
     item: 'Get the organic certification records on file',
     why: 'The cans declare "Organic ... Juice". Organic is USDA-regulated, not a descriptor. Labelling an uncertified ingredient organic is a federal violation, not a marketing risk.',
   },

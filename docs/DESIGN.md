@@ -121,16 +121,31 @@ stays quiet, gives it room, and lets it carry the weight.
 **4. Every claim is a sentence someone can defend.** Enforced — the build fails if
 prohibited claims language reaches the HTML.
 
-## 6. One gap the guard does not cover
+## 6. The brand board, and the gap it exposed
 
-The claims lint reads rendered **text**. It cannot read words baked into an image.
+The board is published at the top of the product index: brand statement first, then the
+three cards as the index into each flavor. It is held to the container width rather than
+bled edge to edge, because the source is 1536px and a true full bleed would upscale it.
 
-The brand board in `assets/` carries lines the site deliberately does not use — "clean
-energy that moves you forward", "fuel what matters", "clean energy". Publishing that image
-would ship those claims invisibly to the lint. It is therefore not used on the site, and
-`product-lineup` needs a clean composed shot without claim copy in the pixels.
+Publishing it exposed a real hole in the claims guard. **The lint reads rendered text and
+cannot read words baked into an image**, so the board's copy would have shipped
+completely unchecked.
 
-Treat any image copy as label copy and review it by eye.
+That is now closed. Every published image carrying words is transcribed into `imageClaims`
+in `claims.ts`, and the lint scans those transcripts exactly as it scans the HTML. The
+transcript is also what makes `claims.ts` a complete review unit: a reviewer reading that
+one file now sees every claim the site makes, not only the selectable ones.
+
+**The board's copy is published but not cleared.** It carries five lines the written copy
+deliberately avoids, because they are effect claims rather than composition:
+
+> clean energy that moves you forward · real ingredients. clean energy. no compromises. ·
+> fuel what matters · zero artificial anything · made for real life
+
+None trip `prohibitedTerms`, so the build passes. That is not the same as being cleared.
+They are flagged under `needsReview`. If counsel objects, the fix is a version of the
+board without those lines — the cans and their ingredient panels carry the argument on
+their own.
 
 ## 7. Still open
 

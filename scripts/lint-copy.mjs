@@ -40,6 +40,20 @@ if (!listMatch) {
 
 const terms = [...listMatch[1].matchAll(/'([^']+)'/g)].map((m) => m[1]);
 
+// Copy baked into an image is invisible to an HTML scan, so every published
+// image carrying words is transcribed into `imageClaims` in claims.ts. Those
+// transcripts are checked exactly like rendered text, which puts image copy
+// back inside the guard. See the header of src/data/claims.ts.
+const imageBlock = claimsSource.match(/imageClaims:\s*\[([\s\S]*?)\n  \],/);
+const imageSources = [];
+if (imageBlock) {
+  const assetNames = [...imageBlock[1].matchAll(/asset:\s*'([^']+)'/g)].map((m) => m[1]);
+  for (const [, body] of imageBlock[1].matchAll(/transcript:\s*\[([\s\S]*?)\]/g)) {
+    const lines = [...body.matchAll(/(?:'([^']*)'|"([^"]*)")/g)].map((m) => m[1] ?? m[2]);
+    imageSources.push({ asset: assetNames[imageSources.length] ?? 'unknown', lines });
+  }
+}
+
 const htmlFiles = [];
 const walk = (dir) => {
   for (const entry of readdirSync(dir)) {
@@ -61,6 +75,26 @@ const visibleText = (html) =>
 
 const violations = [];
 
+// 1. Transcribed image copy.
+for (const { asset, lines } of imageSources) {
+  const text = lines.join(' ').toLowerCase();
+  for (const term of terms) {
+    const pattern = new RegExp(
+      `\\b${term.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`
+    );
+    const match = pattern.exec(text);
+    if (match) {
+      const start = Math.max(0, match.index - 60);
+      violations.push({
+        file: `image: ${asset} (transcribed in src/data/claims.ts)`,
+        term,
+        context: `...${text.slice(start, match.index + term.length + 60).trim()}...`,
+      });
+    }
+  }
+}
+
+// 2. Rendered page text.
 for (const file of htmlFiles) {
   const text = visibleText(readFileSync(file, 'utf8')).toLowerCase();
   for (const term of terms) {
@@ -92,6 +126,8 @@ if (violations.length > 0) {
   process.exit(1);
 }
 
+const imageLineCount = imageSources.reduce((n, i) => n + i.lines.length, 0);
 console.log(
-  `lint-copy: ${htmlFiles.length} pages scanned, ${terms.length} terms checked, none present.`
+  `lint-copy: ${htmlFiles.length} pages and ${imageSources.length} transcribed image(s) ` +
+    `(${imageLineCount} lines) scanned, ${terms.length} terms checked, none present.`
 );
