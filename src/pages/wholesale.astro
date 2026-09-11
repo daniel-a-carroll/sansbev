@@ -44,6 +44,14 @@ const sellSheetIsPublic =
     </div>
   </section>
 
+  <section class="board-bleed">
+    <Asset
+      slot="brand-board"
+      alt="The three SANS flavors side by side, lime, pineapple and cranberry, each can listing its five ingredients."
+      sizes="100vw"
+    />
+  </section>
+
   <section class="section">
     <div class="container grid">
       <div class="wholesale__list">
@@ -154,6 +162,14 @@ const sellSheetIsPublic =
 </script>
 
 <style>
+  .board-bleed {
+    display: block;
+  }
+
+  .board-bleed :global(.asset) {
+    width: 100%;
+  }
+
   .wholesale__intro {
     grid-column: 1 / span 8;
   }

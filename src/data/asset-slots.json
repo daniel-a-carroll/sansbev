@@ -40,8 +40,8 @@
       "width": 1536,
       "height": 1024,
       "format": "png",
-      "where": "Product index page, above the flavor cards",
-      "note": "FULFILLED. The three cans with the brand lockup and positioning copy. TWO THINGS TO KNOW. (1) It carries claim copy in the pixels, so it is transcribed into imageClaims in src/data/claims.ts and the build lint scans that transcript; if you replace this image, update the transcript in the same commit. (2) 1536px wide is enough at desktop container width but soft on high-DPI screens. A 2400px+ export would sharpen it.",
+      "where": "Wholesale page, full-bleed under the intro",
+      "note": "FULFILLED. The three cans with the brand lockup and positioning copy. Lives on the WHOLESALE page, not the product page: it is a poster, carrying its own logo, headline and tagline, so nesting it in a page that already has all three read as a page within a page, and it duplicated the product page's own three cans. On the trade page nothing competes with it and it does the job it was made for. TWO THINGS TO KNOW. (1) It carries claim copy in the pixels, so it is transcribed into imageClaims in src/data/claims.ts and the build lint scans that transcript; if you replace this image, update the transcript in the same commit. (2) It is rendered full-bleed, so on a display wider than 1536px it upscales slightly. A 2400px+ export would fix that.",
       "priority": true
     },
     {

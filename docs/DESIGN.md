@@ -134,9 +134,23 @@ prohibited claims language reaches the HTML.
 
 ## 6. The brand board, and the gap it exposed
 
-The board is published at the top of the product index: brand statement first, then the
-three cards as the index into each flavor. It is held to the container width rather than
-bled edge to edge, because the source is 1536px and a true full bleed would upscale it.
+The board lives on the **wholesale** page, full-bleed under the intro.
+
+It started on the product index and was wrong there. The board is a *poster*: it carries
+its own logo, its own headline and its own tagline, so nesting it inside a page that
+already has all three read as a page within a page. It also put the same three cans on
+screen twice, once in the board and again in the cards below it.
+
+Two alternatives were built and rejected. Making it a full-bleed hero on the product page
+fixed the pasted-in feeling but kept both duplications. Replacing the flavor cards with a
+text link row removed the duplication but gutted the page, taking all the flavor color
+with it.
+
+On the trade page nothing competes with it. A buyer arrives, reads the pitch, and sees
+exactly what they would be stocking. It is a sell piece on the selling page.
+
+It is rendered full-bleed there, which upscales slightly past 1536px; a larger export
+would fix that.
 
 Publishing it exposed a real hole in the claims guard. **The lint reads rendered text and
 cannot read words baked into an image**, so the board's copy would have shipped
