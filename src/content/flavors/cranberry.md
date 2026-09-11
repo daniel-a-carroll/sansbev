@@ -2,12 +2,12 @@
 name: Cranberry
 order: 3
 status: in-development
-tagline: 'Tart and dry.'
+tagline: 'Astringent, not softened.'
 description: 'Carbonated water and organic cranberry juice, with caffeine from green coffee and L-theanine from green tea.'
 tastingNotes:
-  - 'Tart cranberry'
-  - 'Dry and astringent'
-  - 'Crisp finish'
+  - 'Puckering'
+  - 'Dry through the middle'
+  - 'Short, clean finish'
 # Declared on the front of the can, in label order.
 ingredients:
   - Carbonated water
@@ -24,4 +24,4 @@ color:
   ink: '#8E1520'
 ---
 
-Cranberry is the tart one. The astringency is left in rather than sweetened out, because it is the part that makes the fruit recognizable and the part that makes the can worth finishing.
+The astringency is left in rather than sweetened out. It is the part that makes the fruit recognizable, and the part that makes the can worth finishing.

@@ -109,6 +109,10 @@ const decisions = [
     why: 'The story is written; the specifics only you have are still marked.',
   },
   {
+    item: 'Taste the finished liquid against the tasting notes and taglines',
+    why: 'The flavor copy in src/content/flavors/ was written from the formula, not from drinking it. "Bitter backbone", "ripe, not syrupy", "dry through the middle" are plausible given no sweetener in the declared ingredient list, but only you can confirm they are true. Wrong tasting notes are a small credibility leak with buyers who will actually try it.',
+  },
+  {
     item: 'Set the three contact email addresses in src/data/site.ts',
     why: 'The contact page falls back to a form-only message until they exist.',
   },

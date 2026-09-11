@@ -2,12 +2,12 @@
 name: Lime
 order: 1
 status: in-development
-tagline: 'Sharp and green.'
+tagline: 'The bitter edge left in.'
 description: 'Carbonated water and organic lime juice, with caffeine from green coffee and L-theanine from green tea.'
 tastingNotes:
-  - 'Fresh lime zest'
-  - 'Green and citrus-forward'
-  - 'Dry, clean finish'
+  - 'Zest and rind'
+  - 'Sharp acidity'
+  - 'Dry finish'
 # Declared on the front of the can, in label order.
 ingredients:
   - Carbonated water
@@ -24,4 +24,4 @@ color:
   ink: '#3F6C13'
 ---
 
-Lime is the most direct of the range. The fruit is sharp on its own, so the can leans into that rather than rounding it off. Citrus first, with the bitterness that makes lime taste like lime left in.
+Lime is the most direct of the range. The fruit is sharp on its own, so the can leans into that rather than rounding it off. The bitterness that makes lime taste like lime is still in there.
