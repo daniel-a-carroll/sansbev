@@ -113,19 +113,19 @@ export const copy = copySchema.parse({
     seo: {
       title: 'SANS energy drink, made with real fruit juice',
       description:
-        'A Colorado energy drink made with real fruit juice and 200mg of caffeine from green coffee. Lime, pineapple, and cranberry.',
+        'A Colorado energy drink made with real fruit juice and 220mg of caffeine from green coffee. Lime, pineapple, and cranberry.',
     },
     // The line printed on every can. It is the strongest copy the brand has, it
     // makes no claim about the body, and it is already on the packaging.
     heroHeadline: "What's important is what's not in it",
     heroSubhead:
-      'Made with real fruit juice, with 200mg of caffeine from green coffee.',
+      'Made with real fruit juice, with 220mg of caffeine from green coffee.',
     heroTradeLinkLabel: 'See wholesale specs',
 
     storyHeading: 'Sans means without',
     storyBody: [
       'Sans means without in French. That is the whole idea. What matters in a can of SANS is the list of things that are not in it.',
-      'What is in it is simple. Real fruit juice for the fruit named on the front, and 200mg of caffeine from green coffee, in a 12 ounce can.',
+      'What is in it is short enough to print on the front. Carbonated water, organic juice, caffeine from green coffee, L-theanine from green tea, salt. That is the whole list.',
     ],
 
     emailCaptureHeading: 'Find out when it lands near you',
@@ -136,11 +136,11 @@ export const copy = copySchema.parse({
     seo: {
       title: 'The lineup',
       description:
-        'Lime, pineapple, and cranberry. Each made with real fruit juice, with 200mg of caffeine from green coffee, in a 12 ounce slim can.',
+        'Lime, pineapple, and cranberry. Each made with real fruit juice, with 220mg of caffeine from green coffee, in a 12 ounce slim can.',
     },
     heading: 'The lineup',
     intro:
-      'Each one is built around the fruit it is named for. Twelve ounce slim cans, 200mg of caffeine from green coffee.',
+      'Each one is built around the fruit it is named for. Five ingredients, printed on the front of the can.',
   },
 
   whereToBuy: {
@@ -164,7 +164,7 @@ export const copy = copySchema.parse({
     },
     heading: 'Wholesale and retail partners',
     intro:
-      'SANS is a 12 ounce slim-can energy drink made with real fruit juice, with 200mg of caffeine from green coffee. We are talking to buyers, distributors, and brokers in Colorado now. [[PLACEHOLDER: launch timing, and whether you are taking orders yet. One sentence.]]',
+      'SANS is a 12 ounce slim-can energy drink made with real fruit juice, with 220mg of caffeine from green coffee. We are talking to buyers, distributors, and brokers in Colorado now. [[PLACEHOLDER: launch timing, and whether you are taking orders yet. One sentence.]]',
     availableOnRequestHeading: 'Available on request',
     availableOnRequestNote:
       'Send an inquiry and we will follow up with the current sell sheet and full specifications.',

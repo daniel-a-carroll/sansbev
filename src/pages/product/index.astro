@@ -41,7 +41,7 @@ const faq = (await getCollection('faq'))
               <li class="lineup__item">
                 <a href={`/product/${flavor.id}`} class="plain lineup__link">
                   <div
-                    class="lineup__figure"
+                    class="lineup__field"
                     style={
                       flavor.data.color
                         ? `--field: ${flavor.data.color.field}`
@@ -109,19 +109,24 @@ const faq = (await getCollection('faq'))
     gap: var(--space-2xs);
   }
 
-  /* The can renders carry their own studio background, so they sit on the page
-     ground — which is that same background — rather than on a color field.
-     The SKU color is carried by the rule beneath, in keeping with
-     rules-not-cards. */
-  .lineup__figure {
+  /* The SKU color field. The cans are transparent cutouts, so they sit
+     directly on it. Flat and unbounded within the cell: no border, no radius,
+     no shadow. */
+  .lineup__field {
+    background-color: var(--field, var(--color-surface));
     display: grid;
-    place-items: end center;
-    border-block-end: 6px solid var(--field, var(--color-rule-strong));
+    place-items: center;
+    padding: var(--space-lg);
+    aspect-ratio: 5 / 7;
+    overflow: hidden;
   }
 
-  /* :global() — rendered inside <Asset>. See index.astro. */
-  .lineup__figure :global(.asset) {
-    max-inline-size: 72%;
+  /* :global() - rendered inside <Asset>. See index.astro.
+     46% of the card width keeps the full can, base rim included, inside the
+     field: the render is 400x1010, so at this width its height lands well
+     within the 5:7 card. */
+  .lineup__field :global(.asset) {
+    max-inline-size: 46%;
   }
 
   .lineup__name {

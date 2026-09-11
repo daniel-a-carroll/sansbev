@@ -111,12 +111,12 @@ Three rules if you change colors:
 
 - **Check contrast.** Body text needs 4.5:1 against its background. The file
   documents every current ratio; if you change a value, verify the new one.
-- **Do not change `--c-paper` casually.** It is the exact background the can
-  renders were shot on, which is why the cans sit on the page seamlessly.
-  Change it and every product image grows a visible rectangle around it.
-- **Cranberry is both a flavor color and the house accent.** It is the only
-  packaging color dark enough to carry text. Lime and pineapple are field-only
-  and fail badly as text — 1.50 and 1.24 against paper.
+- **Pineapple is the awkward one.** Its field color carries ink, not cream
+  (cream on it is only 3.39), and it needs a darker sibling to work as text on
+  cream. That is why every flavor declares `field`, `onText` and `ink`
+  separately in its frontmatter rather than a single color.
+- **The deep green is the house accent**, used for links, buttons and focus
+  rings. The brand board sets the operative words of the tagline in it.
 
 ### Publish a sell sheet publicly
 
@@ -160,10 +160,11 @@ finished formula supports the statement.
 dangling label, or `undefined`. If you see one, that is a bug, not something you
 need to fill in to hide.
 
-**Cans must not sit on color fields.** The renders are not transparent cutouts;
-each carries its own studio background, which shows as a pale rectangle on any
-saturated color. Flavor color goes on rules and bands the cans do not overlap.
-This changes the day real cutouts exist — see ASSETS.md.
+**Can renders must keep their alpha channel.** The current cutouts are
+transparent, which is why cans sit directly on flavor color fields across the
+home, product, and flavor pages. Replace one with an opaque render and a pale
+rectangle appears around it on every colored band. If you ever have to use an
+opaque render, move the flavor color to rules beneath the can instead.
 
 **Passing a class to `<Asset>` needs `:global()`.** Astro scopes styles to a
 component's own template, so a class handed to `<Asset>` lands on an element

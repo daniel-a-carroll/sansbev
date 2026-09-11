@@ -81,20 +81,24 @@ const unconfirmed = (claimsSource.match(/confirmed:\s*false/g) ?? []).length;
 
 const decisions = [
   {
-    item: 'Resolve the caffeine figure: site says 200mg, the can art says 160MG',
-    why: 'FDA treats this site as labeling, so the site and the physical can must state the same number. They currently do not. Update the artwork or bring the site figure back down.',
+    item: 'Get the organic certification records on file',
+    why: 'The cans declare "Organic ... Juice". Organic is USDA-regulated, not a descriptor. Labelling an uncertified ingredient organic is a federal violation, not a marketing risk.',
   },
   {
     item: 'Confirm the juice percentage in the finished formula',
-    why: 'Gates the nutrient-content claim. It is the food-group leg of the FDA rule; low sugar, sodium and fat alone do not qualify. See src/data/claims.ts.',
+    why: 'Still the open question for any nutrient-content claim. It is the food-group leg of the FDA rule; low sugar, sodium and fat alone do not qualify.',
   },
   {
-    item: 'Confirm L-theanine sourcing, natural or synthetic',
-    why: 'Decides whether any "natural" positioning is defensible. Commonly synthesized rather than tea-extracted.',
+    item: 'Have counsel review the 400mg L-theanine dose alongside the 220mg caffeine',
+    why: 'Both are high for the category and sit together on the front of the can. A formulation call, not a labeling one, but reviewers will stop on it.',
   },
   {
     item: 'Legal review of src/data/claims.ts, including the About page language',
     why: 'FDA treats this site as labeling. Review that one file, not the whole repo. It records which phrases were removed from the founder story and why.',
+  },
+  {
+    item: 'Export a real SVG wordmark to fulfil the logo-wordmark slot',
+    why: 'Highest-value missing asset. The packaging uses a distinct display face the sites Archivo fallback only approximates, and the header is the first thing a buyer sees.',
   },
   {
     item: 'Legal review of the privacy policy and terms',
@@ -102,7 +106,7 @@ const decisions = [
   },
   {
     item: 'Write the founder biography and production location on the About page',
-    why: 'The story is written; the specifics only you have are still marked. Buyers read the About page as evidence of a real operator.',
+    why: 'The story is written; the specifics only you have are still marked.',
   },
   {
     item: 'Set the three contact email addresses in src/data/site.ts',

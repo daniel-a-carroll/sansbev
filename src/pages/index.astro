@@ -46,6 +46,11 @@ const fieldStyle = lead?.data.color
       </div>
 
       <div class="hero__figure" style={fieldStyle}>
+        <!-- The one orchestrated motion moment on the site: the color field
+             rises once behind the can on load. Now possible because the can
+             renders are transparent cutouts. Collapsed by
+             prefers-reduced-motion. -->
+        <div class="hero__field" aria-hidden="true"></div>
         {
           lead && (
             <Asset
@@ -56,9 +61,6 @@ const fieldStyle = lead?.data.color
             />
           )
         }
-        <!-- The one orchestrated motion moment on the site: this rule draws
-             across once on load. Collapsed by prefers-reduced-motion. -->
-        <div class="hero__rule" aria-hidden="true"></div>
       </div>
     </div>
   </section>
@@ -136,7 +138,7 @@ const fieldStyle = lead?.data.color
 
 <style>
   .hero {
-    padding-block: var(--space-xl) var(--space-lg);
+    padding-block: var(--space-xl) 0;
   }
 
   .hero__inner {
@@ -165,35 +167,39 @@ const fieldStyle = lead?.data.color
   }
 
   .hero__figure {
-    grid-column: 8 / span 4;
+    grid-column: 8 / span 5;
+    position: relative;
     display: grid;
     justify-items: center;
-    align-content: end;
+    align-items: end;
+    padding-block-start: var(--space-lg);
   }
 
-  /* The can render carries its own studio background, so it must never sit on
-     a color field. The flavor color appears as a rule beneath it instead. */
-  .hero__rule {
-    inline-size: 100%;
-    block-size: 6px;
+  /* Flat, unbounded flavor color. The can sits ON it, which the transparent
+     cutouts finally allow. Not a card: no border, no radius, no shadow. */
+  .hero__field {
+    position: absolute;
+    inset-block: 0;
+    inset-inline: 8% -30%;
     background-color: var(--field, var(--color-accent));
-    transform-origin: left;
-    animation: rule-draw var(--duration-considered) var(--ease-out) both;
+    transform-origin: bottom;
+    animation: field-rise var(--duration-considered) var(--ease-out) both;
   }
 
   /* :global() because the <img> is rendered inside <Asset>, so it does not
      carry this component's scope id. Nested under .hero__figure to contain it. */
   .hero__figure :global(.asset) {
-    max-inline-size: 17rem;
+    position: relative;
+    max-inline-size: 19rem;
   }
 
-  @keyframes rule-draw {
-    from { transform: scaleX(0); }
-    to { transform: scaleX(1); }
+  @keyframes field-rise {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero__rule { animation: none; }
+    .hero__field { animation: none; }
   }
 
   /* Flavor row. Swatches carry the packaging colors; the name carries the
@@ -264,7 +270,10 @@ const fieldStyle = lead?.data.color
   @media (max-width: 48rem) {
     .hero__figure {
       margin-block-start: var(--space-lg);
-      justify-items: start;
+      padding-block-start: var(--space-xl);
+    }
+    .hero__field {
+      inset-inline: -12% -12%;
     }
 
   }

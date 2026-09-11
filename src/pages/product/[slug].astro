@@ -56,24 +56,23 @@ const disclosures = [
 <BaseLayout title={title} description={description}>
   <JsonLd schema={productSchema(flavor)} />
 
-  <!-- Full-bleed flavor band. Text only: the can render is not a transparent
-       cutout, so it sits on the page ground in the next section instead of on
-       the color, where its studio background would show as a pale box. -->
+  <!-- Full-bleed flavor band with the can on it. The second-generation
+       renders are transparent cutouts, so the product sits in the color
+       rather than beside it. -->
   <section class="flavor-hero" style={fieldStyle}>
-    <div class="container">
-      <p class="flavor-hero__eyebrow">Energy drink</p>
-      <h1 class="display">{d.name}</h1>
-      {d.tagline && <p class="flavor-hero__tagline">{d.tagline}</p>}
-    </div>
-  </section>
-
-  <section class="flavor-figure">
-    <div class="container">
-      <Asset
-        slot={flavorSlot(flavor.id, 'can-front')}
-        alt={`${d.name} can`}
-        sizes="(min-width: 48rem) 22vw, 55vw"
-      />
+    <div class="container grid flavor-hero__inner">
+      <div class="flavor-hero__text">
+        <p class="flavor-hero__eyebrow">Energy drink</p>
+        <h1 class="display">{d.name}</h1>
+        {d.tagline && <p class="flavor-hero__tagline">{d.tagline}</p>}
+      </div>
+      <div class="flavor-hero__figure">
+        <Asset
+          slot={flavorSlot(flavor.id, 'can-front')}
+          alt={`${d.name} can`}
+          sizes="(min-width: 48rem) 22vw, 55vw"
+        />
+      </div>
     </div>
   </section>
 
@@ -163,7 +162,30 @@ const disclosures = [
   .flavor-hero {
     background-color: var(--field, var(--color-surface));
     color: var(--on-field, var(--color-ink));
-    padding-block: var(--space-2xl);
+    padding-block: var(--space-xl) 0;
+    overflow: hidden;
+  }
+
+  .flavor-hero__inner {
+    align-items: end;
+  }
+
+  .flavor-hero__text {
+    grid-column: 1 / span 6;
+    padding-block-end: var(--space-xl);
+    align-self: center;
+  }
+
+  .flavor-hero__figure {
+    grid-column: 8 / span 4;
+    display: grid;
+    justify-items: center;
+    align-items: end;
+  }
+
+  /* :global() - rendered inside <Asset>. See index.astro. */
+  .flavor-hero__figure :global(.asset) {
+    max-inline-size: 13rem;
   }
 
   .flavor-hero__eyebrow {
@@ -178,15 +200,6 @@ const disclosures = [
     margin-block-start: var(--space-sm);
     font-size: var(--text-h3);
     line-height: var(--leading-tight);
-  }
-
-  .flavor-figure {
-    padding-block: var(--space-lg) 0;
-  }
-
-  /* :global() — rendered inside <Asset>. See index.astro. */
-  .flavor-figure :global(.asset) {
-    max-inline-size: 15rem;
   }
 
   .lede {

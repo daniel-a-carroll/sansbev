@@ -61,10 +61,13 @@
  *        (green tea, green coffee bean, guarana) in compositionPoints -- the
  *        specific source is both better copy and better substantiation than the
  *        umbrella word.
- *      - L-theanine: OPEN. Commonly synthesized or fermentation-derived rather
- *        than tea-extracted. Founder is researching naturally derived supply.
- *        If the sourced ingredient is synthetic, "all natural" is a live risk
- *        even though the caffeine is clean.
+ *      - L-theanine: RESOLVED on sourcing. The second-generation packaging
+ *        declares "L-Theanine (from green tea)", which is a plant source, not
+ *        a synthetic or fermentation-derived one. Keep supplier documentation
+ *        proving the tea origin: it is the substantiation for the claim.
+ *        This removes the specific objection that was open, but does NOT
+ *        clear the umbrella term "all natural", which remains a litigation
+ *        magnet on its own.
  *    Prefer specific, verifiable statements over the umbrella term regardless.
  *    "150mg caffeine from green tea" is stronger copy AND lower risk than
  *    "all natural".
@@ -93,6 +96,32 @@
  *    If counsel clears any of these against the finished formula, they can be
  *    restored to copy.ts and removed from prohibitedTerms deliberately. Do not
  *    restore them by weakening the lint.
+ *
+ * 4c. NEW EXPOSURES INTRODUCED BY THE SECOND-GENERATION PACKAGING.
+ *
+ *    "ORGANIC" -- the cans declare "Organic Lime/Pineapple/Cranberry Juice".
+ *    Organic is a REGULATED term administered by USDA under the National
+ *    Organic Program, not a descriptor. Using it on a label requires the
+ *    ingredient to be certified organic and requires certification records.
+ *    Labelling an uncertified ingredient organic is a federal violation, not
+ *    a marketing risk. Get the supplier's organic certificate on file before
+ *    this ships, and keep it. The site repeats the word only because it is
+ *    reproducing the declared ingredient list.
+ *
+ *    L-THEANINE DOSE -- 400mg per can is high relative to the 100-200mg
+ *    typical of the category. That is a formulation decision, not a labeling
+ *    one, but flag it to whoever reviews the label: dose sits alongside the
+ *    220mg caffeine figure and both will draw a reviewer's eye.
+ *
+ *    BRAND BOARD COPY IS NOT CLEARED. The marketing board in assets/ carries
+ *    lines the site does NOT use: "clean energy that moves you forward",
+ *    "fuel what matters", "clean energy". Those are effect claims. They are
+ *    fine on an internal deck and are not published here.
+ *
+ *    IMPORTANT AND EASY TO MISS: the build's claims lint reads rendered TEXT.
+ *    It cannot read words baked into an image. Publishing the brand board, or
+ *    any artwork with claim copy in the pixels, bypasses the guard entirely.
+ *    Treat image copy as label copy and review it by eye.
  *
  * 5. COMPARATIVE CLAIMS ARE ADVERTISING CLAIMS.
  *    Naming or alluding to a competitor invokes Lanham Act exposure on top of
@@ -153,7 +182,7 @@ export const claims = claimsSchema.parse({
   compositionPoints: [
     // Confirmed: printed on all three packaging renders.
     {
-      label: '200mg caffeine from green coffee',
+      label: '220mg caffeine from green coffee',
       detail: 'Per 12 fl oz can.',
       confirmed: true,
     },
@@ -162,18 +191,19 @@ export const claims = claimsSchema.parse({
       detail: undefined,
       confirmed: true,
     },
-    // !! ARTWORK MISMATCH -- RESOLVE BEFORE THE LABEL GOES TO PRINT !!
-    // The site states 200mg per founder direction. The packaging renders in
-    // assets/ print "160MG CAFFEINE FROM GREEN COFFEE" on all three SKUs.
-    // (A figure of 150mg was also discussed earlier in development.)
+    // CAFFEINE FIGURE HISTORY -- the number has now moved three times:
+    //   150mg  discussed early in development
+    //   160mg  first-generation packaging renders
+    //   200mg  founder direction
+    //   220mg  second-generation packaging (current, and used here)
     //
-    // FDA treats this site as labeling, so the number here and the number on
-    // the can must be identical. Right now they are not. Either the artwork is
-    // updated to 200mg or this value comes back down -- but they cannot ship
-    // apart. This is the single highest-risk inconsistency in the project.
+    // The site and the can now AGREE at 220mg, which they did not before.
+    // Keep them in lockstep: FDA treats this site as labeling, so any future
+    // change has to land in both places in the same breath.
     {
-      label: '[[PLACEHOLDER: L-theanine amount and source. Sourcing still open.]]',
-      confirmed: false,
+      label: '400mg L-theanine from green tea',
+      detail: 'Per 12 fl oz can.',
+      confirmed: true,
     },
     {
       label: '[[PLACEHOLDER: juice percentage. Also the open question for the "healthy" claim.]]',
@@ -193,7 +223,7 @@ export const claims = claimsSchema.parse({
 
   disclosures: {
     // Matches the packaging exactly. Keep these two in sync.
-    caffeine: 'Contains 200mg caffeine per 12 fl oz can.',
+    caffeine: 'Contains 220mg caffeine per 12 fl oz can.',
     // Category-standard advisory. At 200mg per can this is worth carrying
     // whether or not it is strictly required. Confirm exact wording with counsel.
     notRecommendedFor:

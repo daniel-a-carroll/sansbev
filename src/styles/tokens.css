@@ -1,11 +1,15 @@
 /* ===========================================================================
  * DESIGN TOKENS — the only file you edit to re-skin this site.
  *
- * These are no longer provisional. Every color here is sampled from the SANS
- * packaging renders in assets/, cross-checked against assets/sans-palette.json,
- * and every contrast ratio below was computed rather than estimated.
+ * Sampled from the second-generation SANS packaging in assets/: the three can
+ * cutouts and the brand board. Every contrast ratio below was computed, not
+ * estimated.
  *
- * Rationale and the design plan are in docs/DESIGN.md.
+ * The direction is premium: a warm cream ground, near-black ink, and three
+ * deep saturated flavor colors. Nothing here is bright or shouty; the richness
+ * comes from depth of color and generous space, not from contrast tricks.
+ *
+ * Rationale and the design record are in docs/DESIGN.md.
  * ======================================================================== */
 
 /* --- Typefaces --------------------------------------------------------- */
@@ -14,10 +18,9 @@
  *   archivo-text-var    variable weight 400-900 at normal width. 34KB.
  *   archivo-wordmark    static weight 900 / width 82%, uppercase only. 2KB.
  *
- * The split exists because the width axis is expensive — carrying it across
- * the whole range cost 42KB, and only the wordmark needs condensed. Subsetting
- * the wordmark to A-Z gets the packaging's heavy condensed lockup for 2KB.
- * See scripts/build-font.sh. */
+ * The wordmark face is a STAND-IN. The packaging uses a distinct high-contrast
+ * display face with tapered stems that Archivo only approximates. Fulfilling
+ * the logo-wordmark asset slot replaces it; see ASSETS.md. */
 
 @font-face {
   font-family: 'Archivo';
@@ -43,65 +46,57 @@
    * semantic tokens below.
    * ================================================================== */
 
-  --c-ink: #0a0a08;      /* wordmark and body text on the light cans        */
-  --c-cream: #eee2d0;    /* wordmark on the cranberry can                   */
-  --c-paper: #e6e3df;    /* the render's studio background                  */
-  --c-surface: #cbc6bc;  /* the render's table/shadow neutral               */
-  --c-slate: #54524f;    /* darkened from the aluminum mid for AA text      */
+  --c-cream: #f9efe2;   /* brand board ground. Warm, not white.           */
+  --c-ink: #101509;     /* brand board ink. Near-black with a green cast. */
+  --c-stone: #575247;   /* secondary text. Derived to clear AA on cream.  */
+  --c-surface: #f0e4d3; /* recessed surfaces, table banding.              */
 
-  /* Aluminum rim, for the one metallic accent. */
-  --c-metal-light: #e8e7e5;
-  --c-metal-mid: #a8a5a1;
-  --c-metal-dark: #5d5b58;
-
-  --c-flare: #fcf8f9;    /* lens-flare core — the brand's signature device  */
-
-  /* Flavor colors. `base` is the can face; `ink` is a darkened sibling that
-   * survives as small text on paper. Lime and pineapple at full saturation
-   * are near-white in luminance and fail as text — hence the split. */
-  --c-lime: #7ed02c;
-  --c-lime-ink: #3e7017;
-  --c-pineapple: #f6c90c;
-  --c-pineapple-ink: #875514;
-  --c-cranberry: #a7172b;
-  --c-cranberry-ink: #a7172b;
-  --c-cranberry-deep: #55080c;
+  /* Flavor colors, taken from the can faces.
+   *
+   * `field` is the band color. `onText` is what is legible ON it. `ink` is the
+   * value that survives as small text on cream. Lime and cranberry are dark
+   * enough that field and ink are the same value; pineapple is not, so it
+   * carries a darker sibling. This is why the schema requires all three. */
+  --c-lime: #3f6c13;
+  --c-lime-ink: #3f6c13;
+  --c-pineapple: #a87a08;
+  --c-pineapple-ink: #7f5c05;
+  --c-cranberry: #8e1520;
+  --c-cranberry-ink: #8e1520;
 
   /* Semantic. Components use only these. */
-  --color-bg: var(--c-paper);
+  --color-bg: var(--c-cream);
   --color-ink: var(--c-ink);
-  --color-ink-muted: var(--c-slate);      /* 6.09:1 on paper — AA          */
+  --color-ink-muted: var(--c-stone);  /* 6.83:1 on cream — AA              */
   --color-surface: var(--c-surface);
-  --color-on-ink: var(--c-cream);         /* 15.50:1 on ink — AAA          */
+  --color-on-ink: var(--c-cream);     /* 16.30:1 on ink — AAA              */
 
-  /* Cranberry is the house accent: the only packaging color dark enough to
-   * work as text, so links and buttons can use a real brand color instead of
-   * a neutral. Lime and pineapple stay field-only. */
-  --color-accent: var(--c-cranberry);     /* 5.86:1 on paper — AA          */
-  --color-accent-text: var(--c-cranberry);
-  --color-on-accent: #ffffff;             /* 7.50:1 on cranberry — AAA     */
+  /* The deep green is the house accent. The brand board sets the operative
+   * words of the tagline in it, and it is the only flavor color that reads as
+   * brand rather than as one SKU. */
+  --color-accent: var(--c-lime);      /* 5.49:1 on cream — AA              */
+  --color-accent-text: var(--c-lime);
+  --color-on-accent: var(--c-cream);
 
-  --color-rule: color-mix(in srgb, var(--c-slate) 26%, transparent);
-  --color-rule-strong: color-mix(in srgb, var(--c-slate) 52%, transparent);
-  --color-focus: var(--c-cranberry);
+  --color-rule: color-mix(in srgb, var(--c-stone) 24%, transparent);
+  --color-rule-strong: color-mix(in srgb, var(--c-stone) 48%, transparent);
+  --color-focus: var(--c-lime);
   --color-focus-on-ink: var(--c-cream);
 
   /* VERIFIED CONTRAST
-   *   ink on paper .................... 15.49  AAA
-   *   slate on paper ................... 6.09  AA
-   *   slate on surface ................. 4.58  AA
-   *   cranberry on paper ............... 5.86  AA   links, focus ring
-   *   white on cranberry ............... 7.50  AAA  filled buttons
-   *   cream on ink .................... 15.50  AAA  dark bands
-   *   ink on lime ..................... 10.33  AAA  lime field
-   *   ink on pineapple ................ 12.53  AAA  pineapple field
-   *   cream on cranberry ............... 5.86  AA   cranberry field
-   *   lime-ink on paper ................ 4.64  AA
-   *   pineapple-ink on paper ........... 4.92  AA
+   *   ink on cream ..................... 16.30  AAA  body
+   *   cream on ink ..................... 16.30  AAA  dark bands
+   *   stone on cream .................... 6.83  AA   secondary
+   *   stone on surface .................. 6.19  AA
+   *   lime on cream ..................... 5.49  AA   links, focus ring
+   *   cream on lime ..................... 5.49  AA   lime band
+   *   ink on pineapple .................. 4.81  AA   pineapple band
+   *   pineapple-ink on cream ............ 5.38  AA
+   *   cream on cranberry ................ 8.11  AAA  cranberry band
    *
-   * NEVER: ink on cranberry (2.64), any flavor base as small text on paper.
-   * Each flavor entry declares its own on-color, so this is enforced by the
-   * schema rather than remembered. */
+   * NEVER: cream on pineapple (3.39), or the pineapple field color as small
+   * text on cream (3.39). Pineapple is the reason every flavor declares its
+   * own on-color in the schema instead of trusting a single global rule. */
 
   /* =====================================================================
    * TYPE
@@ -132,15 +127,16 @@
   --tracking-display: -0.025em;
   --tracking-heading: -0.012em;
   --tracking-body: 0;
-  /* The packaging sets small caps lines like ENERGY DRINK wide. This is the
-   * one place tracked-out caps are earned: it is on the can. */
-  --tracking-label: 0.14em;
+  /* The packaging sets ENERGY DRINK and INGREDIENTS as widely tracked caps.
+   * That is the brand's own device, so it is earned here. */
+  --tracking-label: 0.18em;
 
-  --measure: 66ch;
-  --measure-narrow: 46ch;
+  --measure: 64ch;
+  --measure-narrow: 44ch;
 
   /* =====================================================================
    * SPACE
+   * Premium reads as room. The section rhythm is deliberately generous.
    * ================================================================== */
 
   --space-3xs: 0.25rem;
@@ -150,15 +146,15 @@
   --space-md: 1.5rem;
   --space-lg: 2.5rem;
   --space-xl: 4rem;
-  --space-2xl: clamp(4rem, 2.5rem + 6vw, 7rem);
-  --space-3xl: clamp(5.5rem, 3rem + 10vw, 10rem);
+  --space-2xl: clamp(4.5rem, 2.8rem + 6.5vw, 8rem);
+  --space-3xl: clamp(6rem, 3.2rem + 11vw, 11rem);
 
   /* =====================================================================
    * LAYOUT
    * ================================================================== */
 
   --layout-max: 78rem;
-  --layout-gutter: clamp(1.25rem, 0.7rem + 2.4vw, 3rem);
+  --layout-gutter: clamp(1.25rem, 0.7rem + 2.4vw, 3.5rem);
   --grid-columns: 12;
   --grid-gap: clamp(1rem, 0.6rem + 1.6vw, 2rem);
 
@@ -183,7 +179,7 @@
 
   --duration-instant: 90ms;
   --duration-quick: 160ms;
-  --duration-considered: 620ms;
+  --duration-considered: 700ms;
   --ease-out: cubic-bezier(0.2, 0.7, 0.3, 1);
 
   /* =====================================================================

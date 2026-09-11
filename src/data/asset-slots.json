@@ -16,7 +16,7 @@
       "height": 128,
       "format": "svg",
       "where": "Site header, footer",
-      "note": "Horizontal SANS wordmark, transparent background, single color so it can be recolored via CSS. Until this exists the header sets the wordmark in Archivo heavy condensed, which closely matches the can.",
+      "note": "Horizontal SANS wordmark as SVG, transparent, single color so CSS can recolor it. NOW THE HIGHEST-VALUE MISSING ASSET: the brand board uses a distinct high-contrast display face with tapered stems and a trademark mark, which the site's Archivo fallback only approximates. Export it from the source artwork.",
       "priority": true
     },
     {
@@ -49,7 +49,7 @@
       "height": 1250,
       "format": "png",
       "where": "Product index page",
-      "note": "All three cans together \u2014 lime, pineapple, cranberry \u2014 straight-on, evenly spaced. The existing renders are individual cans; this needs one composed shot of the line."
+      "note": "All three cans together on a flavor-neutral ground, transparent or cream. NOTE: the brand board in assets/ is not usable here, because it bakes claim copy into the pixels where the build's claims lint cannot read it."
     },
     {
       "slot": "about-founder",
@@ -92,19 +92,19 @@
   "flavorSlots": [
     {
       "kind": "can-front",
-      "width": 460,
-      "height": 1186,
+      "width": 400,
+      "height": 1010,
       "format": "png",
       "where": "Flavor page hero, product index card",
-      "note": "FULFILLED by the packaging renders in assets/. These are 460x1186 on the render's studio background (which is why the page background is that same #E6E3DF \u2014 the cans sit on it almost seamlessly). Replace later with a higher-resolution transparent cutout: 460px is adequate at 1x but soft on high-DPI screens at hero size."
+      "note": "FULFILLED by the cutouts in assets/. 400x1010 PNG with a real alpha channel, which is why cans can now sit directly on flavor color fields. Any replacement must keep transparency: an opaque render reintroduces a pale rectangle on every colored band."
     },
     {
       "kind": "can-angle",
-      "width": 460,
-      "height": 1186,
+      "width": 400,
+      "height": 1010,
       "format": "png",
       "where": "Flavor page secondary",
-      "note": "Same can, three-quarter angle, matching the front render's treatment and framing."
+      "note": "Same can, three-quarter angle, transparent background, matching the front cutout's framing and lighting."
     },
     {
       "kind": "ingredient-still",
