@@ -80,8 +80,34 @@ const flavors = defineCollection({
     status: z
       .enum(['concept', 'in-development', 'launched'])
       .default('concept'),
+    /**
+     * Per-flavor tagline. DELIBERATELY EMPTY on all three SKUs.
+     *
+     * It held things like "Sharp and green" for lime, which told a reader
+     * nothing: the fruit is named and the can is visibly green. Rewriting it
+     * into craft-beverage language ("the bitter edge left in") only made it
+     * sound like copy written by someone who had never tasted the product,
+     * which was exactly the case. Removed rather than polished.
+     *
+     * PARKED IDEA, founder's, worth revisiting. Unapologetic irony instead of
+     * flavor adjectives: the descriptor is just a blunt statement of the
+     * obvious, profanity included, along the lines of "It's f---ing lime."
+     * It works precisely because it refuses to do the thing this field
+     * normally does, it is minimal, and no agency would sign it off. It needs
+     * a real decision about whether the brand swears in public, since that
+     * carries into retailer conversations and shelf-tag copy, so it is parked
+     * rather than shipped. If it goes in, it goes in on all three or none.
+     *
+     * Leaving this empty renders nothing. See docs/EDITING.md.
+     */
     tagline: z.string().optional(),
     description: z.string().optional(),
+    /**
+     * Also DELIBERATELY EMPTY. The previous notes were invented from the
+     * formula rather than from drinking the product, which is not a good
+     * enough basis for claims about taste. Fill these in after tasting, or
+     * leave them out; the section hides itself either way.
+     */
     tastingNotes: z.array(z.string()).optional(),
 
     // Label data

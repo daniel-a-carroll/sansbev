@@ -2,12 +2,7 @@
 name: Lime
 order: 1
 status: in-development
-tagline: 'The bitter edge left in.'
 description: 'Carbonated water and organic lime juice, with caffeine from green coffee and L-theanine from green tea.'
-tastingNotes:
-  - 'Zest and rind'
-  - 'Sharp acidity'
-  - 'Dry finish'
 # Declared on the front of the can, in label order.
 ingredients:
   - Carbonated water

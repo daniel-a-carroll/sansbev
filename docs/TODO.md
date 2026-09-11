@@ -30,16 +30,13 @@ These are decisions and inputs only you can supply. Ordered by what blocks the m
 7. **Write the founder biography and production location on the About page**
    The story is written; the specifics only you have are still marked.
 
-8. **Taste the finished liquid against the tasting notes and taglines**
-   The flavor copy in src/content/flavors/ was written from the formula, not from drinking it. "Bitter backbone", "ripe, not syrupy", "dry through the middle" are plausible given no sweetener in the declared ingredient list, but only you can confirm they are true. Wrong tasting notes are a small credibility leak with buyers who will actually try it.
-
-9. **Set the three contact email addresses in src/data/site.ts**
+8. **Set the three contact email addresses in src/data/site.ts**
    The contact page falls back to a form-only message until they exist.
 
-10. **Set RESEND_API_KEY, NOTIFY_FROM, NOTIFY_TO as Wrangler secrets**
+9. **Set RESEND_API_KEY, NOTIFY_FROM, NOTIFY_TO as Wrangler secrets**
    Without them the Worker logs submissions instead of delivering them. Every lead is silently lost.
 
-11. **Flip `launched` to true in src/data/site.ts**
+10. **Flip `launched` to true in src/data/site.ts**
    The entire site is noindex and robots.txt disallows everything until you do. This is the last step before going live.
 
 ## Placeholder copy and data

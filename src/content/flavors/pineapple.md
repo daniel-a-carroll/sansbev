@@ -2,12 +2,7 @@
 name: Pineapple
 order: 2
 status: in-development
-tagline: 'Ripe, not candied.'
 description: 'Carbonated water and organic pineapple juice, with caffeine from green coffee and L-theanine from green tea.'
-tastingNotes:
-  - 'Juicy, not syrupy'
-  - 'Soft acidity'
-  - 'Short finish'
 # Declared on the front of the can, in label order.
 ingredients:
   - Carbonated water

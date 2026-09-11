@@ -2,12 +2,7 @@
 name: Cranberry
 order: 3
 status: in-development
-tagline: 'Astringent, not softened.'
 description: 'Carbonated water and organic cranberry juice, with caffeine from green coffee and L-theanine from green tea.'
-tastingNotes:
-  - 'Puckering'
-  - 'Dry through the middle'
-  - 'Short, clean finish'
 # Declared on the front of the can, in label order.
 ingredients:
   - Carbonated water
