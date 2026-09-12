@@ -2,14 +2,15 @@
 name: Pineapple
 order: 2
 status: in-development
-description: 'Carbonated water and organic pineapple juice, with caffeine from green coffee and L-theanine from green tea.'
+description: 'Carbonated water and organic juice (pineapple and lime), with caffeine from green coffee beans, L-theanine from green tea, acacia fiber and salt.'
 # Declared on the front of the can, in label order.
 ingredients:
   - Carbonated water
-  - Organic pineapple juice
-  - Caffeine (from green coffee)
+  - Organic juice (pineapple and lime)
+  - Caffeine (from green coffee beans)
   - L-theanine (from green tea)
-  - Salt
+  - Acacia (natural fiber)
+  - Salt (for balance)
 canSizeFlOz: 12
 caffeineMg: 220
 lTheanineMg: 400

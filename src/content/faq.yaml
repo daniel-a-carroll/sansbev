@@ -14,24 +14,26 @@
 - id: caffeine-amount
   question: How much caffeine is in a can?
   answer: >-
-    220mg per 12 fl oz can, from green coffee. Not recommended for children, or
-    for people sensitive to caffeine.
+    220mg per 12 fl oz can, from green coffee beans. Not recommended for
+    children, or for people sensitive to caffeine.
   audience: consumer
   order: 1
 
 - id: whats-in-it
   question: What is actually in it?
   answer: >-
-    Five ingredients, printed on the front of the can: carbonated water, organic
-    fruit juice, caffeine from green coffee, L-theanine from green tea, and salt.
+    The whole list is printed on the front of the can: carbonated water, organic
+    juice, caffeine from green coffee beans, L-theanine from green tea, acacia
+    fiber, and salt.
   audience: consumer
   order: 2
 
 - id: real-juice
   question: Is it actually made with fruit juice?
   answer: >-
-    Yes. Each flavor is built around the fruit it is named for, and the juice is
-    declared on the ingredient list on the can.
+    Yes, and the blend is named on the front of the can rather than left as
+    "fruit juice". Lime is lime and apple, pineapple is pineapple and lime, and
+    cranberry is cranberry and apple.
   audience: consumer
   order: 3
 

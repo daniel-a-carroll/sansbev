@@ -2,14 +2,15 @@
 name: Lime
 order: 1
 status: in-development
-description: 'Carbonated water and organic lime juice, with caffeine from green coffee and L-theanine from green tea.'
+description: 'Carbonated water and organic juice (lime and apple), with caffeine from green coffee beans, L-theanine from green tea, acacia fiber and salt.'
 # Declared on the front of the can, in label order.
 ingredients:
   - Carbonated water
-  - Organic lime juice
-  - Caffeine (from green coffee)
+  - Organic juice (lime and apple)
+  - Caffeine (from green coffee beans)
   - L-theanine (from green tea)
-  - Salt
+  - Acacia (natural fiber)
+  - Salt (for balance)
 canSizeFlOz: 12
 caffeineMg: 220
 lTheanineMg: 400

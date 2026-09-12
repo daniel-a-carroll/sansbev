@@ -79,7 +79,10 @@ const disclosures = [
   <section class="section">
     <div class="container grid">
       <div class="flavor__prose prose">
-        {d.description && <p class="lede">{d.description}</p>}
+        {/* d.description is deliberately NOT rendered here: it is the
+            ingredient list in sentence form, and the Ingredients section
+            below prints the same list. It still feeds the meta description
+            and Product JSON-LD, where it is genuinely useful. */}
         <Content />
 
         {
@@ -128,6 +131,14 @@ const disclosures = [
               <p class="prose flavor__allergen">{d.allergenStatement}</p>
             )}
 
+          </div>
+
+          <div class="flavor__scene">
+            <Asset
+              slot={flavorSlot(flavor.id, 'scene')}
+              alt={`A can of ${d.name} beside the fruit it is made with.`}
+              sizes="(min-width: 60rem) 30vw, 90vw"
+            />
           </div>
 
           <div class="flavor__panel">
@@ -219,8 +230,13 @@ const disclosures = [
     grid-column: 1 / span 7;
   }
 
-  .flavor__panel {
+  .flavor__scene {
     grid-column: 9 / span 4;
+  }
+
+  .flavor__panel {
+    grid-column: 1 / span 7;
+    margin-block-start: var(--space-lg);
   }
 
   .flavor__allergen {

@@ -23,15 +23,22 @@ Facts taken off the artwork, not invented here:
 | Brand | **SANS**, with a trademark mark |
 | Descriptor | Energy drink |
 | Tagline | *what's important is what's not in it* |
-| Ingredients | Carbonated water · Organic fruit juice · Caffeine (from green coffee) · L-theanine (from green tea) · Salt |
+| Ingredients | Carbonated water · Organic juice, a named two-fruit blend · Caffeine (from green coffee beans) · L-theanine (from green tea) · Acacia (natural fiber) · Salt |
 | Caffeine | **220mg** |
 | L-theanine | **400mg**, from green tea |
 | Format | 12 fl oz (355 mL) slim can |
 | Flavors | Lime, Pineapple, Cranberry |
 
 The ingredient list is printed on the **front** of the can. That is the brand's whole
-argument made visible, and the site leans on it: the product page intro and the home story
-both lead with the five ingredients rather than with adjectives.
+argument made visible, and the site leans on it.
+
+**The site never counts the ingredients.** An earlier version said "five ingredients" and
+was wrong within a fortnight, when acacia was added and the juice became a blend. Exactly
+the same mistake as counting the flavors. Copy now says where the list is, not how long
+it is, and the per-flavor lists are rendered from data.
+
+**The juice is a blend in every SKU**: lime and apple, pineapple and lime, cranberry and
+apple. The site names the blend wherever it mentions juice, because the can does.
 
 **The caffeine figure has now moved three times** — 150mg discussed, 160mg on the
 first-generation art, 200mg by direction, 220mg on the current art. Site and can now agree
@@ -178,4 +185,11 @@ their own.
 - **Organic** is a USDA-regulated claim now printed on the cans. Certification records
   need to exist before this ships.
 - 400mg L-theanine is high for the category. A formulation call, but reviewers will notice.
+- **"Calm focus"** on the brand board is the most exposed claim on the site: a
+  structure/function claim tied to a named ingredient at a named dose, on a conventional
+  food. See `claims.ts`.
+- **"0 added sugar"** is a regulated nutrient content claim and needs the finished
+  Nutrition Facts panel behind it, particularly now the juice blends include apple.
+- The pineapple can sets its ingredient panel in ALL CAPS while lime and cranberry use
+  sentence case. Cosmetic, but fix it before print.
 - Juice percentage, still the open question for any nutrient-content claim.

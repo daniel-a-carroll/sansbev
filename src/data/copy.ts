@@ -113,19 +113,19 @@ export const copy = copySchema.parse({
     seo: {
       title: 'SANS energy drink, made with real fruit juice',
       description:
-        'A Colorado energy drink made with real fruit juice and 220mg of caffeine from green coffee. Lime, pineapple, and cranberry.',
+        'A Colorado energy drink made with organic fruit juice and 220mg of caffeine from green coffee beans. Lime, pineapple, and cranberry.',
     },
     // The line printed on every can. It is the strongest copy the brand has, it
     // makes no claim about the body, and it is already on the packaging.
     heroHeadline: "What's important is what's not in it",
     heroSubhead:
-      'Made with real fruit juice, with 220mg of caffeine from green coffee.',
+      'Made with organic fruit juice, with 220mg of caffeine from green coffee beans.',
     heroTradeLinkLabel: 'See wholesale specs',
 
     storyHeading: 'Sans means without',
     storyBody: [
       'Sans means without in French. That is the whole idea. What matters in a can of SANS is the list of things that are not in it.',
-      'What is in it is short enough to print on the front. Carbonated water, organic juice, caffeine from green coffee, L-theanine from green tea, salt. That is the whole list.',
+      'The full ingredient list is printed on the front of the can, not hidden on the back in small type. That is the whole argument.',
     ],
 
     emailCaptureHeading: 'Find out when it lands near you',
@@ -136,11 +136,11 @@ export const copy = copySchema.parse({
     seo: {
       title: 'The lineup',
       description:
-        'Lime, pineapple, and cranberry. Each made with real fruit juice, with 220mg of caffeine from green coffee, in a 12 ounce slim can.',
+        'Lime, pineapple, and cranberry. Each made with organic fruit juice, with 220mg of caffeine from green coffee beans, in a 12 ounce slim can.',
     },
     heading: 'The lineup',
     intro:
-      'Each one is built around the fruit it is named for. Five ingredients, printed on the front of the can.',
+      'Every can prints its full ingredient list on the front. The juice is organic, and the blend is named there too.',
   },
 
   whereToBuy: {
@@ -164,7 +164,7 @@ export const copy = copySchema.parse({
     },
     heading: 'Wholesale and retail partners',
     intro:
-      'SANS is a 12 ounce slim-can energy drink made with real fruit juice, with 220mg of caffeine from green coffee. We are talking to buyers, distributors, and brokers in Colorado now. [[PLACEHOLDER: launch timing, and whether you are taking orders yet. One sentence.]]',
+      'SANS is a 12 ounce slim-can energy drink made with organic fruit juice, with 220mg of caffeine from green coffee beans. We are talking to buyers, distributors, and brokers in Colorado now. [[PLACEHOLDER: launch timing, and whether you are taking orders yet. One sentence.]]',
     availableOnRequestHeading: 'Available on request',
     availableOnRequestNote:
       'Send an inquiry and we will follow up with the current sell sheet and full specifications.',
@@ -186,7 +186,7 @@ export const copy = copySchema.parse({
       'For years I got my caffeine from everywhere. Coffee, tea, supplements, energy drinks, whatever was in front of me that day.',
       'Then I had a family and ran out of time. I wanted one convenient thing I could reach for every day and feel good about drinking. I went looking and could not find it. Some had ingredients I did not recognize. Some were sweeter than I wanted. Some just did not taste good.',
       'So I kept drinking things I was not happy with. For years. Eventually I decided to do something about it myself.',
-      'SANS is the drink I wanted and could not buy. Real fruit juice, caffeine from green coffee, and a label I am comfortable handing to anybody.',
+      'SANS is the drink I wanted and could not buy. Organic juice, caffeine from green coffee beans, and a label I am comfortable handing to anybody.',
       'We are based in Colorado. [[PLACEHOLDER: where specifically, and where the product is produced. Buyers ask this early, so answer it plainly here.]]',
     ],
   },

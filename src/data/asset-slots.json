@@ -37,11 +37,11 @@
     },
     {
       "slot": "brand-board",
-      "width": 1536,
-      "height": 1024,
+      "width": 1774,
+      "height": 887,
       "format": "png",
       "where": "Wholesale page, full-bleed under the intro",
-      "note": "FULFILLED. The three cans with the brand lockup and positioning copy. Lives on the WHOLESALE page, not the product page: it is a poster, carrying its own logo, headline and tagline, so nesting it in a page that already has all three read as a page within a page, and it duplicated the product page's own three cans. On the trade page nothing competes with it and it does the job it was made for. TWO THINGS TO KNOW. (1) It carries claim copy in the pixels, so it is transcribed into imageClaims in src/data/claims.ts and the build lint scans that transcript; if you replace this image, update the transcript in the same commit. (2) It is rendered full-bleed, so on a display wider than 1536px it upscales slightly. A 2400px+ export would fix that.",
+      "note": "FULFILLED. Second-generation board: three cans in a styled fruit scene, with the positioning copy down both sides. Lives full-bleed on the WHOLESALE page, not the product page: it is a poster carrying its own logo, headline and tagline, so nesting it in a page that already has all three read as a page within a page. IT CARRIES CLAIM COPY IN THE PIXELS, including the structure/function claims \"Natural energy\" and \"Calm focus\" and the regulated nutrient content claim \"0 added sugar\". Every line is transcribed into imageClaims in src/data/claims.ts and the build lint scans that transcript. IF YOU REPLACE THIS IMAGE, RE-TRANSCRIBE IT IN THE SAME COMMIT, or the new copy ships unchecked.",
       "priority": true
     },
     {
@@ -93,27 +93,27 @@
   "flavorSlots": [
     {
       "kind": "can-front",
-      "width": 400,
-      "height": 1010,
+      "width": 560,
+      "height": 1470,
       "format": "png",
       "where": "Flavor page hero, product index card",
-      "note": "FULFILLED by the cutouts in assets/. 400x1010 PNG with a real alpha channel, which is why cans can now sit directly on flavor color fields. Any replacement must keep transparency: an opaque render reintroduces a pale rectangle on every colored band."
+      "note": "FULFILLED. 560x1470 PNG with a real alpha channel, which is why cans sit directly on flavor colour fields. Any replacement must keep transparency: an opaque render reintroduces a pale rectangle on every coloured band. The front panel is the product's whole argument, so keep the ingredient list legible at the sizes used here."
     },
     {
       "kind": "can-angle",
-      "width": 400,
-      "height": 1010,
+      "width": 560,
+      "height": 1470,
       "format": "png",
       "where": "Flavor page secondary",
       "note": "Same can, three-quarter angle, transparent background, matching the front cutout's framing and lighting."
     },
     {
-      "kind": "ingredient-still",
-      "width": 1600,
-      "height": 1200,
+      "kind": "scene",
+      "width": 1024,
+      "height": 1536,
       "format": "jpg",
-      "where": "Flavor page, tasting notes section",
-      "note": "The actual fruit for this SKU \u2014 lime wedge, pineapple wedge, cranberries \u2014 styled to match the fruit already composited on the can. Plain surface, no syrup splashes."
+      "where": "Flavor page, below the specifications",
+      "note": "FULFILLED. Portrait scene shot: the can in a styled setting with its own fruit. Carries the flavour pages now that the invented tasting copy was removed, which is the better trade: a real photograph instead of adjectives written by someone who had not tasted the product."
     }
   ]
 }

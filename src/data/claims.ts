@@ -113,30 +113,78 @@
  *    one, but flag it to whoever reviews the label: dose sits alongside the
  *    220mg caffeine figure and both will draw a reviewer's eye.
  *
- *    THE BRAND BOARD IS NOW PUBLISHED, AND ITS COPY IS NOT CLEARED.
- *    At the founder's direction the marketing board is live on the product
- *    index page. It carries lines the site's own written copy deliberately
- *    avoids, because they are effect claims rather than composition:
+ *    THE BRAND BOARD IS PUBLISHED, AND ITS COPY IS NOT CLEARED.
+ *    At the founder's direction the marketing board is live, full-bleed, on the
+ *    wholesale page. The SECOND board carries different and materially riskier
+ *    copy than the first. Full transcript in imageClaims below.
  *
- *        "clean energy that moves you forward"
- *        "real ingredients. clean energy. no compromises."
- *        "fuel what matters"
- *        "zero artificial anything"
- *        "made for real life"
+ *    "CALM FOCUS" IS THE MOST EXPOSED LINE ON THE SITE.
+ *    It is a structure/function claim about a mental state, and it sits
+ *    directly above "400 MG L-THEANINE", which ties the claimed effect to a
+ *    specific ingredient at a specific dose. That pairing is the problem: it
+ *    reads as "this ingredient, at this amount, produces this state", which is
+ *    precisely the construction that needs substantiation.
  *
- *    These are claims made to a reader exactly as if they were typed into the
- *    page, because FDA does not care whether copy is text or pixels. They are
- *    listed in imageClaims below and flagged there under needsReview.
+ *    Re-read item 3 above. This is a CONVENTIONAL FOOD. For conventional foods
+ *    a structure/function claim must derive from NUTRITIVE VALUE, and
+ *    L-theanine is not generally treated as a nutritive component. Supplement
+ *    brands make this exact claim routinely; that is not precedent, because
+ *    they are regulated under a different section. The same words on a can of
+ *    soda are a different question.
  *
- *    If counsel objects, the fix is a version of the board WITHOUT those
- *    lines: the three cans and the ingredient panels carry the argument on
- *    their own. Do not solve it by removing the transcript.
+ *    "NATURAL ENERGY" has the same shape, paired with the caffeine figure, but
+ *    is weaker: energy from caffeine is closer to common understanding.
+ *
+ *    "0 ADDED SUGAR" is a REGULATED nutrient content claim, not a description.
+ *    It has a codified definition (21 CFR 101.60(c)(2)) and it obliges the
+ *    Nutrition Facts panel to declare 0g added sugars. It is plausible here,
+ *    since nothing in the ingredient list is a sweetener. But note the juice is
+ *    now a BLEND, and apple juice is a common way to sweeten a formula without
+ *    adding "sugar". That is legitimate and the claim can still hold, because
+ *    juice sugars are intrinsic rather than added. Two consequences to expect:
+ *    total sugars will not be zero, and a reviewer will read "0 added sugar"
+ *    next to an apple-juice blend with interest. Have the finished panel in
+ *    hand before this ships.
+ *
+ *    "NO PRESERVATIVES" and "NO ARTIFICIAL INGREDIENTS" are absence claims.
+ *    Cheap to make, expensive to be wrong about. They must hold for the
+ *    finished formula including processing aids, not just the declared list.
+ *
+ *    "A CLEANER WAY" invites the question "cleaner than what?". Comparative in
+ *    spirit even without a named competitor. See item 5.
+ *
+ *    If counsel objects to any of it, the fix is a board export without those
+ *    lines. The cans and their ingredient panels carry the argument alone, and
+ *    that is the argument the written copy already makes.
  *
  *    HOW THE GUARD COVERS THIS. The lint reads rendered TEXT and cannot read
  *    words inside a picture, so images would otherwise walk straight past it.
  *    Every published image with words on it is therefore transcribed into
  *    imageClaims, and the lint scans those transcripts exactly as it scans the
  *    HTML. Publish an image with copy on it and you must transcribe it first.
+ *    NOTE that none of the lines above trip prohibitedTerms: the transcript is
+ *    there so a human reviewer sees them, not because the lint will catch them.
+ *
+ * 4d. THE FORMULA CHANGED. Ingredients are now, in label order: carbonated
+ *    water, organic juice (a named two-fruit blend), caffeine from green coffee
+ *    beans, L-theanine from green tea, acacia (natural fiber), and salt.
+ *
+ *    ACACIA is new. It is gum arabic, a soluble dietary fiber. It is not a
+ *    claim in itself, but it will appear as dietary fiber on the Nutrition
+ *    Facts panel, and "natural fiber" on the can is a description that the
+ *    panel has to support.
+ *
+ *    THE JUICE IS A BLEND, and every SKU contains a second fruit: lime and
+ *    apple, pineapple and lime, cranberry and apple. The site names the blend
+ *    everywhere rather than saying "fruit juice", because the can does. This
+ *    also bears on the juice-percentage question in item 4 above: the
+ *    food-group leg of "healthy" depends on total juice content, and a blend
+ *    may make that easier to reach.
+ *
+ *    ARTWORK INCONSISTENCY, worth fixing before print: the pineapple can sets
+ *    its ingredient panel in ALL CAPS while lime and cranberry use sentence
+ *    case. Purely cosmetic, but it is the kind of thing a buyer notices on a
+ *    shelf and a printer will not fix for you.
  *
  * 5. COMPARATIVE CLAIMS ARE ADVERTISING CLAIMS.
  *    Naming or alluding to a competitor invokes Lanham Act exposure on top of
@@ -224,13 +272,21 @@ export const claims = claimsSchema.parse({
   compositionPoints: [
     // Confirmed: printed on all three packaging renders.
     {
-      label: '220mg caffeine from green coffee',
+      label: '220mg caffeine from green coffee beans',
       detail: 'Per 12 fl oz can.',
       confirmed: true,
     },
     {
-      label: 'Made with real fruit juice',
-      detail: undefined,
+      label: 'Made with organic fruit juice',
+      // The juice is a BLEND and the can names it. Lime is lime and apple,
+      // pineapple is pineapple and lime, cranberry is cranberry and apple.
+      // Per-flavor lists live on the flavor entries.
+      detail: 'A named blend, printed on the front of the can.',
+      confirmed: true,
+    },
+    {
+      label: 'Acacia fiber',
+      detail: 'A natural soluble fiber. Per 12 fl oz can.',
       confirmed: true,
     },
     // CAFFEINE FIGURE HISTORY -- the number has now moved three times:
@@ -276,40 +332,49 @@ export const claims = claimsSchema.parse({
   imageClaims: [
     {
       asset: 'brand-board',
-      where: 'Product index page, above the flavor cards',
-      // Transcribed from assets/ChatGPT Image Sep 10, 2026, 10_15_07 PM.png
+      where: 'Wholesale page, full-bleed under the intro',
+      // Transcribed from src/assets/brand-board.png. SECOND BOARD: the copy
+      // changed substantially from the first one, so this is a fresh
+      // transcription, not an edit.
       transcript: [
         'SANS',
         'ENERGY DRINK',
-        "WHAT'S IMPORTANT IS WHAT'S NOT IN IT",
-        'PLANT-BASED CAFFEINE',
-        'ZERO ARTIFICIAL ANYTHING',
-        'REAL INGREDIENTS',
-        'MADE FOR REAL LIFE',
-        'CLEAN ENERGY THAT MOVES YOU FORWARD',
+        "What's important is what's not in it.",
+        '0 ADDED SUGAR',
+        'NO ARTIFICIAL INGREDIENTS',
+        'NO PRESERVATIVES',
+        'REAL ENERGY. A CLEANER WAY.',
         'INGREDIENTS',
         'Carbonated Water',
-        'Organic Lime Juice',
-        'Organic Pineapple Juice',
-        'Organic Cranberry Juice',
-        'Caffeine (from green coffee) 220 MG',
-        'L-Theanine (from green tea) 400 MG',
-        'Salt',
+        'Organic Juice (Lime and Apple)',
+        'Organic Juice (Pineapple and Lime)',
+        'Organic Juice (Cranberry and Apple)',
+        'Caffeine (From Green Coffee Beans) 220 MG',
+        'L-Theanine (From Green Tea) 400 MG',
+        'Acacia (Natural Fiber)',
+        'Salt (For Balance)',
         'LIME',
         'PINEAPPLE',
         'CRANBERRY',
-        'REAL INGREDIENTS. CLEAN ENERGY. NO COMPROMISES.',
-        'FUEL WHAT MATTERS',
+        'NATURAL ENERGY',
+        '220 MG CAFFEINE (FROM GREEN COFFEE BEANS)',
+        'CALM FOCUS',
+        '400 MG L-THEANINE (FROM GREEN TEA)',
+        'PLANT-BASED GOODNESS',
+        'ACACIA (NATURAL FIBER)',
+        'REAL FRUIT JUICE',
+        'LIME, PINEAPPLE OR CRANBERRY',
+        'SIMPLE INGREDIENTS. BIG DIFFERENCE.',
       ],
-      // None of these trip prohibitedTerms, so the build passes. That is not
-      // the same as being cleared. Publishing this image publishes these lines
-      // as labeling, and the site's own written copy deliberately avoids them:
+      // None of these trip prohibitedTerms, so the build passes. That is NOT
+      // the same as being cleared, and this board is riskier than the last one.
       needsReview: [
-        'CLEAN ENERGY THAT MOVES YOU FORWARD',
-        'REAL INGREDIENTS. CLEAN ENERGY. NO COMPROMISES.',
-        'FUEL WHAT MATTERS',
-        'ZERO ARTIFICIAL ANYTHING',
-        'MADE FOR REAL LIFE',
+        'CALM FOCUS',        // see 4d below. The most exposed line on the site.
+        'NATURAL ENERGY',
+        '0 ADDED SUGAR',     // regulated nutrient content claim
+        'NO PRESERVATIVES',
+        'NO ARTIFICIAL INGREDIENTS',
+        'REAL ENERGY. A CLEANER WAY.',
       ],
     },
   ],

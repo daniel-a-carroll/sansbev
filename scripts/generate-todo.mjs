@@ -85,6 +85,18 @@ const decisions = [
     why: 'The board on the product page carries five effect-claim lines the written copy avoids: "clean energy that moves you forward", "real ingredients. clean energy. no compromises.", "fuel what matters", "zero artificial anything", "made for real life". They are transcribed in imageClaims in src/data/claims.ts. If they do not clear, re-export the board without them.',
   },
   {
+    item: 'Have counsel review "Calm focus" on the brand board before launch',
+    why: 'It is a structure/function claim about a mental state, sitting directly above "400 MG L-THEANINE", which ties a claimed effect to a named ingredient at a named dose. On a conventional food that construction needs substantiation, and supplement-industry precedent does not transfer. The most exposed line on the site.',
+  },
+  {
+    item: 'Confirm "0 added sugar" against the finished Nutrition Facts panel',
+    why: 'A regulated nutrient content claim with a codified definition, printed on the brand board. Plausible, since nothing in the list is a sweetener, but the juice blends now include apple and a reviewer will read the two together. Needs the finished panel.',
+  },
+  {
+    item: 'Fix the pineapple can ingredient panel to match the other two',
+    why: 'Pineapple is set in ALL CAPS while lime and cranberry use sentence case. Cosmetic, but a buyer notices it on a shelf and the printer will not fix it for you.',
+  },
+  {
     item: 'Get the organic certification records on file',
     why: 'The cans declare "Organic ... Juice". Organic is USDA-regulated, not a descriptor. Labelling an uncertified ingredient organic is a federal violation, not a marketing risk.',
   },
