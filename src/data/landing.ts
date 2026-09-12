@@ -72,11 +72,23 @@ const landingSchema = z.object({
     captureLabel: z.string(),
   }),
 
-  /** Section 3. Their own packaging is the evidence. */
+  /**
+   * Section 3. Their own packaging is the evidence, but it is NOT the headline.
+   *
+   * The big type is our 20%, not their 0%. Setting a competitor's line as the
+   * largest text on the section spends our own emphasis amplifying their
+   * phrase, and leaves the reader's strongest visual memory of the section
+   * being someone else's brand. Their disclosure still does the work, one size
+   * down, directly above the photographs where it belongs as a caption to
+   * evidence rather than as our argument.
+   */
   juice: z.object({
     problem: z.string(),
     heading: z.string(),
+    subhead: z.string().optional(),
     body: z.array(z.string()).default([]),
+    competitorHeading: z.string(),
+    competitorNote: z.string().optional(),
     competitors: z.array(competitorSchema).default([]),
     tasteHeading: z.string(),
     tasteBody: z.array(z.string()).default([]),
@@ -178,11 +190,14 @@ export const landing = landingSchema.parse({
 
   juice: {
     problem: 'Every energy drink flavour is synthetic.',
-    heading: 'Contains 0% juice',
+    heading: '20% real organic juice',
+    subhead: 'Not from concentrate.',
     body: [
-      'That line is printed on their cans, by them. It is not our accusation, it is their disclosure.',
-      'Ours is 20% organic juice, not from concentrate.',
+      'The flavour is the fruit. There is no flavour system doing an impression of it.',
     ],
+    competitorHeading: 'Contains 0% juice',
+    competitorNote:
+      'That line is printed on their cans, by them. It is not our accusation, it is their disclosure.',
     competitors: [
       {
         asset: 'competitor-celsius-zero-juice',

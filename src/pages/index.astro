@@ -120,12 +120,24 @@ const caffeineMg = caffeineAmounts.length === 1 ? caffeineAmounts[0] : undefined
     </div>
   </section>
 
-  {/* 3. CONTAINS 0% JUICE. Their disclosure, printed by them. */}
+  {/* 3. REAL JUICE. Our 20% is the headline; their 0% is the caption to the
+       evidence. Setting a competitor's line in the largest type on the section
+       would spend our emphasis amplifying their phrase. */}
   <section class="section proof">
     <div class="container">
       <p class="proof__problem">{landing.juice.problem}</p>
-      <h2>{landing.juice.heading}</h2>
+      <h2 class="juice__claim">{landing.juice.heading}</h2>
+      {landing.juice.subhead && <p class="juice__sub">{landing.juice.subhead}</p>}
       {landing.juice.body.map((p) => <p class="proof__body prose">{p}</p>)}
+
+      {landing.juice.competitors.length > 0 && (
+        <div class="theirs">
+          <h3 class="theirs__heading">{landing.juice.competitorHeading}</h3>
+          {landing.juice.competitorNote && (
+            <p class="theirs__note prose">{landing.juice.competitorNote}</p>
+          )}
+        </div>
+      )}
 
       {landing.juice.competitors.length > 0 && (
         <ul class="evidence">
@@ -331,6 +343,42 @@ const caffeineMg = caffeineAmounts.length === 1 ? caffeineAmounts[0] : undefined
 
   .proof__body {
     margin-block-start: var(--space-sm);
+  }
+
+  /* Our claim is the largest thing in the section. */
+  .juice__claim {
+    font-size: var(--text-display);
+    font-weight: var(--font-weight-display);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    max-inline-size: 18ch;
+  }
+
+  .juice__sub {
+    margin-block-start: var(--space-2xs);
+    font-size: var(--text-h3);
+    color: var(--color-ink-muted);
+  }
+
+  /* Their disclosure, one level down: a caption to the evidence rather than
+     our argument. */
+  .theirs {
+    margin-block-start: var(--space-2xl);
+    padding-block-start: var(--space-md);
+    border-block-start: var(--rule-strong);
+  }
+
+  .theirs__heading {
+    font-size: var(--text-h3);
+  }
+
+  .theirs__note {
+    margin-block-start: var(--space-2xs);
+    color: var(--color-ink-muted);
+  }
+
+  .evidence {
+    margin-block-start: var(--space-md) !important;
   }
 
   .compare {
