@@ -21,6 +21,17 @@ const nav = [
 ];
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+interface Props {
+  /**
+   * Hides the primary nav. Used by the pre-launch landing page, whose only job
+   * is the email capture: every nav link there is a competing call to action.
+   * The pages themselves stay live and reachable by URL.
+   */
+  minimal?: boolean;
+}
+
+const { minimal = false } = Astro.props;
 ---
 
 <header class="site-header">
@@ -29,6 +40,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
       <Wordmark size="md" />
     </a>
 
+    {!minimal && (
     <nav aria-label="Primary">
       <ul class="site-nav">
         {
@@ -49,6 +61,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
         }
       </ul>
     </nav>
+    )}
   </div>
 </header>
 

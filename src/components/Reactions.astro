@@ -1,0 +1,73 @@
+---
+/**
+ * Section 7: reactions.
+ *
+ * BUILT NOW, HIDDEN UNTIL POPULATED. Nothing renders while
+ * landing.reactions.items is empty, so six months of incoming messages land
+ * here by editing one array, with no redesign and no layout work.
+ *
+ * Screenshot register on purpose: texts and DMs, not polished testimonials
+ * with headshots. A tidy testimonial with a stock portrait reads as bought. A
+ * message that looks like a message reads as true, which matters more on a page
+ * whose entire argument is that it does not overstate.
+ *
+ * Only paste things people actually sent. This section is worth nothing the
+ * moment any of it is written in-house, and on a brand built on verifiable
+ * claims a fabricated reaction is the most expensive possible shortcut.
+ */
+import JoinForm from './forms/JoinForm.astro';
+import { landing } from '../data/landing';
+
+const { heading, items, captureLabel } = landing.reactions;
+---
+
+{
+  items.length > 0 && (
+    <section class="section reactions">
+      <div class="container">
+        <h2>{heading}</h2>
+        <ul class="reactions__list">
+          {items.map((item) => (
+            <li class="reaction">
+              <p class="reaction__text">{item.text}</p>
+              {item.attribution && (
+                <p class="reaction__who caption">{item.attribution}</p>
+              )}
+            </li>
+          ))}
+        </ul>
+        <JoinForm source="reactions" label={captureLabel} />
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .reactions__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    gap: var(--grid-gap);
+    margin-block-start: var(--space-lg);
+    padding: 0;
+    list-style: none;
+    align-items: start;
+  }
+
+  /* Message-bubble register, deliberately not a testimonial card. */
+  .reaction {
+    background-color: var(--color-surface);
+    padding: var(--space-sm) var(--space-md);
+    border-start-start-radius: 1.1rem;
+    border-start-end-radius: 1.1rem;
+    border-end-end-radius: 1.1rem;
+    border-end-start-radius: 0.25rem;
+  }
+
+  .reaction__text {
+    font-size: var(--text-body);
+  }
+
+  .reaction__who {
+    margin-block-start: var(--space-2xs);
+  }
+</style>

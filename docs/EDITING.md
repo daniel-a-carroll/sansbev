@@ -16,6 +16,9 @@ redeploys itself.
 
 | I want to change… | Edit this |
 |---|---|
+| **The landing page: any section's copy, the offer, the rules block** | `src/data/landing.ts` |
+| **Add a reaction** (section appears once it has one) | `src/data/landing.ts` → `reactions.items` |
+| **Swap a competitor label photo** | Drop the file in `src/assets/` named for its slot |
 | Brand name, tagline, contact emails, business address | `src/data/site.ts` |
 | **Take the site live (turn off noindex)** | `src/data/site.ts` → `launched: true` |
 | Homepage, about, legal copy, page titles and meta descriptions | `src/data/copy.ts` |
@@ -32,6 +35,34 @@ redeploys itself.
 | Form fields and validation rules | `src/lib/form-schemas.ts` |
 
 ---
+
+## The landing page
+
+The home page is a single-purpose pre-launch conversion page. Its only job is
+turning a visitor into an email subscriber, and every section follows the same
+shape: name a problem the reader already feels, give the solution, show the
+proof.
+
+**The proof is the ingredient panel.** A six-item list someone can read and
+verify beats any sentence you could write, which is why the hero visual is a
+label rather than a lifestyle photo.
+
+Before editing any of that copy, read the header of `src/data/landing.ts`. It
+lists what must never appear on the page, and the reasons are not stylistic.
+The short version:
+
+- Never claim plant-sourced caffeine works better than synthetic. The trials
+  found them bioequivalent. State the source, never the superiority.
+- Never say "clinically proven" about the product. No clinical work exists.
+- Never call a competitor's ingredients unsafe. Show their label, say nothing.
+
+**Every section ends with a capture, and each is tagged with a `source`.** That
+tag rides into the notification subject line, so your inbox tells you which
+proof converted without any database. If you add a section, give its form a new
+`source`.
+
+**Reactions are built and hidden.** Add entries to `reactions.items` and the
+section appears. Paste only messages people actually sent.
 
 ## Common jobs
 

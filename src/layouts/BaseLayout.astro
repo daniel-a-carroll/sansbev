@@ -12,9 +12,11 @@ interface Props {
   description: string;
   ogSlot?: string;
   noindex?: boolean;
+  /** Hides the primary nav. See SiteHeader. */
+  minimalHeader?: boolean;
 }
 
-const { title, description, ogSlot, noindex } = Astro.props;
+const { title, description, ogSlot, noindex, minimalHeader = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -25,7 +27,7 @@ const { title, description, ogSlot, noindex } = Astro.props;
   </head>
   <body>
     <a href="#main" class="skip-link">Skip to content</a>
-    <SiteHeader />
+    <SiteHeader minimal={minimalHeader} />
     <main id="main" tabindex="-1">
       <slot />
     </main>

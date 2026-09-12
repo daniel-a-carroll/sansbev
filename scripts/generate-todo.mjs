@@ -81,6 +81,27 @@ const unconfirmed = (claimsSource.match(/confirmed:\s*false/g) ?? []).length;
 
 const decisions = [
   {
+    item: 'TRADEMARK: confirm clearance on the SANS name before commissioning anything else name-dependent',
+    why: 'There are at least three existing beverage users in the same class. The wordmark SVG and favicon are ALREADY IN THE REPO and live on the site, so this is not a clean slate: if clearance fails, both are wasted and the domain, the OG image and any printed material follow. Commission nothing further until it is confirmed.',
+  },
+  {
+    item: 'Supply the competitor label photographs',
+    why: 'Sections 2 and 3 of the landing page are the two highest-converting sections and both are currently gray placeholders. Needed: Celsius ingredient panel, and CONTAINS 0% JUICE visible on Celsius, Alani Nu and Kirkland Signature. Photographs, never retyped: their own label is evidence, a transcription is our word against theirs.',
+  },
+  {
+    item: 'Regulatory review of the caffeine and L-theanine section',
+    why: 'The one section on the site that describes what an ingredient does. On a conventional food a structure/function claim must derive from nutritive value, and L-theanine is not generally treated as nutritive. It is written as research about the two compounds, explicitly not about this drink, but it needs sign-off before launch.',
+  },
+  {
+    item: 'Verify and paste links for the five research citations',
+    why: 'The citations in src/data/landing.ts are real and findable, but no URLs were invented for them. Check each resolves, then paste the DOI or PubMed link into the url field. A broken or wrong link on the one section asking for trust is worse than no link.',
+  },
+  {
+    item: 'Confirm the juice percentage and sugar figures against the finished formula',
+    why: 'The landing page states 20% juice, about 10g sugar all from fruit, 0g added, about 40 calories. These are now published claims, and 0g added sugar is a regulated nutrient content claim needing the finished Nutrition Facts panel behind it.',
+  },
+
+  {
     item: 'Have counsel review the brand board copy now that it is published',
     why: 'The board on the product page carries five effect-claim lines the written copy avoids: "clean energy that moves you forward", "real ingredients. clean energy. no compromises.", "fuel what matters", "zero artificial anything", "made for real life". They are transcribed in imageClaims in src/data/claims.ts. If they do not clear, re-export the board without them.',
   },

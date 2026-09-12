@@ -1,0 +1,100 @@
+---
+/**
+ * The only conversion on the site.
+ *
+ * ONE FIELD. The pre-launch spec is explicit: email only, no name, no phone.
+ * Every extra field costs signups, and signups are the entire job of the page
+ * right now. ZIP was previously required here for buyer-meeting demand data;
+ * that reasoning still holds, it was just outranked. The schema keeps ZIP
+ * optional so it can come back on a page where the trade case wins.
+ *
+ * `source` is a hidden field naming the section this form sits in. The landing
+ * page carries a capture after every proof section, and which proof converts is
+ * the thing worth learning. It rides along in the notification subject line, so
+ * it is answerable from an inbox with no database.
+ *
+ * The success state repeats the OFFER rather than saying thanks, because the
+ * confirmation is the last moment anyone reads anything.
+ */
+import FormShell from './FormShell.astro';
+import Field from './Field.astro';
+import { landing } from '../../data/landing';
+
+interface Props {
+  /** Which section this capture sits in. Becomes the tracked `source`. */
+  source: string;
+  /** Shown above the field. Omit on sections that already say enough. */
+  label?: string;
+  /** Dark sections invert the field styling. */
+  tone?: 'light' | 'dark';
+}
+
+const { source, label, tone = 'light' } = Astro.props;
+const id = `join-${source}`;
+---
+
+<div class:list={['join', `join--${tone}`]}>
+  {label && <p class="join__label">{label}</p>}
+
+  <FormShell
+    id={id}
+    action="/api/subscribe"
+    submitLabel={landing.capture.submitLabel}
+    successHeading={landing.capture.successHeading}
+    successBody={landing.capture.successBody}
+  >
+    <input type="hidden" name="source" value={source} />
+    <Field
+      formId={id}
+      name="email"
+      label={landing.capture.fieldLabel}
+      type="email"
+      required
+      autocomplete="email"
+      inputmode="email"
+    />
+  </FormShell>
+
+  <p class="join__note caption">{landing.capture.note}</p>
+</div>
+
+<style>
+  .join {
+    margin-block-start: var(--space-lg);
+    max-inline-size: 30rem;
+  }
+
+  .join__label {
+    font-size: var(--text-h3);
+    margin-block-end: var(--space-2xs);
+  }
+
+  .join__note {
+    margin-block-start: var(--space-2xs);
+  }
+
+  /* On the dark bands the inherited cream already carries; only the muted
+     caption needs lifting off the ink. */
+  .join--dark .join__note {
+    color: inherit;
+    opacity: 0.7;
+  }
+
+  .join--dark :global(.field__hint),
+  .join--dark :global(.field__optional) {
+    color: inherit;
+    opacity: 0.7;
+  }
+
+  .join--dark :global(.button) {
+    background-color: var(--color-on-ink);
+    border-color: var(--color-on-ink);
+    color: var(--color-ink);
+  }
+
+  .join--dark :global(.button:hover) {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-on-ink);
+  }
+</style>

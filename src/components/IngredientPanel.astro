@@ -1,0 +1,78 @@
+---
+/**
+ * Our ingredient list, set large.
+ *
+ * THIS IS THE PITCH, not decoration. The landing page argues compositionally:
+ * a short list a reader can verify beats any claim, so the list gets display
+ * treatment rather than being tucked into body copy.
+ *
+ * Rendered from the flavor data, so it can never disagree with the can. The
+ * plant sources are already parenthesised in the declared list, which is why
+ * this renders them as-is rather than reformatting.
+ */
+interface Props {
+  ingredients: string[];
+  heading?: string;
+  /** Ordinal numbers make the shortness legible at a glance. */
+  numbered?: boolean;
+  tone?: 'light' | 'dark';
+}
+
+const { ingredients, heading, numbered = true, tone = 'light' } = Astro.props;
+---
+
+<div class:list={['panel', `panel--${tone}`]}>
+  {heading && <p class="panel__heading label">{heading}</p>}
+  <ol class="panel__list">
+    {
+      ingredients.map((item, i) => (
+        <li class="panel__item">
+          {numbered && <span class="panel__num" aria-hidden="true">{i + 1}</span>}
+          <span class="panel__text">{item}</span>
+        </li>
+      ))
+    }
+  </ol>
+</div>
+
+<style>
+  .panel__heading {
+    margin-block-end: var(--space-sm);
+  }
+
+  .panel--dark .panel__heading {
+    color: inherit;
+    opacity: 0.7;
+  }
+
+  .panel__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-block-start: var(--rule-strong);
+  }
+
+  .panel__item {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: baseline;
+    padding-block: var(--space-xs);
+    border-block-end: var(--rule);
+    font-size: var(--text-h3);
+  }
+
+  .panel__num {
+    font-size: var(--text-caption);
+    font-variant-numeric: tabular-nums;
+    opacity: 0.5;
+    min-inline-size: 1.2em;
+  }
+
+  .panel--dark .panel__list {
+    border-block-start-color: color-mix(in srgb, var(--color-on-ink) 55%, transparent);
+  }
+
+  .panel--dark .panel__item {
+    border-block-end-color: color-mix(in srgb, var(--color-on-ink) 26%, transparent);
+  }
+</style>

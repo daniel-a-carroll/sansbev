@@ -133,9 +133,9 @@ const copySchema = z.object({
 export const copy = copySchema.parse({
   home: {
     seo: {
-      title: 'SANS energy drink, made with real fruit juice',
+      title: 'SANS energy drink, six ingredients',
       description:
-        'A Colorado energy drink made with organic fruit juice and 220mg of caffeine from green coffee beans. Lime, pineapple, and cranberry.',
+        'Six ingredients, all of them on the front of the can. Organic juice, caffeine from green coffee beans, L-theanine from green tea. Join the list for the taste panel.',
     },
     // The line printed on every can. It is the strongest copy the brand has, it
     // makes no claim about the body, and it is already on the packaging.

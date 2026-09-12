@@ -2,50 +2,65 @@
 
 **Generated file — do not edit by hand.** Regenerate with `npm run todo:doc`.
 
-Counts as of the last run: **20 placeholder strings**,
-**10 unfulfilled asset slots**, **5 unconfirmed claims**.
+Counts as of the last run: **21 placeholder strings**,
+**14 unfulfilled asset slots**, **5 unconfirmed claims**.
 
 ## Blocking before launch
 
 These are decisions and inputs only you can supply. Ordered by what blocks the most.
 
-1. **Have counsel review the brand board copy now that it is published**
+1. **TRADEMARK: confirm clearance on the SANS name before commissioning anything else name-dependent**
+   There are at least three existing beverage users in the same class. The wordmark SVG and favicon are ALREADY IN THE REPO and live on the site, so this is not a clean slate: if clearance fails, both are wasted and the domain, the OG image and any printed material follow. Commission nothing further until it is confirmed.
+
+2. **Supply the competitor label photographs**
+   Sections 2 and 3 of the landing page are the two highest-converting sections and both are currently gray placeholders. Needed: Celsius ingredient panel, and CONTAINS 0% JUICE visible on Celsius, Alani Nu and Kirkland Signature. Photographs, never retyped: their own label is evidence, a transcription is our word against theirs.
+
+3. **Regulatory review of the caffeine and L-theanine section**
+   The one section on the site that describes what an ingredient does. On a conventional food a structure/function claim must derive from nutritive value, and L-theanine is not generally treated as nutritive. It is written as research about the two compounds, explicitly not about this drink, but it needs sign-off before launch.
+
+4. **Verify and paste links for the five research citations**
+   The citations in src/data/landing.ts are real and findable, but no URLs were invented for them. Check each resolves, then paste the DOI or PubMed link into the url field. A broken or wrong link on the one section asking for trust is worse than no link.
+
+5. **Confirm the juice percentage and sugar figures against the finished formula**
+   The landing page states 20% juice, about 10g sugar all from fruit, 0g added, about 40 calories. These are now published claims, and 0g added sugar is a regulated nutrient content claim needing the finished Nutrition Facts panel behind it.
+
+6. **Have counsel review the brand board copy now that it is published**
    The board on the product page carries five effect-claim lines the written copy avoids: "clean energy that moves you forward", "real ingredients. clean energy. no compromises.", "fuel what matters", "zero artificial anything", "made for real life". They are transcribed in imageClaims in src/data/claims.ts. If they do not clear, re-export the board without them.
 
-2. **Have counsel review "Calm focus" on the brand board before launch**
+7. **Have counsel review "Calm focus" on the brand board before launch**
    It is a structure/function claim about a mental state, sitting directly above "400 MG L-THEANINE", which ties a claimed effect to a named ingredient at a named dose. On a conventional food that construction needs substantiation, and supplement-industry precedent does not transfer. The most exposed line on the site.
 
-3. **Confirm "0 added sugar" against the finished Nutrition Facts panel**
+8. **Confirm "0 added sugar" against the finished Nutrition Facts panel**
    A regulated nutrient content claim with a codified definition, printed on the brand board. Plausible, since nothing in the list is a sweetener, but the juice blends now include apple and a reviewer will read the two together. Needs the finished panel.
 
-4. **Fix the pineapple can ingredient panel to match the other two**
+9. **Fix the pineapple can ingredient panel to match the other two**
    Pineapple is set in ALL CAPS while lime and cranberry use sentence case. Cosmetic, but a buyer notices it on a shelf and the printer will not fix it for you.
 
-5. **Get the organic certification records on file**
+10. **Get the organic certification records on file**
    The cans declare "Organic ... Juice". Organic is USDA-regulated, not a descriptor. Labelling an uncertified ingredient organic is a federal violation, not a marketing risk.
 
-6. **Confirm the juice percentage in the finished formula**
+11. **Confirm the juice percentage in the finished formula**
    Still the open question for any nutrient-content claim. It is the food-group leg of the FDA rule; low sugar, sodium and fat alone do not qualify.
 
-7. **Have counsel review the 400mg L-theanine dose alongside the 220mg caffeine**
+12. **Have counsel review the 400mg L-theanine dose alongside the 220mg caffeine**
    Both are high for the category and sit together on the front of the can. A formulation call, not a labeling one, but reviewers will stop on it.
 
-8. **Legal review of src/data/claims.ts, including the About page language**
+13. **Legal review of src/data/claims.ts, including the About page language**
    FDA treats this site as labeling. Review that one file, not the whole repo. It records which phrases were removed from the founder story and why.
 
-9. **Legal review of the privacy policy and terms**
+14. **Legal review of the privacy policy and terms**
    Both are written and accurate about what the site does, but neither has been reviewed. Each carries a REVIEW REQUIRED marker in src/data/copy.ts.
 
-10. **Write the founder biography and production location on the About page**
+15. **Write the founder biography and production location on the About page**
    The story is written; the specifics only you have are still marked.
 
-11. **Set the three contact email addresses in src/data/site.ts**
+16. **Set the three contact email addresses in src/data/site.ts**
    The contact page falls back to a form-only message until they exist.
 
-12. **Set RESEND_API_KEY, NOTIFY_FROM, NOTIFY_TO as Wrangler secrets**
+17. **Set RESEND_API_KEY, NOTIFY_FROM, NOTIFY_TO as Wrangler secrets**
    Without them the Worker logs submissions instead of delivering them. Every lead is silently lost.
 
-13. **Flip `launched` to true in src/data/site.ts**
+18. **Flip `launched` to true in src/data/site.ts**
    The entire site is noindex and robots.txt disallows everything until you do. This is the last step before going live.
 
 ## Placeholder copy and data
@@ -62,13 +77,17 @@ These are decisions and inputs only you can supply. Ordered by what blocks the m
 ### `src/data/copy.ts`
 
 - **L15** — ...
-- **L167** — launch timing, and whether you are taking orders yet. One sentence.
-- **L190** — where specifically, and where the product is produced. Buyers ask this early, so answer it plainly here.
-- **L213** — date this was last reviewed
-- **L243** — the address people should write to in order to be removed. Set the contact addresses in src/data/site.ts, then name the general one here.
-- **L252** — REVIEW REQUIRED. This policy was written to describe accurately what the site actually does, but it has not been reviewed by counsel and does not attempt to address state-specific privacy obligations. Have it reviewed before launch.
-- **L264** — date this was last reviewed
-- **L299** — REVIEW REQUIRED. These terms are a plain-language starting point, not a complete or jurisdiction-specific agreement. They deliberately omit warranty disclaimers, limitation of liability, and governing law, all of which counsel should decide. Have this reviewed before launch.
+- **L199** — launch timing, and whether you are taking orders yet. One sentence.
+- **L222** — where specifically, and where the product is produced. Buyers ask this early, so answer it plainly here.
+- **L245** — date this was last reviewed
+- **L275** — the address people should write to in order to be removed. Set the contact addresses in src/data/site.ts, then name the general one here.
+- **L284** — REVIEW REQUIRED. This policy was written to describe accurately what the site actually does, but it has not been reviewed by counsel and does not attempt to address state-specific privacy obligations. Have it reviewed before launch.
+- **L296** — date this was last reviewed
+- **L331** — REVIEW REQUIRED. These terms are a plain-language starting point, not a complete or jurisdiction-specific agreement. They deliberately omit warranty disclaimers, limitation of liability, and governing law, all of which counsel should decide. Have this reviewed before launch.
+
+### `src/data/landing.ts`
+
+- **L173** — confirm the caption against the photograph once supplied.
 
 ### `src/data/site.ts`
 
@@ -81,7 +100,7 @@ These are decisions and inputs only you can supply. Ordered by what blocks the m
 
 ## Photography and artwork
 
-10 slots still need real files. Full shot list with dimensions and
+14 slots still need real files. Full shot list with dimensions and
 direction is in [ASSETS.md](../ASSETS.md).
 
 - `logo-mark`
@@ -91,6 +110,10 @@ direction is in [ASSETS.md](../ASSETS.md).
 - `about-colorado`
 - `wholesale-case`
 - `wholesale-shelf`
+- `competitor-celsius-panel`
+- `competitor-celsius-zero-juice`
+- `competitor-alani-zero-juice`
+- `competitor-kirkland-zero-juice`
 - `flavor-cranberry-can-angle`
 - `flavor-lime-can-angle`
 - `flavor-pineapple-can-angle`

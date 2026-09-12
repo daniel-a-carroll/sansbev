@@ -1,0 +1,51 @@
+---
+/**
+ * A competitor's own packaging, shown as evidence.
+ *
+ * PHOTOGRAPH, NEVER A TRANSCRIPTION. A photo of their label is evidence; a
+ * retyped list is our word against theirs, and retyping also means we own any
+ * error in it.
+ *
+ * The caption states what is visible and nothing else. Calling a competitor's
+ * ingredients toxic or unsafe is the fastest way to turn a factual comparison
+ * into a regulatory and credibility problem, and brands in this category have
+ * already demonstrated that. Show the label. Do not editorialise.
+ *
+ * Renders a labelled placeholder until the photograph exists, so the section
+ * still lays out correctly while the shots are being taken.
+ */
+import Asset from './Asset.astro';
+
+interface Props {
+  asset: string;
+  brand: string;
+  caption: string;
+  sizes?: string;
+}
+
+const { asset, brand, caption, sizes = '(min-width: 48rem) 45vw, 90vw' } = Astro.props;
+---
+
+<figure class="competitor">
+  <Asset slot={asset} alt={`${brand} packaging, photographed.`} sizes={sizes} />
+  <figcaption class="competitor__caption caption">
+    <span class="competitor__brand">{brand}</span>
+    {caption}
+  </figcaption>
+</figure>
+
+<style>
+  .competitor {
+    margin: 0;
+  }
+
+  .competitor__caption {
+    margin-block-start: var(--space-2xs);
+  }
+
+  .competitor__brand {
+    display: block;
+    font-weight: var(--font-weight-medium);
+    color: var(--color-ink);
+  }
+</style>

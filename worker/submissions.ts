@@ -86,7 +86,7 @@ class ResendProvider implements SubmissionProvider {
 
   async submit(s: Submission): Promise<void> {
     const subjectDetail =
-      s.data.zip ?? s.data.businessName ?? s.data.storeName ?? '';
+      s.data.source ?? s.data.zip ?? s.data.businessName ?? s.data.storeName ?? '';
 
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',

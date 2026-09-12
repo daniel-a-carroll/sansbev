@@ -1,19 +1,36 @@
 ---
 /**
- * Home. Consumer-facing, with the trade path present in the hero rather than
- * buried at the bottom — the layout admitting who the site is actually for.
+ * PRE-LAUNCH LANDING PAGE.
  *
- * The hero can and its color field both come from the lead flavor (lowest
- * `order`), so there is no duplicate hero asset to keep in sync and reordering
- * the SKUs reskins the hero automatically.
+ * The only job is turning a visitor into an email subscriber. There is no
+ * product for sale and will not be for months.
+ *
+ * STRUCTURE: every section names a problem the reader already feels, gives the
+ * solution, and backs it with proof. The proof is compositional. The ingredient
+ * panel is the evidence, and a six-item list a person can verify beats any
+ * claim we could write. Where a photographed label does the work, the copy
+ * stays out of the way.
+ *
+ * EVERY SECTION ENDS WITH A CAPTURE, each tagged with its own `source`, so
+ * someone convinced by the juice section never has to scroll to the ask, and so
+ * we learn which proof actually converts.
+ *
+ * Section order follows the spec's priority: the label and juice sections do
+ * the most work because their proof is unfalsifiable.
+ *
+ * Copy lives in src/data/landing.ts. Read the header there before editing: it
+ * lists what must never appear on this page.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Asset from '../components/Asset.astro';
 import JsonLd from '../components/JsonLd.astro';
-import SubscribeForm from '../components/forms/SubscribeForm.astro';
+import IngredientPanel from '../components/IngredientPanel.astro';
+import CompetitorLabel from '../components/CompetitorLabel.astro';
+import JoinForm from '../components/forms/JoinForm.astro';
+import Reactions from '../components/Reactions.astro';
 import { getCollection } from 'astro:content';
+import { landing } from '../data/landing';
 import { copy } from '../data/copy';
-import { claims } from '../data/claims';
 import { flavorSlot } from '../lib/assets';
 import { organizationSchema } from '../lib/schema';
 
@@ -22,139 +39,219 @@ const flavors = (await getCollection('flavors', ({ data }) => !data.draft)).sort
 );
 const lead = flavors[0];
 
-// Unconfirmed claims never render. See src/data/claims.ts.
-const composition = claims.compositionPoints.filter((p) => p.confirmed);
-const absence = claims.absencePoints.filter((p) => p.confirmed);
+// The panel is rendered from the flavor data so it can never disagree with the
+// can. The lead SKU carries the hero; the lists differ only in the juice blend.
+const ingredients = lead?.data.ingredients ?? [];
+const fieldStyle = lead?.data.color ? `--field: ${lead.data.color.field}` : undefined;
 
 const theanineAmounts = [...new Set(
   flavors.map((f) => f.data.lTheanineMg).filter((v): v is number => v !== undefined)
 )];
 const theanineMg = theanineAmounts.length === 1 ? theanineAmounts[0] : undefined;
-
-const fieldStyle = lead?.data.color
-  ? `--field: ${lead.data.color.field}`
-  : undefined;
+const caffeineAmounts = [...new Set(
+  flavors.map((f) => f.data.caffeineMg).filter((v): v is number => v !== undefined)
+)];
+const caffeineMg = caffeineAmounts.length === 1 ? caffeineAmounts[0] : undefined;
 ---
 
-<BaseLayout title={copy.home.seo.title} description={copy.home.seo.description}>
+<BaseLayout
+  title={copy.home.seo.title}
+  description={copy.home.seo.description}
+  minimalHeader={true}
+>
   <JsonLd schema={organizationSchema()} />
 
+  {/* 1. HERO. The visual is the panel, not a lifestyle shot. Capture is above
+       the fold: nobody should have to scroll to subscribe. */}
   <section class="hero">
     <div class="container grid hero__inner">
       <div class="hero__text">
-        <p class="label">Energy drink</p>
-        <h1 class="display">{copy.home.heroHeadline}</h1>
-        {copy.home.heroSubhead && <p class="hero__sub">{copy.home.heroSubhead}</p>}
-        <p class="hero__trade">
-          <a href="/wholesale" class="accent">{copy.home.heroTradeLinkLabel}</a>
-        </p>
+        <p class="label">{landing.hero.eyebrow}</p>
+        <h1 class="hero__headline display">{landing.hero.headline}</h1>
+        <p class="hero__sub">{landing.hero.subheadIntro}</p>
+
+        {ingredients.length > 0 && (
+          <div class="hero__panel">
+            <IngredientPanel ingredients={ingredients} numbered={true} />
+          </div>
+        )}
+
+        <JoinForm source="hero" label={landing.hero.captureLabel} />
       </div>
 
       <div class="hero__figure" style={fieldStyle}>
-        <!-- The one orchestrated motion moment on the site: the color field
-             rises once behind the can on load. Now possible because the can
-             renders are transparent cutouts. Collapsed by
-             prefers-reduced-motion. -->
         <div class="hero__field" aria-hidden="true"></div>
-        {
-          lead && (
-            <Asset
-              slot={flavorSlot(lead.id, 'can-front')}
-              alt=""
-              sizes="(min-width: 48rem) 30vw, 65vw"
-              class="hero__can"
-            />
-          )
-        }
+        {lead && (
+          <Asset
+            slot={flavorSlot(lead.id, 'can-front')}
+            alt="The front of the can, showing its full ingredient list."
+            sizes="(min-width: 48rem) 28vw, 60vw"
+          />
+        )}
       </div>
     </div>
   </section>
 
-  {
-    flavors.length > 0 && (
-      <section class="section section--tight">
-        <div class="container">
-          <h2 class="visually-hidden">The flavors</h2>
-          <ul class="flavors">
-            {flavors.map((flavor) => (
+  {/* 2. READ THE LABEL. The longest section, and the most load-bearing. Ours
+       beside theirs at comparable size; the length differential argues. */}
+  <section class="section proof">
+    <div class="container">
+      <p class="proof__problem">{landing.label.problem}</p>
+      <h2>{landing.label.heading}</h2>
+      {landing.label.body.map((p) => <p class="proof__body prose">{p}</p>)}
+
+      <div class="grid compare">
+        <div class="compare__ours">
+          <IngredientPanel
+            ingredients={ingredients}
+            heading={landing.label.oursHeading}
+            numbered={true}
+          />
+        </div>
+        <div class="compare__theirs">
+          <p class="label compare__theirs-heading">{landing.label.theirsHeading}</p>
+          {landing.label.competitors.map((c) => (
+            <CompetitorLabel asset={c.asset} brand={c.brand} caption={c.caption} />
+          ))}
+        </div>
+      </div>
+
+      <JoinForm source="label" label={landing.label.captureLabel} />
+    </div>
+  </section>
+
+  {/* 3. CONTAINS 0% JUICE. Their disclosure, printed by them. */}
+  <section class="section proof">
+    <div class="container">
+      <p class="proof__problem">{landing.juice.problem}</p>
+      <h2>{landing.juice.heading}</h2>
+      {landing.juice.body.map((p) => <p class="proof__body prose">{p}</p>)}
+
+      {landing.juice.competitors.length > 0 && (
+        <ul class="evidence">
+          {landing.juice.competitors.map((c) => (
+            <li>
+              <CompetitorLabel
+                asset={c.asset}
+                brand={c.brand}
+                caption={c.caption}
+                sizes="(min-width: 48rem) 30vw, 90vw"
+              />
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <div class="taste prose">
+        <h3>{landing.juice.tasteHeading}</h3>
+        {landing.juice.tasteBody.map((p) => <p>{p}</p>)}
+      </div>
+
+      <JoinForm source="juice" label={landing.juice.captureLabel} />
+    </div>
+  </section>
+
+  {/* 4. NOTHING TO SWEETEN IT. State the sugar number ourselves. Omitting it
+       would be the one dishonest move on a page built on not overstating. */}
+  <section class="section proof">
+    <div class="container">
+      <p class="proof__problem">{landing.sweetener.problem}</p>
+      <h2>{landing.sweetener.heading}</h2>
+      {landing.sweetener.body.map((p) => <p class="proof__body prose">{p}</p>)}
+
+      {landing.sweetener.facts.length > 0 && (
+        <ul class="facts">
+          {landing.sweetener.facts.map((f) => (
+            <li>
+              <span class="facts__value display">{f.value}</span>
+              <span class="facts__label">{f.label}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <JoinForm source="sweetener" label={landing.sweetener.captureLabel} />
+    </div>
+  </section>
+
+  {/* 6. THE CONSTRAINT. The most shareable element on the page, so it gets the
+       one dark band. Rules the brand is bound by, not features it added. */}
+  <section class="band band--ink constraint">
+    <div class="container">
+      <h2 class="constraint__heading">{landing.constraint.heading}</h2>
+      {landing.constraint.intro && (
+        <p class="constraint__intro prose">{landing.constraint.intro}</p>
+      )}
+      <ul class="constraint__rules">
+        {landing.constraint.rules.map((r) => <li>{r}</li>)}
+      </ul>
+      <JoinForm source="constraint" label={landing.constraint.captureLabel} tone="dark" />
+    </div>
+  </section>
+
+  {/*
+    5. CAFFEINE AND L-THEANINE.
+
+    DELIBERATELY THE SHORTEST SECTION, and placed late. It is the only place the
+    reader is asked to trust research rather than read a label, which makes it
+    the weakest proof on the page and the most tempting to overwrite.
+
+    !! REGULATORY REVIEW REQUIRED BEFORE LAUNCH !!
+    This is the one section that describes what an ingredient does. On a
+    CONVENTIONAL FOOD a structure/function claim must derive from nutritive
+    value, and L-theanine is not generally treated as nutritive. The research is
+    presented AS RESEARCH, on the two compounds and not on this drink, and the
+    note beside it says so explicitly. Do not paraphrase the findings into a
+    claim about the can. See src/data/claims.ts.
+  */}
+  <section class="section proof pairing">
+    <div class="container">
+      <p class="proof__problem">{landing.pairing.problem}</p>
+      <h2>{landing.pairing.heading}</h2>
+
+      <div class="grid pairing__inner">
+        <div class="pairing__amounts">
+          {caffeineMg !== undefined && (
+            <p class="pairing__amount">
+              <span class="display">{caffeineMg}<span class="pairing__unit">mg</span></span>
+              <span class="pairing__what">caffeine, from green coffee beans</span>
+            </p>
+          )}
+          {theanineMg !== undefined && (
+            <p class="pairing__amount">
+              <span class="display">{theanineMg}<span class="pairing__unit">mg</span></span>
+              <span class="pairing__what">L-theanine, from green tea</span>
+            </p>
+          )}
+        </div>
+
+        <div class="pairing__text prose">
+          {landing.pairing.body.map((p) => <p>{p}</p>)}
+          <h3>{landing.pairing.researchHeading}</h3>
+          <p class="caption">{landing.pairing.researchNote}</p>
+          <ol class="research">
+            {landing.pairing.research.map((r) => (
               <li>
-                <a
-                  href={`/product/${flavor.id}`}
-                  class="plain flavors__link"
-                  style={
-                    flavor.data.color
-                      ? `--swatch: ${flavor.data.color.field}`
-                      : undefined
-                  }
-                >
-                  <span class="flavors__swatch" aria-hidden="true" />
-                  {flavor.data.name}
-                </a>
+                {r.url ? <a href={r.url}>{r.citation}</a> : r.citation}
               </li>
             ))}
-          </ul>
+          </ol>
         </div>
-      </section>
-    )
-  }
-
-  <section class="section">
-    <div class="container grid">
-      <div class="hero__story prose">
-        {copy.home.storyHeading && <h2>{copy.home.storyHeading}</h2>}
-        {copy.home.storyBody.map((p) => <p>{p}</p>)}
       </div>
 
-      {
-        (composition.length > 0 || absence.length > 0) && (
-          <div class="hero__facts">
-            <h2 class="visually-hidden">What's in it</h2>
-            <ul class="facts">
-              {composition.map((p) => (
-                <li>
-                  <span class="facts__label">{p.label}</span>
-                  {p.detail && <span class="caption">{p.detail}</span>}
-                </li>
-              ))}
-              {absence.map((p) => (
-                <li><span class="facts__label">{p.label}</span></li>
-              ))}
-            </ul>
-          </div>
-        )
-      }
+      <JoinForm source="pairing" label={landing.pairing.captureLabel} />
     </div>
   </section>
 
-  {
-    theanineMg !== undefined && (
-      <section class="band band--ink theanine">
-        <div class="container grid">
-          <div class="theanine__figure">
-            <p class="label theanine__eyebrow">{copy.home.theanine.eyebrow}</p>
-            <p class="theanine__amount display">
-              {theanineMg}
-              <span class="theanine__unit">mg</span>
-            </p>
-            <p class="theanine__source">{copy.home.theanine.source}</p>
-          </div>
+  {/* 7. REACTIONS. Built, and hidden until there is something real in it. */}
+  <Reactions />
 
-          <div class="theanine__text">
-            <h2>{copy.home.theanine.heading}</h2>
-            {copy.home.theanine.body.map((p) => <p>{p}</p>)}
-          </div>
-        </div>
-      </section>
-    )
-  }
-
-  <section class="section">
+  {/* 8. THE ASK. One action. No competing links anywhere in this section. */}
+  <section class="section ask">
     <div class="container">
-      <h2>{copy.home.emailCaptureHeading}</h2>
-      {copy.home.emailCaptureBody && (
-        <p class="prose capture__body">{copy.home.emailCaptureBody}</p>
-      )}
-      <SubscribeForm id="home-subscribe" />
+      <h2>{landing.ask.heading}</h2>
+      {landing.ask.body.map((p) => <p class="proof__body prose">{p}</p>)}
+      <JoinForm source="ask" label={landing.ask.captureLabel} />
     </div>
   </section>
 </BaseLayout>
@@ -170,32 +267,30 @@ const fieldStyle = lead?.data.color
   }
 
   .hero__inner {
-    align-items: center;
+    align-items: start;
   }
 
   .hero__text {
-    grid-column: 1 / span 6;
+    grid-column: 1 / span 7;
   }
 
-  .hero__text .label {
-    margin-block-end: var(--space-2xs);
+  .hero__headline {
+    margin-block-start: var(--space-2xs);
   }
 
   .hero__sub {
-    max-width: var(--measure-narrow);
     margin-block-start: var(--space-md);
     font-size: var(--text-h3);
     color: var(--color-ink-muted);
-    line-height: var(--leading-tight);
   }
 
-  .hero__trade {
-    margin-block-start: var(--space-lg);
-    font-size: var(--text-small);
+  .hero__panel {
+    margin-block-start: var(--space-md);
+    max-inline-size: 26rem;
   }
 
   .hero__figure {
-    grid-column: 8 / span 5;
+    grid-column: 9 / span 4;
     position: relative;
     display: grid;
     justify-items: center;
@@ -203,22 +298,18 @@ const fieldStyle = lead?.data.color
     padding-block-start: var(--space-lg);
   }
 
-  /* Flat, unbounded flavor color. The can sits ON it, which the transparent
-     cutouts finally allow. Not a card: no border, no radius, no shadow. */
   .hero__field {
     position: absolute;
     inset-block: 0;
-    inset-inline: 8% -30%;
+    inset-inline: 10% -30%;
     background-color: var(--field, var(--color-accent));
     transform-origin: bottom;
     animation: field-rise var(--duration-considered) var(--ease-out) both;
   }
 
-  /* :global() because the <img> is rendered inside <Asset>, so it does not
-     carry this component's scope id. Nested under .hero__figure to contain it. */
   .hero__figure :global(.asset) {
     position: relative;
-    max-inline-size: 19rem;
+    max-inline-size: 15rem;
   }
 
   @keyframes field-rise {
@@ -230,51 +321,57 @@ const fieldStyle = lead?.data.color
     .hero__field { animation: none; }
   }
 
-  /* Flavor row. Swatches carry the packaging colors; the name carries the
-     meaning, so this is not color-only information. */
-  .flavors {
-    display: flex;
-    padding-block-start: 0;
-    flex-wrap: wrap;
-    gap: var(--space-md) var(--space-lg);
-    margin: 0;
+  /* Each proof section opens by naming the problem in the reader's words. */
+  .proof__problem {
+    font-size: var(--text-h3);
+    color: var(--color-ink-muted);
+    margin-block-end: var(--space-2xs);
+    max-inline-size: var(--measure);
+  }
+
+  .proof__body {
+    margin-block-start: var(--space-sm);
+  }
+
+  .compare {
+    margin-block-start: var(--space-xl);
+    align-items: start;
+  }
+
+  .compare__ours {
+    grid-column: 1 / span 5;
+  }
+
+  .compare__theirs {
+    grid-column: 7 / span 6;
+  }
+
+  .compare__theirs-heading {
+    margin-block-end: var(--space-sm);
+  }
+
+  .evidence {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    gap: var(--grid-gap);
+    margin-block-start: var(--space-xl);
     padding: 0;
     list-style: none;
-    font-size: var(--text-h3);
   }
 
-  .flavors__link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2xs);
+  .taste {
+    margin-block-start: var(--space-xl);
   }
 
-  .flavors__swatch {
-    inline-size: 0.85em;
-    block-size: 0.85em;
-    background-color: var(--swatch, var(--color-surface));
-    border-radius: 50%;
-  }
-
-  .flavors__link:hover {
-    text-decoration: underline;
-    text-underline-offset: 0.18em;
-  }
-
-  .section--tight {
-    padding-block: var(--space-lg) var(--space-2xl);
-  }
-
-  .hero__story {
-    grid-column: 1 / span 6;
-  }
-
-  .hero__facts {
-    grid-column: 8 / span 5;
+  .taste h3 {
+    margin-block-end: var(--space-2xs);
   }
 
   .facts {
-    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xl);
+    margin-block-start: var(--space-xl);
     padding: 0;
     list-style: none;
   }
@@ -282,71 +379,84 @@ const fieldStyle = lead?.data.color
   .facts li {
     display: grid;
     gap: var(--space-3xs);
-    padding-block: var(--space-xs);
-    border-block-end: var(--rule);
+  }
+
+  .facts__value {
+    font-size: clamp(2.5rem, 1.6rem + 3.4vw, 4rem);
+    line-height: 1;
   }
 
   .facts__label {
-    font-weight: var(--font-weight-medium);
+    font-size: var(--text-small);
+    color: var(--color-ink-muted);
+    max-inline-size: 12rem;
   }
 
-  /* The one dark band on the site. It gives the home page a spine, and it is
-     the design carrying the idea rather than any adjective: the number is the
-     point, so the number is set large. Cream on ink is 16.30:1. */
-  .theanine__figure {
-    grid-column: 1 / span 4;
-  }
-
-  .theanine__eyebrow {
-    color: inherit;
-    opacity: 0.7;
-  }
-
-  .theanine__amount {
-    margin-block-start: var(--space-2xs);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .theanine__unit {
-    font-size: 0.35em;
-    font-weight: var(--font-weight-heading);
-    margin-inline-start: 0.15em;
-    vertical-align: baseline;
-  }
-
-  .theanine__source {
-    margin-block-start: var(--space-2xs);
-    font-size: var(--text-h3);
-    opacity: 0.8;
-  }
-
-  .theanine__text {
-    grid-column: 6 / span 6;
-    align-self: center;
+  .constraint__heading {
     max-inline-size: var(--measure);
   }
 
-  .theanine__text h2 {
-    margin-block-end: var(--space-md);
-  }
-
-  .theanine__text p + p {
+  .constraint__intro {
     margin-block-start: var(--space-sm);
+    opacity: 0.85;
   }
 
-  .capture__body {
-    margin-block: var(--space-2xs) var(--space-md);
+  .constraint__rules {
+    margin-block-start: var(--space-lg);
+    padding: 0;
+    list-style: none;
+    border-block-start: 1px solid color-mix(in srgb, var(--color-on-ink) 55%, transparent);
+    max-inline-size: 44rem;
+  }
+
+  .constraint__rules li {
+    padding-block: var(--space-sm);
+    border-block-end: 1px solid color-mix(in srgb, var(--color-on-ink) 26%, transparent);
+    font-size: var(--text-h3);
+  }
+
+  .pairing__amounts {
+    grid-column: 1 / span 4;
+  }
+
+  .pairing__text {
+    grid-column: 6 / span 7;
+  }
+
+  .pairing__amount {
+    display: grid;
+    gap: var(--space-3xs);
+  }
+
+  .pairing__amount + .pairing__amount {
+    margin-block-start: var(--space-lg);
+  }
+
+  .pairing__amount .display {
+    font-size: clamp(2.5rem, 1.6rem + 3.4vw, 4rem);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pairing__unit {
+    font-size: 0.35em;
+    font-weight: var(--font-weight-heading);
+    margin-inline-start: 0.12em;
+  }
+
+  .pairing__what {
+    font-size: var(--text-small);
     color: var(--color-ink-muted);
   }
 
-  @media (max-width: 48rem) {
-    .hero__figure {
-      margin-block-start: var(--space-lg);
-      padding-block-start: var(--space-xl);
-    }
-    .hero__field {
-      inset-inline: -12% -12%;
-    }
+  .research {
+    margin-block-start: var(--space-sm);
+    padding-inline-start: var(--space-md);
+    font-size: var(--text-small);
+    color: var(--color-ink-muted);
+  }
 
+  .research li + li {
+    margin-block-start: var(--space-2xs);
   }
 </style>

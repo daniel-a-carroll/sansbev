@@ -16,10 +16,22 @@ customer data off any server we run. It has a real cost, described below.
 Each submission arrives with a subject line carrying the useful field:
 
 ```
-Email signup — 80301
+Email signup — juice
 Store request — Corner Market
 Wholesale inquiry — Alfalfa Market
 ```
+
+For signups that word is the **section of the landing page whose form they
+used**: `hero`, `label`, `juice`, `sweetener`, `constraint`, `pairing`,
+`reactions` or `ask`. Sorting your inbox by it answers the only question worth
+asking about the page, which is which proof actually converts. If `label` and
+`juice` dominate, the compositional argument is doing the work; if only `hero`
+converts, nobody is reading past the fold.
+
+Note the signup form no longer collects a ZIP. It was dropped to a single field
+because every extra field costs conversions, and conversion is the whole job of
+the page right now. The schema still accepts a ZIP, so it can come back on a
+page where the trade case outweighs the conversion cost.
 
 The body is plain text, one `field: value` per line, deliberately easy to paste.
 
@@ -27,14 +39,19 @@ The body is plain text, one `field: value` per line, deliberately easy to paste.
 
 ```
 subject:"Email signup"                  → every consumer signup
-subject:"Email signup — 803"            → Boulder-area ZIPs
+subject:"Email signup - label"          → converted by the ingredient comparison
+subject:"Email signup - juice"          → converted by the 0% juice proof
 subject:"Store request"                 → requested stores
 subject:"Wholesale inquiry"             → trade leads
 ```
 
-For a buyer meeting, the number that matters is usually *signups in the ZIPs
-that store serves*. Search the ZIP prefix, read the result count off the top of
-the search, and screenshot it. That's your demand slide.
+For a buyer meeting, the number that matters is total signups and how fast they
+are arriving. Search the subject, read the count off the top of the search, and
+screenshot it. That is your demand slide.
+
+The ZIP-level version of that slide is gone for now, since the form stopped
+asking. If a buyer conversation turns on local demand, that is the moment to put
+the ZIP field back on one page and accept the conversion cost there.
 
 ## The honest limitation
 

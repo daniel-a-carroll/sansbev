@@ -36,12 +36,27 @@ const shortText = (label: string, max = 120) =>
 
 /**
  * Consumer email capture.
- * ZIP is required by design: geographic demand is the point of the list, not
- * a nice-to-have. A signup without a ZIP is worth far less in a buyer meeting.
+ *
+ * EMAIL IS THE ONLY VISIBLE FIELD. The pre-launch landing page spec is explicit:
+ * one field, no name, no phone. Every additional field costs conversions, and
+ * conversion is the entire job of the site right now.
+ *
+ * NOTE, because this reverses an earlier deliberate decision: ZIP used to be
+ * REQUIRED, on the reasoning that geographic demand is a sales asset in buyer
+ * meetings. That reasoning has not stopped being true, it has been outranked.
+ * The field is kept optional so a page can still ask for it where the trade
+ * case outweighs the conversion cost, and so no already-collected ZIP is
+ * rejected.
+ *
+ * `source` records WHICH section's form converted. The landing page carries a
+ * capture after every proof section, and knowing which proof works is the whole
+ * point of running it that way. It is a hidden field, not personal data, and it
+ * rides along in the notification so it is visible without a database.
  */
 export const subscribeSchema = z.object({
   email,
-  zip,
+  zip: zip.optional().or(z.literal('')),
+  source: z.string().max(60).optional().or(z.literal('')),
   [HONEYPOT_FIELD]: honeypot,
 });
 

@@ -33,7 +33,7 @@
       "height": 630,
       "format": "png",
       "where": "Open Graph / social preview for any page without its own image",
-      "note": "Brand lockup on a flat field, ideally the cranberry can on paper. Keep text large; this renders small in feeds."
+      "note": "The INGREDIENT PANEL, per the landing page spec: the panel is the pitch, so it is what should appear when the page is shared. A lifestyle shot here would undercut the whole argument. Until this exists the site emits no OG image, which is better than the wrong one."
     },
     {
       "slot": "brand-board",
@@ -83,6 +83,38 @@
       "format": "jpg",
       "where": "Wholesale page",
       "note": "Product on a real retail shelf, facing forward. Powerful proof for a category buyer. Omit until there is a genuine shelf placement \u2014 do not stage this."
+    },
+    {
+      "slot": "competitor-celsius-panel",
+      "width": 1200,
+      "height": 1600,
+      "format": "jpg",
+      "where": "Landing page, the proof sections",
+      "note": "Celsius INGREDIENT PANEL, photographed from the can, shot square-on and legible at full width. This sits beside ours at comparable size and the length differential does the arguing, so both must be readable. Do not retype it: a photograph of their own label is evidence, a transcription is our word against theirs. REPLACEABLE: competitor labels change, so treat these as perishable and re-shoot when a formula or pack changes."
+    },
+    {
+      "slot": "competitor-celsius-zero-juice",
+      "width": 1200,
+      "height": 900,
+      "format": "jpg",
+      "where": "Landing page, the proof sections",
+      "note": "Celsius can with CONTAINS 0% JUICE legible. Their disclosure, not our accusation. Crop tight enough that the line is readable on a phone. REPLACEABLE: competitor labels change, so treat these as perishable and re-shoot when a formula or pack changes."
+    },
+    {
+      "slot": "competitor-alani-zero-juice",
+      "width": 1200,
+      "height": 900,
+      "format": "jpg",
+      "where": "Landing page, the proof sections",
+      "note": "Alani Nu can with CONTAINS 0% JUICE legible. Same framing as the others so the three read as a set. REPLACEABLE: competitor labels change, so treat these as perishable and re-shoot when a formula or pack changes."
+    },
+    {
+      "slot": "competitor-kirkland-zero-juice",
+      "width": 1200,
+      "height": 900,
+      "format": "jpg",
+      "where": "Landing page, the proof sections",
+      "note": "Kirkland Signature can with CONTAINS 0% JUICE legible. Same framing as the others. REPLACEABLE: competitor labels change, so treat these as perishable and re-shoot when a formula or pack changes."
     }
   ],
   "_flavorComment": [
