@@ -153,7 +153,7 @@ export const landing = landingSchema.parse({
   hero: {
     eyebrow: 'Energy drink',
     headline: 'The energy drink you would actually want to be drinking',
-    subheadIntro: 'Six ingredients. All of them on the front of the can.',
+    subheadIntro: 'The whole ingredient list, on the front of the can.',
     captureLabel: 'Get invited to the taste panel',
   },
 

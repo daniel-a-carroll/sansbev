@@ -186,6 +186,42 @@
  *    case. Purely cosmetic, but it is the kind of thing a buyer notices on a
  *    shelf and a printer will not fix for you.
  *
+ * 4e. THE COMBINED JUICE LINE MAY NOT SURVIVE A REAL LABEL REVIEW.
+ *
+ *    The artwork declares one line, "Organic Juice (Lime and Apple)". Founder
+ *    raised the obvious question: that is two ingredients, and an ingredient
+ *    statement normally lists every ingredient separately, by common name, in
+ *    DESCENDING ORDER OF PREDOMINANCE BY WEIGHT (21 CFR 101.4(a)(1)).
+ *
+ *    There is a route by which the combined line can be legitimate. If the
+ *    juice is bought as a single pre-made blend from a supplier, it is a
+ *    COMPOUND ingredient, and those may be declared either by naming the blend
+ *    with its components in parentheses, or by dropping the components into the
+ *    main list (21 CFR 101.4(b)(2)). Note the "and/or" shorthand that exists
+ *    for fats and oils does NOT extend to juices.
+ *
+ *    So the question for the co-packer and the label reviewer is narrow:
+ *      - Is the juice purchased as one blended ingredient, or are two juices
+ *        dosed separately at the plant? If dosed separately, they must be
+ *        listed separately and the combined line goes.
+ *
+ *    THE ORDERING CONSEQUENCE MATTERS MORE THAN THE COUNT. Either way the
+ *    components appear in descending order by weight. Apple is a common, cheap
+ *    juice base, so if apple predominates the label reads APPLE FIRST, on a can
+ *    whose front says LIME. That is a bigger deal than whether the list runs to
+ *    six lines or seven, and it should be settled before print rather than
+ *    discovered by a category buyer reading the panel.
+ *
+ *    It also bears on the juice-percentage question in item 4: total juice is
+ *    what the food-group leg of "healthy" turns on, and on a beverage naming a
+ *    fruit, 21 CFR 102.33 governs how the flavour may be named relative to what
+ *    is actually in it.
+ *
+ *    THE SITE DOES NOT DEPEND ON THE ANSWER. No copy states an ingredient
+ *    count, and the panels render from the per-flavor `ingredients` arrays. If
+ *    the label splits the juice into two lines, that is a data edit in
+ *    src/content/flavors/, with no component or copy change.
+ *
  * 5. COMPARATIVE CLAIMS ARE ADVERTISING CLAIMS.
  *    Naming or alluding to a competitor invokes Lanham Act exposure on top of
  *    FDA. Any comparison must be to a substantiated, documented fact.

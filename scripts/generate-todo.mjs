@@ -85,6 +85,10 @@ const decisions = [
     why: 'There are at least three existing beverage users in the same class. The wordmark SVG and favicon are ALREADY IN THE REPO and live on the site, so this is not a clean slate: if clearance fails, both are wasted and the domain, the OG image and any printed material follow. Commission nothing further until it is confirmed.',
   },
   {
+    item: 'Settle whether the juice can be declared as one combined line',
+    why: 'The art says "Organic Juice (Lime and Apple)". Ingredients are normally declared separately in descending order by weight. The combined line is defensible only if the juice is bought as a single pre-made blend, in which case it is a compound ingredient. Ask the co-packer whether one blend is purchased or two juices are dosed at the plant. THE ORDER MATTERS MORE THAN THE COUNT: if apple predominates, the panel reads apple first on a can whose front says lime. Settle it before print. The site needs no code change either way.',
+  },
+  {
     item: 'Supply the competitor label photographs',
     why: 'Sections 2 and 3 of the landing page are the two highest-converting sections and both are currently gray placeholders. Needed: Celsius ingredient panel, and CONTAINS 0% JUICE visible on Celsius, Alani Nu and Kirkland Signature. Photographs, never retyped: their own label is evidence, a transcription is our word against theirs.',
   },
