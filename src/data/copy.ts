@@ -49,6 +49,28 @@ const copySchema = z.object({
     heroTradeLinkLabel: z.string(),
     storyHeading: z.string().optional(),
     storyBody: z.array(z.string()).default([]),
+    /**
+     * Ingredient spotlight on the home page.
+     *
+     * COMPOSITION ONLY. This section is about the single riskiest ingredient
+     * on the label: L-theanine is what the brand board's "Calm focus" claim
+     * hangs on, and on a conventional food a structure/function claim has to
+     * derive from nutritive value. So this copy says what the ingredient IS,
+     * where it comes from, and how much is in the can. It says nothing about
+     * what it does to a body, and adding that here would be the single most
+     * exposed sentence on the site. See src/data/claims.ts before editing.
+     *
+     * The amount is NOT written into this copy. It is read from the flavor
+     * data at render time, so it cannot go stale the way the caffeine figure
+     * did three times over.
+     */
+    theanine: z.object({
+      eyebrow: z.string(),
+      source: z.string(),
+      heading: z.string(),
+      body: z.array(z.string()).default([]),
+    }),
+
     emailCaptureHeading: z.string(),
     emailCaptureBody: z.string().optional(),
   }),
@@ -127,6 +149,16 @@ export const copy = copySchema.parse({
       'Sans means without in French. That is the whole idea. What matters in a can of SANS is the list of things that are not in it.',
       'The full ingredient list is printed on the front of the can, not hidden on the back in small type. That is the whole argument.',
     ],
+
+    theanine: {
+      eyebrow: 'L-theanine',
+      source: 'from green tea',
+      heading: 'An amino acid that occurs naturally in tea leaves',
+      body: [
+        'Ours is extracted from green tea rather than made synthetically, which is the kind of detail that usually stays on a spec sheet and never reaches the label.',
+        'It is on the front of the can with everything else, and with the amount attached. An ingredient listed without a number is not really listed.',
+      ],
+    },
 
     emailCaptureHeading: 'Find out when it lands near you',
     emailCaptureBody: 'We use your ZIP to decide which markets to open next.',

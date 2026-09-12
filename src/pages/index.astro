@@ -26,6 +26,11 @@ const lead = flavors[0];
 const composition = claims.compositionPoints.filter((p) => p.confirmed);
 const absence = claims.absencePoints.filter((p) => p.confirmed);
 
+const theanineAmounts = [...new Set(
+  flavors.map((f) => f.data.lTheanineMg).filter((v): v is number => v !== undefined)
+)];
+const theanineMg = theanineAmounts.length === 1 ? theanineAmounts[0] : undefined;
+
 const fieldStyle = lead?.data.color
   ? `--field: ${lead.data.color.field}`
   : undefined;
@@ -121,6 +126,28 @@ const fieldStyle = lead?.data.color
     </div>
   </section>
 
+  {
+    theanineMg !== undefined && (
+      <section class="band band--ink theanine">
+        <div class="container grid">
+          <div class="theanine__figure">
+            <p class="label theanine__eyebrow">{copy.home.theanine.eyebrow}</p>
+            <p class="theanine__amount display">
+              {theanineMg}
+              <span class="theanine__unit">mg</span>
+            </p>
+            <p class="theanine__source">{copy.home.theanine.source}</p>
+          </div>
+
+          <div class="theanine__text">
+            <h2>{copy.home.theanine.heading}</h2>
+            {copy.home.theanine.body.map((p) => <p>{p}</p>)}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   <section class="section">
     <div class="container">
       <h2>{copy.home.emailCaptureHeading}</h2>
@@ -139,6 +166,7 @@ const fieldStyle = lead?.data.color
 <style>
   .hero {
     padding-block: var(--space-xl) 0;
+    overflow-x: clip;
   }
 
   .hero__inner {
@@ -260,6 +288,50 @@ const fieldStyle = lead?.data.color
 
   .facts__label {
     font-weight: var(--font-weight-medium);
+  }
+
+  /* The one dark band on the site. It gives the home page a spine, and it is
+     the design carrying the idea rather than any adjective: the number is the
+     point, so the number is set large. Cream on ink is 16.30:1. */
+  .theanine__figure {
+    grid-column: 1 / span 4;
+  }
+
+  .theanine__eyebrow {
+    color: inherit;
+    opacity: 0.7;
+  }
+
+  .theanine__amount {
+    margin-block-start: var(--space-2xs);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .theanine__unit {
+    font-size: 0.35em;
+    font-weight: var(--font-weight-heading);
+    margin-inline-start: 0.15em;
+    vertical-align: baseline;
+  }
+
+  .theanine__source {
+    margin-block-start: var(--space-2xs);
+    font-size: var(--text-h3);
+    opacity: 0.8;
+  }
+
+  .theanine__text {
+    grid-column: 6 / span 6;
+    align-self: center;
+    max-inline-size: var(--measure);
+  }
+
+  .theanine__text h2 {
+    margin-block-end: var(--space-md);
+  }
+
+  .theanine__text p + p {
+    margin-block-start: var(--space-sm);
   }
 
   .capture__body {

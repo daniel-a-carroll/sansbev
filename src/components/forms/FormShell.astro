@@ -83,6 +83,12 @@ const { id, action, submitLabel, successHeading, successBody } = Astro.props;
     white-space: nowrap;
   }
 
+  /* Without this the input lays out at its intrinsic width and pokes out of
+     the 1px wrapper, which showed up as document overflow on narrow screens. */
+  .honeypot input {
+    inline-size: 100%;
+  }
+
   .button {
     justify-self: start;
     padding: var(--space-2xs) var(--space-md);
