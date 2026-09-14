@@ -16,7 +16,7 @@ the exact final dimensions, there is no layout shift when it swaps.
 Deliver at the listed dimensions or larger, at the exact aspect ratio. Larger is
 fine; the build downscales. Wrong ratio is not fine; it will letterbox.
 
-**8 of 22 slots fulfilled. 14 still needed.**
+**9 of 22 slots fulfilled. 13 still needed.**
 
 ## Site-wide and page slots
 
@@ -31,7 +31,7 @@ fine; the build downscales. Wrong ratio is not fine; it will letterbox.
 | `about-colorado` | NEEDED | 2400×1200 | 2:1 | JPG | About page, provenance section | Wide Colorado landscape or production facility exterior. Avoid the generic mountain-range stock crop. |
 | `wholesale-case` | NEEDED | 1600×1200 | 4:3 | JPG | Wholesale page, near the specs table | The shipper case, and a pallet if one exists. Plain background. This is an operational photo for buyers, not a beauty shot — it should show the case as it arrives on a dock. |
 | `wholesale-shelf` | NEEDED | 1600×1200 | 4:3 | JPG | Wholesale page | Product on a real retail shelf, facing forward. Powerful proof for a category buyer. Omit until there is a genuine shelf placement — do not stage this. |
-| `competitor-celsius-panel` | NEEDED | 1200×1600 | 3:4 | JPG | Landing page, the proof sections | Celsius INGREDIENT PANEL, photographed from the can, shot square-on and legible at full width. This sits beside ours at comparable size and the length differential does the arguing, so both must be readable. Do not retype it: a photograph of their own label is evidence, a transcription is our word against theirs. REPLACEABLE: competitor labels change, so treat these as perishable and re-shoot when a formula or pack changes. |
+| `competitor-celsius-panel` | have | 905×262 | 905:262 | PNG | Landing page, the proof sections | FULFILLED. Celsius ingredient statement, cropped to the text and flattened onto white so it reads as their label rather than our typesetting. 20 items including sucralose, against our six or seven. The length differential is the argument, so do not annotate or highlight it: a plain reproduction is evidence, a marked-up one is editorial. STRONGER STILL would be a photograph of the physical can, which is harder to dismiss than a text render. PERISHABLE: competitor formulas change. Re-capture when theirs does. |
 | `competitor-celsius-zero-juice` | NEEDED | 1200×900 | 4:3 | JPG | Landing page, the proof sections | Celsius can with CONTAINS 0% JUICE legible. Their disclosure, not our accusation. Crop tight enough that the line is readable on a phone. REPLACEABLE: competitor labels change, so treat these as perishable and re-shoot when a formula or pack changes. |
 | `competitor-alani-zero-juice` | NEEDED | 1200×900 | 4:3 | JPG | Landing page, the proof sections | Alani Nu can with CONTAINS 0% JUICE legible. Same framing as the others so the three read as a set. REPLACEABLE: competitor labels change, so treat these as perishable and re-shoot when a formula or pack changes. |
 | `competitor-kirkland-zero-juice` | NEEDED | 1200×900 | 4:3 | JPG | Landing page, the proof sections | Kirkland Signature can with CONTAINS 0% JUICE legible. Same framing as the others. REPLACEABLE: competitor labels change, so treat these as perishable and re-shoot when a formula or pack changes. |

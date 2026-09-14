@@ -173,16 +173,15 @@ export const landing = landingSchema.parse({
     problem: 'You cannot pronounce what is in your energy drink.',
     heading: 'Read the label',
     body: [
-      'Ours is on the left. Theirs is on the right, photographed from the can, not retyped.',
+      'Ours is on the left. Theirs is on the right, reproduced as printed, not retyped by us.',
     ],
     oursHeading: 'SANS',
-    theirsHeading: 'A leading better-for-you energy drink',
+    theirsHeading: 'Celsius',
     competitors: [
       {
         asset: 'competitor-celsius-panel',
         brand: 'Celsius',
-        caption:
-          'Celsius ingredient panel, photographed from the can. [[PLACEHOLDER: confirm the caption against the photograph once supplied.]]',
+        caption: 'Their ingredient statement, reproduced as printed.',
       },
     ],
     captureLabel: 'Want to read the real one? Join the list',

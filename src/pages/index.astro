@@ -111,7 +111,13 @@ const caffeineMg = caffeineAmounts.length === 1 ? caffeineAmounts[0] : undefined
         <div class="compare__theirs">
           <p class="label compare__theirs-heading">{landing.label.theirsHeading}</p>
           {landing.label.competitors.map((c) => (
-            <CompetitorLabel asset={c.asset} brand={c.brand} caption={c.caption} />
+            <CompetitorLabel
+              asset={c.asset}
+              brand={c.brand}
+              caption={c.caption}
+              showBrand={false}
+              sizes="(min-width: 48rem) 55vw, 90vw"
+            />
           ))}
         </div>
       </div>
@@ -387,11 +393,11 @@ const caffeineMg = caffeineAmounts.length === 1 ? caffeineAmounts[0] : undefined
   }
 
   .compare__ours {
-    grid-column: 1 / span 5;
+    grid-column: 1 / span 4;
   }
 
   .compare__theirs {
-    grid-column: 7 / span 6;
+    grid-column: 6 / span 7;
   }
 
   .compare__theirs-heading {

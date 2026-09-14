@@ -21,15 +21,23 @@ interface Props {
   brand: string;
   caption: string;
   sizes?: string;
+  /** Off when a heading directly above already names them, to avoid saying it twice. */
+  showBrand?: boolean;
 }
 
-const { asset, brand, caption, sizes = '(min-width: 48rem) 45vw, 90vw' } = Astro.props;
+const {
+  asset,
+  brand,
+  caption,
+  sizes = '(min-width: 48rem) 45vw, 90vw',
+  showBrand = true,
+} = Astro.props;
 ---
 
 <figure class="competitor">
   <Asset slot={asset} alt={`${brand} packaging, photographed.`} sizes={sizes} />
   <figcaption class="competitor__caption caption">
-    <span class="competitor__brand">{brand}</span>
+    {showBrand && <span class="competitor__brand">{brand}</span>}
     {caption}
   </figcaption>
 </figure>
