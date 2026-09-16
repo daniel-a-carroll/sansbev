@@ -92,21 +92,27 @@ const caffeineMg = caffeineAmounts.length === 1 ? caffeineAmounts[0] : undefined
         <JoinForm source="hero" label={landing.hero.captureLabel} />
       </div>
 
-      <div class="hero__figure" style={fieldStyle}>
-        <div class="hero__field" data-flavor-field aria-hidden="true"></div>
+      <div class="hero__figure">
+        {/* The stage is the coloured rectangle AND the clipping window. Cans
+            slide within it, so one leaving simply disappears at the colour's
+            edge rather than tracking across the cream page. */}
+        <div class="hero__stage" style={fieldStyle}>
+          <div class="hero__field" data-flavor-field aria-hidden="true"></div>
+          <div class="hero__wipe" data-flavor-wipe aria-hidden="true"></div>
 
-        {flavors.map((flavor, i) => (
-          <div class="hero__can" data-flavor-can={i} hidden={i !== 0}
-               data-can-name={flavor.data.name}
-               data-can-color={flavor.data.color?.field}>
-            <Asset
-              slot={flavorSlot(flavor.id, 'can-front')}
-              alt={`The front of the ${flavor.data.name} can, showing its full ingredient list.`}
-              sizes="(min-width: 48rem) 28vw, 60vw"
-              loading="eager"
-            />
-          </div>
-        ))}
+          {flavors.map((flavor, i) => (
+            <div class="hero__can" data-flavor-can={i} hidden={i !== 0}
+                 data-can-name={flavor.data.name}
+                 data-can-color={flavor.data.color?.field}>
+              <Asset
+                slot={flavorSlot(flavor.id, 'can-front')}
+                alt={`The front of the ${flavor.data.name} can, showing its full ingredient list.`}
+                sizes="(min-width: 48rem) 28vw, 60vw"
+                loading="eager"
+              />
+            </div>
+          ))}
+        </div>
 
         {/* Hidden until the script runs, so no-JS never sees a dead control. */}
         <div class="flavors" data-flavor-controls hidden>
@@ -342,36 +348,57 @@ const caffeineMg = caffeineAmounts.length === 1 ? caffeineAmounts[0] : undefined
 
   .hero__figure {
     grid-column: 9 / span 4;
-    position: relative;
     display: grid;
     grid-template-rows: 1fr auto;
-    justify-items: center;
+    padding-block-start: var(--space-lg);
+  }
+
+  /* The coloured rectangle, and the window the cans move inside. `clip` rather
+     than `hidden` so it never becomes a scroll container. It bleeds off the
+     right exactly as the field did before. */
+  .hero__stage {
+    grid-row: 1;
+    position: relative;
+    overflow: clip;
+    margin-inline: 10% -30%;
+    display: grid;
+    place-items: end center;
     padding-block-start: var(--space-lg);
   }
 
   .hero__field {
     position: absolute;
-    inset-block: 0 3.5rem;
-    inset-inline: 10% -30%;
+    inset: 0;
     background-color: var(--field, var(--color-accent));
     transform-origin: bottom;
+    /* On first load there is nothing behind, so the base itself rises. */
     animation: field-rise var(--duration-considered) var(--ease-out) both;
   }
 
-  /* Cans are stacked in the same grid cell so switching cannot shift layout. */
+  /* The incoming colour, rising over the outgoing one. Idle at zero height. */
+  .hero__wipe {
+    position: absolute;
+    inset: 0;
+    background-color: var(--wipe, transparent);
+    transform-origin: bottom;
+    transform: scaleY(0);
+  }
+
+  /* Stacked in one cell so a switch cannot shift layout, and so the outgoing
+     and incoming cans can occupy the same space mid-transition. */
   .hero__can {
     grid-area: 1 / 1;
     position: relative;
-    justify-self: center;
     align-self: end;
+    will-change: transform, opacity;
   }
 
-  .hero__figure :global(.asset) {
+  .hero__stage :global(.asset) {
     max-inline-size: 15rem;
   }
 
   .flavors {
-    grid-area: 2 / 1;
+    grid-row: 2;
     position: relative;
     display: flex;
     align-items: center;
