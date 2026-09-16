@@ -39,9 +39,8 @@ const flavors = (await getCollection('flavors', ({ data }) => !data.draft)).sort
 );
 const lead = flavors[0];
 
-// The panel is rendered from the flavor data so it can never disagree with the
-// can. The lead SKU carries the hero; the lists differ only in the juice blend.
-const ingredients = lead?.data.ingredients ?? [];
+// Panels render per flavour, from the flavor data, so they can never disagree
+// with the can. The lists differ only in the juice blend.
 const fieldStyle = lead?.data.color ? `--field: ${lead.data.color.field}` : undefined;
 
 const theanineAmounts = [...new Set(
@@ -140,11 +139,15 @@ const caffeineMg = caffeineAmounts.length === 1 ? caffeineAmounts[0] : undefined
 
       <div class="grid compare">
         <div class="compare__ours">
-          <IngredientPanel
-            ingredients={ingredients}
-            heading={landing.label.oursHeading}
-            numbered={true}
-          />
+          {flavors.map((flavor, i) => (
+            <div data-flavor-panel={i} hidden={i !== 0}>
+              <IngredientPanel
+                ingredients={flavor.data.ingredients ?? []}
+                heading={landing.label.oursHeading}
+                numbered={true}
+              />
+            </div>
+          ))}
         </div>
         <div class="compare__theirs">
           <p class="label compare__theirs-heading">{landing.label.theirsHeading}</p>

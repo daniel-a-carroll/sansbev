@@ -35,7 +35,7 @@ const prefersReducedMotion = () =>
 
 const setUp = (root: HTMLElement): void => {
   const cans = [...root.querySelectorAll<HTMLElement>('[data-flavor-can]')];
-  const panels = [...root.querySelectorAll<HTMLElement>('[data-flavor-panel]')];
+  const panels = [...document.querySelectorAll<HTMLElement>('[data-flavor-panel]')];
   const field = root.querySelector<HTMLElement>('[data-flavor-field]');
   const wipe = root.querySelector<HTMLElement>('[data-flavor-wipe]');
   const controls = root.querySelector<HTMLElement>('[data-flavor-controls]');
@@ -54,8 +54,8 @@ const setUp = (root: HTMLElement): void => {
     running.forEach((a) => a.cancel());
     running = [];
     if (wipe) wipe.style.removeProperty('--wipe');
-    cans.forEach((can, i) => {
-      can.hidden = i !== index;
+    cans.forEach((can) => {
+      can.hidden = Number(can.dataset.flavorCan) !== index;
       can.style.transform = '';
       can.style.opacity = '';
     });
@@ -109,7 +109,9 @@ const setUp = (root: HTMLElement): void => {
     const incoming = cans[index]!;
     const name = incoming.dataset.canName ?? '';
 
-    panels.forEach((el, i) => { el.hidden = i !== index; });
+    panels.forEach((el) => {
+      el.hidden = Number(el.dataset.flavorPanel) !== index;
+    });
     label(name);
 
     if (prefersReducedMotion()) {
