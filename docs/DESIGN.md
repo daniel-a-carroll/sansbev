@@ -123,8 +123,18 @@ The current renders have a real alpha channel, so the product goes back into the
 Otherwise unchanged: hairline rules instead of cards, no shadows anywhere, asymmetric
 left-weighted 12-column grid, data as real semantic tables.
 
-**Motion:** one moment — the hero color field rising once behind the can on load.
-Collapsed by `prefers-reduced-motion`.
+**Motion:** one gesture, the hero colour field rising from the bottom. It plays on load
+and replays whenever the visitor cycles to another flavour, in that flavour's colour.
+
+That is a change to the original "one moment, on load" rule, made deliberately. The thing
+the rule was protecting against is decoration: motion that fires on scroll, on hover, on
+every card, that the visitor did not ask for. This is the opposite. It is user-initiated,
+it carries information (the colour IS the flavour), and it is the same gesture the page
+already makes rather than a second vocabulary. One gesture, used consistently, is still
+one moment.
+
+Collapsed by `prefers-reduced-motion`, where the colour changes instantly instead. The
+animation signals the switch; the switch is already obvious from the can and the list.
 
 ## 5. Principles
 

@@ -62,32 +62,64 @@ const caffeineMg = caffeineAmounts.length === 1 ? caffeineAmounts[0] : undefined
   <JsonLd schema={organizationSchema()} />
 
   {/* 1. HERO. The visual is the panel, not a lifestyle shot. Capture is above
-       the fold: nobody should have to scroll to subscribe. */}
+       the fold: nobody should have to scroll to subscribe.
+
+       Every flavour's can and list is rendered, with the lead one shown and the
+       controls hidden. src/scripts/flavor-carousel.ts reveals the controls and
+       switches between them, so with JavaScript off this is exactly the static
+       hero it was before, with no dead buttons.
+
+       Cycling is also on-message: the only line that changes between flavours
+       is the juice. The list makes that visible without a sentence about it. */}
   <section class="hero">
-    <div class="container grid hero__inner">
+    <div class="container grid hero__inner" data-flavor-carousel>
       <div class="hero__text">
         <p class="label">{landing.hero.eyebrow}</p>
         <h1 class="hero__headline display">{landing.hero.headline}</h1>
         <p class="hero__sub">{landing.hero.subheadIntro}</p>
 
-        {ingredients.length > 0 && (
-          <div class="hero__panel">
-            <IngredientPanel ingredients={ingredients} numbered={true} />
-          </div>
-        )}
+        <div class="hero__panels">
+          {flavors.map((flavor, i) => (
+            <div class="hero__panel" data-flavor-panel={i} hidden={i !== 0}>
+              <IngredientPanel
+                ingredients={flavor.data.ingredients ?? []}
+                numbered={true}
+              />
+            </div>
+          ))}
+        </div>
 
         <JoinForm source="hero" label={landing.hero.captureLabel} />
       </div>
 
       <div class="hero__figure" style={fieldStyle}>
-        <div class="hero__field" aria-hidden="true"></div>
-        {lead && (
-          <Asset
-            slot={flavorSlot(lead.id, 'can-front')}
-            alt="The front of the can, showing its full ingredient list."
-            sizes="(min-width: 48rem) 28vw, 60vw"
-          />
-        )}
+        <div class="hero__field" data-flavor-field aria-hidden="true"></div>
+
+        {flavors.map((flavor, i) => (
+          <div class="hero__can" data-flavor-can={i} hidden={i !== 0}
+               data-can-name={flavor.data.name}
+               data-can-color={flavor.data.color?.field}>
+            <Asset
+              slot={flavorSlot(flavor.id, 'can-front')}
+              alt={`The front of the ${flavor.data.name} can, showing its full ingredient list.`}
+              sizes="(min-width: 48rem) 28vw, 60vw"
+              loading="eager"
+            />
+          </div>
+        ))}
+
+        {/* Hidden until the script runs, so no-JS never sees a dead control. */}
+        <div class="flavors" data-flavor-controls hidden>
+          <button type="button" class="flavors__btn" data-flavor-prev aria-label="Previous flavour">
+            <span aria-hidden="true">&#8592;</span>
+          </button>
+          <span class="flavors__name" data-flavor-current aria-live="polite">
+            {lead?.data.name}
+          </span>
+          <button type="button" class="flavors__btn" data-flavor-next aria-label="Next flavour">
+            <span aria-hidden="true">&#8594;</span>
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -276,6 +308,7 @@ const caffeineMg = caffeineAmounts.length === 1 ? caffeineAmounts[0] : undefined
 
 <script>
   import '../scripts/forms';
+  import '../scripts/flavor-carousel';
 </script>
 
 <style>
@@ -311,23 +344,64 @@ const caffeineMg = caffeineAmounts.length === 1 ? caffeineAmounts[0] : undefined
     grid-column: 9 / span 4;
     position: relative;
     display: grid;
+    grid-template-rows: 1fr auto;
     justify-items: center;
-    align-items: end;
     padding-block-start: var(--space-lg);
   }
 
   .hero__field {
     position: absolute;
-    inset-block: 0;
+    inset-block: 0 3.5rem;
     inset-inline: 10% -30%;
     background-color: var(--field, var(--color-accent));
     transform-origin: bottom;
     animation: field-rise var(--duration-considered) var(--ease-out) both;
   }
 
-  .hero__figure :global(.asset) {
+  /* Cans are stacked in the same grid cell so switching cannot shift layout. */
+  .hero__can {
+    grid-area: 1 / 1;
     position: relative;
+    justify-self: center;
+    align-self: end;
+  }
+
+  .hero__figure :global(.asset) {
     max-inline-size: 15rem;
+  }
+
+  .flavors {
+    grid-area: 2 / 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    margin-block-start: var(--space-sm);
+  }
+
+  .flavors__btn {
+    display: grid;
+    place-items: center;
+    inline-size: 2.5rem;
+    block-size: 2.5rem;
+    background: transparent;
+    border: 1px solid var(--color-rule-strong);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: var(--text-body);
+    line-height: 1;
+  }
+
+  .flavors__btn:hover {
+    border-color: var(--color-ink);
+  }
+
+  .flavors__name {
+    min-inline-size: 7ch;
+    text-align: center;
+    font-size: var(--text-small);
+    font-weight: var(--font-weight-medium);
   }
 
   @keyframes field-rise {
