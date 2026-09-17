@@ -13,7 +13,7 @@ ingredients:
   - Salt (for balance)
 canSizeFlOz: 12
 caffeineMg: 220
-lTheanineMg: 400
+lTheanineMg: 200
 color:
   field: '#8E1520'
   onText: '#F9EFE2'

@@ -201,11 +201,6 @@ const caffeineMg = caffeineAmounts.length === 1 ? caffeineAmounts[0] : undefined
         </ul>
       )}
 
-      <div class="taste prose">
-        <h3>{landing.juice.tasteHeading}</h3>
-        {landing.juice.tasteBody.map((p) => <p>{p}</p>)}
-      </div>
-
       <JoinForm source="juice" label={landing.juice.captureLabel} />
     </div>
   </section>
@@ -229,13 +224,23 @@ const caffeineMg = caffeineAmounts.length === 1 ? caffeineAmounts[0] : undefined
         </ul>
       )}
 
+      {landing.sweetener.categorySweeteners.length > 0 && (
+        <div class="sweeteners">
+          <h3 class="sweeteners__heading">{landing.sweetener.categorySweetenersHeading}</h3>
+          <p class="sweeteners__note caption">{landing.sweetener.categorySweetenersNote}</p>
+          <ul class="sweeteners__list">
+            {landing.sweetener.categorySweeteners.map((name) => <li>{name}</li>)}
+          </ul>
+        </div>
+      )}
+
       <JoinForm source="sweetener" label={landing.sweetener.captureLabel} />
     </div>
   </section>
 
   {/* 6. THE CONSTRAINT. The most shareable element on the page, so it gets the
        one dark band. Rules the brand is bound by, not features it added. */}
-  <section class="band band--ink constraint">
+  <section class="band band--flavor constraint">
     <div class="container">
       <h2 class="constraint__heading">{landing.constraint.heading}</h2>
       {landing.constraint.intro && (
@@ -517,12 +522,43 @@ const caffeineMg = caffeineAmounts.length === 1 ? caffeineAmounts[0] : undefined
     list-style: none;
   }
 
-  .taste {
-    margin-block-start: var(--space-xl);
+  /* A plain wrapped list. The length is the argument, so it is set small and
+     dense and given no emphasis of its own. */
+  .sweeteners {
+    margin-block-start: var(--space-2xl);
+    padding-block-start: var(--space-md);
+    border-block-start: var(--rule-strong);
   }
 
-  .taste h3 {
-    margin-block-end: var(--space-2xs);
+  .sweeteners__heading {
+    font-size: var(--text-h3);
+  }
+
+  .sweeteners__note {
+    margin-block-start: var(--space-3xs);
+    max-inline-size: var(--measure);
+  }
+
+  .sweeteners__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-sm);
+    margin-block-start: var(--space-md);
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-small);
+    color: var(--color-ink-muted);
+    max-inline-size: 60rem;
+  }
+
+  .sweeteners__list li::after {
+    content: '·';
+    margin-inline-start: var(--space-sm);
+    opacity: 0.5;
+  }
+
+  .sweeteners__list li:last-child::after {
+    content: none;
   }
 
   .facts {
@@ -550,6 +586,12 @@ const caffeineMg = caffeineAmounts.length === 1 ? caffeineAmounts[0] : undefined
     max-inline-size: 12rem;
   }
 
+  /* Deep green from the lime can. Cream on it is 5.49, AA. */
+  .constraint {
+    --band: var(--c-lime);
+    --band-on: var(--c-cream);
+  }
+
   .constraint__heading {
     max-inline-size: var(--measure);
   }
@@ -563,13 +605,13 @@ const caffeineMg = caffeineAmounts.length === 1 ? caffeineAmounts[0] : undefined
     margin-block-start: var(--space-lg);
     padding: 0;
     list-style: none;
-    border-block-start: 1px solid color-mix(in srgb, var(--color-on-ink) 55%, transparent);
+    border-block-start: 1px solid color-mix(in srgb, currentColor 55%, transparent);
     max-inline-size: 44rem;
   }
 
   .constraint__rules li {
     padding-block: var(--space-sm);
-    border-block-end: 1px solid color-mix(in srgb, var(--color-on-ink) 26%, transparent);
+    border-block-end: 1px solid color-mix(in srgb, currentColor 26%, transparent);
     font-size: var(--text-h3);
   }
 

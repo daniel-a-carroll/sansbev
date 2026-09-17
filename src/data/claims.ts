@@ -108,10 +108,21 @@
  *    this ships, and keep it. The site repeats the word only because it is
  *    reproducing the declared ingredient list.
  *
- *    L-THEANINE DOSE -- 400mg per can is high relative to the 100-200mg
- *    typical of the category. That is a formulation decision, not a labeling
- *    one, but flag it to whoever reviews the label: dose sits alongside the
- *    220mg caffeine figure and both will draw a reviewer's eye.
+ *    L-THEANINE DOSE -- now 200mg, down from 400mg, after formulation and
+ *    flavour problems at the higher dose. 200mg sits inside the 100-200mg range
+ *    typical of the category, so the earlier "unusually high" flag is retired.
+ *
+ *    !! THE ARTWORK STILL SAYS 400 MG !!
+ *    Every can render, and the brand board, print "L-THEANINE (FROM GREEN TEA)
+ *    400 MG". Those images are on the live site, so right now the landing page
+ *    states 200mg in text while the can beside it shows 400 MG. That is not a
+ *    subtle drift, it is two different numbers on one screen, and it is the
+ *    kind of thing a category buyer notices immediately on a page whose whole
+ *    argument is "read the label".
+ *
+ *    The site figure is the correct one and is rendered from data. The cans
+ *    need re-rendering at 200 MG, and the brand board with them. Until they
+ *    are, treat the images as known-stale rather than as evidence.
  *
  *    THE BRAND BOARD IS PUBLISHED, AND ITS COPY IS NOT CLEARED.
  *    At the founder's direction the marketing board is live, full-bleed, on the
@@ -335,7 +346,7 @@ export const claims = claimsSchema.parse({
     // Keep them in lockstep: FDA treats this site as labeling, so any future
     // change has to land in both places in the same breath.
     {
-      label: '400mg L-theanine from green tea',
+      label: '200mg L-theanine from green tea',
       detail: 'Per 12 fl oz can.',
       confirmed: true,
     },

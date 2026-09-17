@@ -90,17 +90,34 @@ const landingSchema = z.object({
     competitorHeading: z.string(),
     competitorNote: z.string().optional(),
     competitors: z.array(competitorSchema).default([]),
-    tasteHeading: z.string(),
-    tasteBody: z.array(z.string()).default([]),
     captureLabel: z.string(),
   }),
 
-  /** Section 4. State the sugar number ourselves. */
+  /**
+   * Section 4. Absorbs the taste point from section 3: the two were making one
+   * argument across two headings.
+   *
+   * State the sugar number OURSELVES. Omitting it would be the single dishonest
+   * move on a page whose whole claim is that it does not overstate.
+   */
   sweetener: z.object({
     problem: z.string(),
     heading: z.string(),
     body: z.array(z.string()).default([]),
     facts: z.array(z.object({ value: z.string(), label: z.string() })).default([]),
+    /**
+     * Sweeteners used across the category, as a plain list.
+     *
+     * The length is the argument, exactly as with the ingredient panels: our
+     * sweetener line is empty and this one runs to forty items. It is a neutral
+     * enumeration of what the category sweetens with, NOT a claim that any of
+     * them is unsafe. Do not add adjectives here. Brands that editorialised
+     * about competitor ingredients drew regulatory and credibility problems,
+     * and the plain list is more damaging anyway.
+     */
+    categorySweetenersHeading: z.string(),
+    categorySweetenersNote: z.string(),
+    categorySweeteners: z.array(z.string()).default([]),
     captureLabel: z.string(),
   }),
 
@@ -173,7 +190,7 @@ export const landing = landingSchema.parse({
     problem: 'You cannot pronounce what is in your energy drink.',
     heading: 'Read the label',
     body: [
-      'Ours is on the left. Theirs is on the right, reproduced as printed, not retyped by us.',
+      'Ours is on the left. Theirs is on the right.',
     ],
     oursHeading: 'SANS',
     theirsHeading: 'Celsius',
@@ -189,7 +206,7 @@ export const landing = landingSchema.parse({
 
   juice: {
     problem: 'Every energy drink flavour is synthetic.',
-    heading: '20% real organic juice',
+    heading: 'SANS is 20% real organic juice',
     subhead: 'Not from concentrate.',
     body: [
       'The flavour is the fruit. There is no flavour system doing an impression of it.',
@@ -214,11 +231,6 @@ export const landing = landingSchema.parse({
         caption: 'CONTAINS 0% JUICE, printed on the can.',
       },
     ],
-    tasteHeading: 'Sweet is not the same as real',
-    tasteBody: [
-      'Sucralose tastes sweet. It does not taste like fruit.',
-      'Ours is less sweet than what you are used to, and it tastes like the fruit it is made from. That is the whole trade, and we would rather tell you now than have you find out from the first sip.',
-    ],
     captureLabel: 'Taste it before anyone else. Join the list',
   },
 
@@ -227,13 +239,30 @@ export const landing = landingSchema.parse({
       'Every option is bad. Sucralose, stevia, sugar alcohols, or 54 grams of sugar.',
     heading: 'Nothing to sweeten it',
     body: [
-      'Our panel has no sweetener line at all. Not a natural one, not a synthetic one, not one hidden inside a blend name.',
-      'The sugar is the fruit. That is the honest trade, and the number is ours to state rather than yours to discover.',
+      'Theirs is sweet. Ours tastes real. That is why we use real juice, not from concentrate.',
+      'Never sweetened. Always tasty.',
+      'Our panel has no sweetener line at all. Not a natural one, not a synthetic one, not one hidden inside a blend name. The sugar is the fruit, and the number is ours to state rather than yours to discover.',
     ],
     facts: [
       { value: '10 g', label: 'sugar, all of it from the juice' },
       { value: '0 g', label: 'added sugar' },
       { value: '40', label: 'calories' },
+    ],
+
+    categorySweetenersHeading: 'What the category sweetens with',
+    categorySweetenersNote:
+      'Sweeteners in common use across energy drinks and soft drinks. Our panel uses none of them.',
+    categorySweeteners: [
+      'Aspartame', 'Acesulfame potassium', 'Sucralose', 'Saccharin', 'Neotame',
+      'Advantame', 'Cyclamate', 'Neohesperidin dihydrochalcone',
+      'Steviol glycosides (Reb A, Reb D, Reb M)', 'Monk fruit mogrosides',
+      'Thaumatin', 'Brazzein', 'Monellin', 'Miraculin', 'Glycyrrhizin',
+      'Erythritol', 'Xylitol', 'Sorbitol', 'Maltitol', 'Isomalt', 'Lactitol',
+      'Allulose', 'Tagatose', 'Isomaltulose', 'Trehalose',
+      'High-fructose corn syrup', 'Sucrose', 'Glucose / dextrose',
+      'Glucose syrup', 'Fructose', 'Invert sugar', 'Honey', 'Agave',
+      'Maple syrup', 'Coconut sugar', 'Date sugar', 'Brown rice syrup',
+      'Tapioca syrup',
     ],
     captureLabel: 'Join the list',
   },

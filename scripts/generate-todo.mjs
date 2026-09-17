@@ -81,6 +81,11 @@ const unconfirmed = (claimsSource.match(/confirmed:\s*false/g) ?? []).length;
 
 const decisions = [
   {
+    item: 'Re-render the cans and the brand board at 200 MG L-theanine',
+    why: 'The formula moved to 200mg but every can render and the brand board still print 400 MG, and those images are live. The landing page now states 200mg in text with a can beside it showing 400 MG: two different numbers on one screen, on a page whose whole argument is "read the label". The site figure is the correct one and comes from data; the artwork is the stale half.',
+  },
+
+  {
     item: 'TRADEMARK: confirm clearance on the SANS name before commissioning anything else name-dependent',
     why: 'There are at least three existing beverage users in the same class. The wordmark SVG and favicon are ALREADY IN THE REPO and live on the site, so this is not a clean slate: if clearance fails, both are wasted and the domain, the OG image and any printed material follow. Commission nothing further until it is confirmed.',
   },

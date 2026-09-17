@@ -205,6 +205,28 @@ a.accent {
   color: var(--color-on-accent);
 }
 
+/*
+ * A band in one of the packaging colours. Pass the colour through --band.
+ *
+ * This replaced a near-black band, which broke up the page but read as its
+ * footer: a page that goes dark tells a reader it has ended. A flavour colour
+ * reads as a section, and it ties the landing page to the flavour pages and
+ * the cans, which use the same three values.
+ *
+ * ONLY lime and cranberry carry cream text (5.49 and 8.11). Pineapple is 3.39
+ * against cream and must use ink instead, which is why the on-colour is passed
+ * in rather than assumed. The flavour entries already declare their own
+ * on-colour for exactly this reason.
+ */
+.band--flavor {
+  background-color: var(--band, var(--color-accent));
+  color: var(--band-on, var(--color-on-accent));
+}
+
+.band--flavor .rule-on-band {
+  border-color: color-mix(in srgb, currentColor 30%, transparent);
+}
+
 /* --- Data -------------------------------------------------------------- */
 /* Nutrition panels and spec tables share this treatment — same visual
  * language as the rest of the page, so specs read as native, not bolted on. */

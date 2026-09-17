@@ -2,80 +2,83 @@
 
 **Generated file — do not edit by hand.** Regenerate with `npm run todo:doc`.
 
-Counts as of the last run: **21 placeholder strings**,
-**14 unfulfilled asset slots**, **5 unconfirmed claims**.
+Counts as of the last run: **20 placeholder strings**,
+**13 unfulfilled asset slots**, **5 unconfirmed claims**.
 
 ## Blocking before launch
 
 These are decisions and inputs only you can supply. Ordered by what blocks the most.
 
-1. **TRADEMARK: confirm clearance on the SANS name before commissioning anything else name-dependent**
+1. **Re-render the cans and the brand board at 200 MG L-theanine**
+   The formula moved to 200mg but every can render and the brand board still print 400 MG, and those images are live. The landing page now states 200mg in text with a can beside it showing 400 MG: two different numbers on one screen, on a page whose whole argument is "read the label". The site figure is the correct one and comes from data; the artwork is the stale half.
+
+2. **TRADEMARK: confirm clearance on the SANS name before commissioning anything else name-dependent**
    There are at least three existing beverage users in the same class. The wordmark SVG and favicon are ALREADY IN THE REPO and live on the site, so this is not a clean slate: if clearance fails, both are wasted and the domain, the OG image and any printed material follow. Commission nothing further until it is confirmed.
 
-2. **Settle whether the juice can be declared as one combined line**
+3. **Settle whether the juice can be declared as one combined line**
    The art says "Organic Juice (Lime and Apple)". Ingredients are normally declared separately in descending order by weight. The combined line is defensible only if the juice is bought as a single pre-made blend, in which case it is a compound ingredient. Ask the co-packer whether one blend is purchased or two juices are dosed at the plant. THE ORDER MATTERS MORE THAN THE COUNT: if apple predominates, the panel reads apple first on a can whose front says lime. Settle it before print. The site needs no code change either way.
 
-3. **Supply the competitor label photographs**
+4. **Supply the competitor label photographs**
    Sections 2 and 3 of the landing page are the two highest-converting sections and both are currently gray placeholders. Needed: Celsius ingredient panel, and CONTAINS 0% JUICE visible on Celsius, Alani Nu and Kirkland Signature. Photographs, never retyped: their own label is evidence, a transcription is our word against theirs.
 
-4. **Regulatory review of the caffeine and L-theanine section**
+5. **Regulatory review of the caffeine and L-theanine section**
    The one section on the site that describes what an ingredient does. On a conventional food a structure/function claim must derive from nutritive value, and L-theanine is not generally treated as nutritive. It is written as research about the two compounds, explicitly not about this drink, but it needs sign-off before launch.
 
-5. **Verify and paste links for the five research citations**
+6. **Verify and paste links for the five research citations**
    The citations in src/data/landing.ts are real and findable, but no URLs were invented for them. Check each resolves, then paste the DOI or PubMed link into the url field. A broken or wrong link on the one section asking for trust is worse than no link.
 
-6. **Confirm the juice percentage and sugar figures against the finished formula**
+7. **Confirm the juice percentage and sugar figures against the finished formula**
    The landing page states 20% juice, about 10g sugar all from fruit, 0g added, about 40 calories. These are now published claims, and 0g added sugar is a regulated nutrient content claim needing the finished Nutrition Facts panel behind it.
 
-7. **Have counsel review the brand board copy now that it is published**
+8. **Have counsel review the brand board copy now that it is published**
    The board on the product page carries five effect-claim lines the written copy avoids: "clean energy that moves you forward", "real ingredients. clean energy. no compromises.", "fuel what matters", "zero artificial anything", "made for real life". They are transcribed in imageClaims in src/data/claims.ts. If they do not clear, re-export the board without them.
 
-8. **Have counsel review "Calm focus" on the brand board before launch**
+9. **Have counsel review "Calm focus" on the brand board before launch**
    It is a structure/function claim about a mental state, sitting directly above "400 MG L-THEANINE", which ties a claimed effect to a named ingredient at a named dose. On a conventional food that construction needs substantiation, and supplement-industry precedent does not transfer. The most exposed line on the site.
 
-9. **Confirm "0 added sugar" against the finished Nutrition Facts panel**
+10. **Confirm "0 added sugar" against the finished Nutrition Facts panel**
    A regulated nutrient content claim with a codified definition, printed on the brand board. Plausible, since nothing in the list is a sweetener, but the juice blends now include apple and a reviewer will read the two together. Needs the finished panel.
 
-10. **Fix the pineapple can ingredient panel to match the other two**
+11. **Fix the pineapple can ingredient panel to match the other two**
    Pineapple is set in ALL CAPS while lime and cranberry use sentence case. Cosmetic, but a buyer notices it on a shelf and the printer will not fix it for you.
 
-11. **Get the organic certification records on file**
+12. **Get the organic certification records on file**
    The cans declare "Organic ... Juice". Organic is USDA-regulated, not a descriptor. Labelling an uncertified ingredient organic is a federal violation, not a marketing risk.
 
-12. **Confirm the juice percentage in the finished formula**
+13. **Confirm the juice percentage in the finished formula**
    Still the open question for any nutrient-content claim. It is the food-group leg of the FDA rule; low sugar, sodium and fat alone do not qualify.
 
-13. **Have counsel review the 400mg L-theanine dose alongside the 220mg caffeine**
+14. **Have counsel review the 400mg L-theanine dose alongside the 220mg caffeine**
    Both are high for the category and sit together on the front of the can. A formulation call, not a labeling one, but reviewers will stop on it.
 
-14. **Legal review of src/data/claims.ts, including the About page language**
+15. **Legal review of src/data/claims.ts, including the About page language**
    FDA treats this site as labeling. Review that one file, not the whole repo. It records which phrases were removed from the founder story and why.
 
-15. **Legal review of the privacy policy and terms**
+16. **Legal review of the privacy policy and terms**
    Both are written and accurate about what the site does, but neither has been reviewed. Each carries a REVIEW REQUIRED marker in src/data/copy.ts.
 
-16. **Write the founder biography and production location on the About page**
+17. **Write the founder biography and production location on the About page**
    The story is written; the specifics only you have are still marked.
 
-17. **Set the three contact email addresses in src/data/site.ts**
+18. **Set the three contact email addresses in src/data/site.ts**
    The contact page falls back to a form-only message until they exist.
 
-18. **Set RESEND_API_KEY, NOTIFY_FROM, NOTIFY_TO as Wrangler secrets**
+19. **Set RESEND_API_KEY, NOTIFY_FROM, NOTIFY_TO as Wrangler secrets**
    Without them the Worker logs submissions instead of delivering them. Every lead is silently lost.
 
-19. **Flip `launched` to true in src/data/site.ts**
+20. **Flip `launched` to true in src/data/site.ts**
    The entire site is noindex and robots.txt disallows everything until you do. This is the last step before going live.
 
 ## Placeholder copy and data
 
 ### `src/data/claims.ts`
 
-- **L306** — one sentence describing what is in the can. Composition only, no effect language.
-- **L343** — juice percentage. Also the open question for the "healthy" claim.
-- **L347** — sweetener approach, stated as composition
-- **L353** — e.g. "No artificial colors"
-- **L354** — e.g. "No artificial flavors"
-- **L355** — carbohydrate/sugar statement, stated factually
+- **L317** — one sentence describing what is in the can. Composition only, no effect language.
+- **L354** — juice percentage. Also the open question for the "healthy" claim.
+- **L358** — sweetener approach, stated as composition
+- **L364** — e.g. "No artificial colors"
+- **L365** — e.g. "No artificial flavors"
+- **L366** — carbohydrate/sugar statement, stated factually
 
 ### `src/data/copy.ts`
 
@@ -88,10 +91,6 @@ These are decisions and inputs only you can supply. Ordered by what blocks the m
 - **L296** — date this was last reviewed
 - **L331** — REVIEW REQUIRED. These terms are a plain-language starting point, not a complete or jurisdiction-specific agreement. They deliberately omit warranty disclaimers, limitation of liability, and governing law, all of which counsel should decide. Have this reviewed before launch.
 
-### `src/data/landing.ts`
-
-- **L173** — confirm the caption against the photograph once supplied.
-
 ### `src/data/site.ts`
 
 - **L77** — registered legal entity name
@@ -103,7 +102,7 @@ These are decisions and inputs only you can supply. Ordered by what blocks the m
 
 ## Photography and artwork
 
-14 slots still need real files. Full shot list with dimensions and
+13 slots still need real files. Full shot list with dimensions and
 direction is in [ASSETS.md](../ASSETS.md).
 
 - `logo-mark`
@@ -113,7 +112,6 @@ direction is in [ASSETS.md](../ASSETS.md).
 - `about-colorado`
 - `wholesale-case`
 - `wholesale-shelf`
-- `competitor-celsius-panel`
 - `competitor-celsius-zero-juice`
 - `competitor-alani-zero-juice`
 - `competitor-kirkland-zero-juice`

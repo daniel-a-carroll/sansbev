@@ -25,7 +25,7 @@ Facts taken off the artwork, not invented here:
 | Tagline | *what's important is what's not in it* |
 | Ingredients | Carbonated water · Organic juice, a named two-fruit blend · Caffeine (from green coffee beans) · L-theanine (from green tea) · Acacia (natural fiber) · Salt |
 | Caffeine | **220mg** |
-| L-theanine | **400mg**, from green tea |
+| L-theanine | **200mg**, from green tea (reduced from 400mg; the artwork still shows 400) |
 | Format | 12 fl oz (355 mL) slim can |
 | Flavors | Lime, Pineapple, Cranberry |
 
@@ -123,6 +123,15 @@ The current renders have a real alpha channel, so the product goes back into the
 Otherwise unchanged: hairline rules instead of cards, no shadows anywhere, asymmetric
 left-weighted 12-column grid, data as real semantic tables.
 
+**Colour bands.** The landing page's one band was near-black, which broke the page up but
+read as its footer: a page that goes dark tells a reader it has ended. It now uses the
+deep green from the lime can, through a `band--flavor` primitive that takes the colour and
+its on-colour as custom properties. That ties the landing page to the flavour pages and
+the cans, which already use the same three values.
+
+Only lime and cranberry carry cream text (5.49 and 8.11). **Pineapple is 3.39 against
+cream and must use ink**, which is why the on-colour is passed in rather than assumed.
+
 **Motion:** one gesture, the hero colour field rising from the bottom. It plays on load
 and replays whenever the visitor cycles to another flavour, in that flavour's colour.
 
@@ -194,7 +203,8 @@ their own.
 - Brand name: SANS as product brand, SansBev as company and domain. Unconfirmed.
 - **Organic** is a USDA-regulated claim now printed on the cans. Certification records
   need to exist before this ships.
-- 400mg L-theanine is high for the category. A formulation call, but reviewers will notice.
+- The cans and the brand board still print 400 MG L-theanine. The formula is 200mg and the
+  site says so, which means a page currently shows both numbers at once. Re-render.
 - **"Calm focus"** on the brand board is the most exposed claim on the site: a
   structure/function claim tied to a named ingredient at a named dose, on a conventional
   food. See `claims.ts`.
