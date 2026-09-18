@@ -262,7 +262,6 @@ export const landing = landingSchema.parse({
       'High-fructose corn syrup', 'Sucrose', 'Glucose / dextrose',
       'Glucose syrup', 'Fructose', 'Invert sugar', 'Honey', 'Agave',
       'Maple syrup', 'Coconut sugar', 'Date sugar', 'Brown rice syrup',
-      'Tapioca syrup',
     ],
     captureLabel: 'Join the list',
   },
