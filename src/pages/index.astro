@@ -310,14 +310,6 @@ const caffeineMg = caffeineAmounts.length === 1 ? caffeineAmounts[0] : undefined
   {/* 7. REACTIONS. Built, and hidden until there is something real in it. */}
   <Reactions />
 
-  {/* 8. THE ASK. One action. No competing links anywhere in this section. */}
-  <section class="section ask">
-    <div class="container">
-      <h2>{landing.ask.heading}</h2>
-      {landing.ask.body.map((p) => <p class="proof__body prose">{p}</p>)}
-      <JoinForm source="ask" label={landing.ask.captureLabel} />
-    </div>
-  </section>
 </BaseLayout>
 
 <script>

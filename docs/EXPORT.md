@@ -22,8 +22,8 @@ Wholesale inquiry — Alfalfa Market
 ```
 
 For signups that word is the **section of the landing page whose form they
-used**: `hero`, `label`, `juice`, `sweetener`, `constraint`, `pairing`,
-`reactions` or `ask`. Sorting your inbox by it answers the only question worth
+used**: `hero`, `label`, `juice`, `sweetener`, `constraint`, `pairing` or
+`reactions`. Sorting your inbox by it answers the only question worth
 asking about the page, which is which proof actually converts. If `label` and
 `juice` dominate, the compositional argument is doing the work; if only `hero`
 converts, nobody is reading past the fold.

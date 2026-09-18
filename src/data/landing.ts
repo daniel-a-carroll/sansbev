@@ -161,12 +161,6 @@ const landingSchema = z.object({
     captureLabel: z.string(),
   }),
 
-  /** Section 8. One action. No competing links. */
-  ask: z.object({
-    heading: z.string(),
-    body: z.array(z.string()).default([]),
-    captureLabel: z.string(),
-  }),
 });
 
 export const landing = landingSchema.parse({
@@ -297,7 +291,9 @@ export const landing = landingSchema.parse({
           'Kahathuduwa CN, Dassanayake TL, Amarakoon AMT, Weerasinghe VS. Acute effects of theanine, caffeine and theanine-caffeine combination on attention. Nutritional Neuroscience, 2017;20(6):369-377.',
       },
     ],
-    captureLabel: 'Join the list',
+    // This capture now ENDS the page. It carries the offer rather than a bare
+    // "join the list", so the reason to act did not leave with the ask section.
+    captureLabel: 'Get invited to the taste panel',
   },
 
   constraint: {
@@ -322,13 +318,6 @@ export const landing = landingSchema.parse({
     captureLabel: 'Join the list',
   },
 
-  ask: {
-    heading: 'Join the list',
-    body: [
-      'There is nothing to buy yet and will not be for a while. What there is, is a taste panel before launch and a first run that goes to this list first.',
-    ],
-    captureLabel: 'Get invited to the taste panel',
-  },
 });
 
 export type Landing = z.infer<typeof landingSchema>;
