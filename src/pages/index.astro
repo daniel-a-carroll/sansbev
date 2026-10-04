@@ -123,10 +123,7 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
         </div>
         <div class="hero__action">
           <a class="cta plain" href={landing.hero.ctaHref}>{landing.hero.ctaLabel}</a>
-          <p class="hero__product caption">
-            {landing.hero.productLine}
-            <br /><a href="#math">{landing.hero.estimateNote}</a>
-          </p>
+          <p class="hero__product caption">{landing.hero.productLine}</p>
         </div>
       </div>
 
@@ -176,9 +173,11 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
       <p class="label margin">{landing.rule.label}</p>
       <div class="rule__body">
         <h2 id="rule-heading" class="rule__heading display">{landing.rule.heading}</h2>
-        <div class="rule__text">
-          {landing.rule.body.map((p) => <p>{p}</p>)}
-        </div>
+        {landing.rule.body.length > 0 && (
+          <div class="rule__text">
+            {landing.rule.body.map((p) => <p>{p}</p>)}
+          </div>
+        )}
       </div>
     </div>
   </section>

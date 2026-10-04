@@ -4,7 +4,7 @@
  * These are the verified figures from the brief. Do not re-derive or re-round
  * them in components: if a number changes, it changes here and nowhere else.
  * Display strings sit beside the raw values on purpose, so that a rounding
- * decision ("about $670", "about 57 hours") is made once, by a person, rather
+ * decision ("about $730", "about 57 hours") is made once, by a person, rather
  * than by whatever Math.round happens to do in a template.
  *
  * The savings and time figures are ILLUSTRATIVE ESTIMATES. Anywhere they are
@@ -26,16 +26,19 @@ export const price = {
   /** Every Nth case free on subscription. */
   freeCaseEvery: 4,
   freeCaseEveryWord: 'fourth',
-  /** Effective per-can price for a steady subscriber. */
-  subscriberPerCan: '$4.67',
-  subscriberDiscount: 'roughly 22%',
+  /** Effective per-can price for a steady subscriber: every 4th case free on
+   *  $6.00 is exactly 25% off. Was $4.67 / 22%, which did not match the
+   *  offer; corrected by the founder 2026-10-04. */
+  subscriberPerCan: '$4.50',
+  subscriberDiscount: 'roughly 25%',
 } as const;
 
 export const money = {
   cafeDrinkPerDay: '$6.50',
   cafeDrinkPerYear: '$2,372',
-  subscriberPerYear: '$1,703',
-  savingPerYear: 'about $670',
+  // $4.50 x 365 = $1,642.50, shown as $1,642 to match how $2,372.50 is shown.
+  subscriberPerYear: '$1,642',
+  savingPerYear: 'about $730',
 } as const;
 
 export const time = {

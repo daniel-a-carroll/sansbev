@@ -36,26 +36,22 @@ import { money, price, product, time } from './numbers';
 
 export const landing = {
   hero: {
-    // Leads with the time claim, not the product.
-    headline: 'You spend two and a half days a year waiting for coffee.',
+    headline: 'Upgrade your routine.',
+    // "nearly 60 hours" is the founder's rounding of the two time estimates in
+    // numbers.ts (about 57 and about 60). It is typed here, not linked, so
+    // update it by hand if those figures change.
     sub: [
-      'The queue, the detour, the tip prompt. Or the grinder, the cleanup, the descaling. The coffee was never the problem.',
-      'This is a can. It is already cold.',
+      'You spend nearly 60 hours a year waiting for coffee. The queue, the detour, the tip prompt. The coffee was never the problem.',
     ],
     ctaLabel: 'Subscribe',
     ctaHref: '#subscribe',
-    productLine: `Sparkling. Made with real fruit juice. ${product.caffeineMg} mg caffeine.`,
-    // The headline figure is an estimate, so it points at its working.
-    estimateNote: 'An estimate. The working is below.',
+    productLine: `Sparkling. Made with real fruit juice. ${product.caffeineMg} mg caffeine. ${product.lTheanineMg} mg L-Theanine`,
   },
 
   rule: {
     label: 'The rule',
     heading: 'Never more than six.',
-    body: [
-      'Six is not how many ingredients this drink happens to have. It is the most it is allowed to have.',
-      'If a recipe needs a seventh, the recipe is wrong. We change the recipe.',
-    ],
+    body: [] as string[],
   },
 
   six: {
@@ -80,11 +76,11 @@ export const landing = {
       },
       {
         value: 'No added sugar',
-        text: 'No sweetener of any kind. Not cane sugar, not stevia, not anything else. The sweetness is the juice.',
+        text: 'No sweetener of any kind. Just juice.',
       },
       {
         value: 'Crisp',
-        text: 'Thin bodied, on purpose. Nothing on the list is there to thicken it or round it off. Six ingredients taste like six ingredients.',
+        text: 'Every Flavor, Crisp, Refreshing, and Energizing.',
       },
     ],
   },
@@ -111,7 +107,7 @@ export const landing = {
           item: `Home espresso, with grinding and cleanup. ${time.homeEspressoPerDay.replace(/^about/, 'About')} a day.`,
           amount: time.homeEspressoPerYear,
         },
-        { item: `${BRAND_NAME}. Opening a can.`, amount: 'Not measured' },
+        { item: `${BRAND_NAME}. Opening a can.`, amount: '365 Moments' },
       ],
       total: { item: 'Either way', amount: time.eitherWay.replace(/ a year$/, '') },
     },
@@ -152,8 +148,8 @@ export const landing = {
       { q: 'What’s in your proprietary energy blend?', a: 'Caffeine.' },
       { q: 'What’s the adaptogen stack?', a: 'There isn’t one.' },
       { q: 'Why only six ingredients?', a: 'We couldn’t justify a seventh.' },
-      { q: `Why is it ${price.perCan.replace('.00', '')}?`, a: 'Because it costs a lot to make and we didn’t want to make it cheaper.' },
-      { q: 'Is this an energy drink?', a: 'Technically. Don’t hold that against it.' },
+      { q: `Why is it ${price.perCan.replace('.00', '')}?`, a: 'Because we refuse to compromise on quality.' },
+      { q: 'Is this an energy drink?', a: 'No. Just kidding, it is.' },
     ],
   },
 };
