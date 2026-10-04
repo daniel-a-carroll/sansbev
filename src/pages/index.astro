@@ -355,7 +355,7 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
 
   /* --- 1. Hero --------------------------------------------------------- */
   .hero {
-    padding-block: var(--space-2xl) var(--space-3xl);
+    padding-block: var(--space-xl);
     overflow-x: clip;
   }
 
@@ -525,6 +525,17 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
   }
 
   /* --- 2. The rule ----------------------------------------------------- */
+  /* The rule is the heading for the list below it, so the two sit close
+     with no divider between them, and the gap from the hero is modest. */
+  .section.rule {
+    padding-block: var(--space-xl) var(--space-lg);
+  }
+
+  .section.six {
+    padding-block-start: 0;
+    border-block-start: 0;
+  }
+
   .rule__body {
     grid-column: 3 / -1;
   }
