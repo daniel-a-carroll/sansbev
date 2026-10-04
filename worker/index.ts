@@ -199,7 +199,22 @@ async function handleSubmission(
   }
 
   return json
-    ? Response.json({ ok: true, provider: provider.name })
+    ? Response.json({
+        ok: true,
+        provider: provider.name,
+        // Only on the fallback path: which settings the Worker can see, as
+        // yes/no. Never values. Tells "wrong Worker" (all no) apart from "one
+        // secret empty or misnamed" (that one no).
+        ...(provider.name === 'console'
+          ? {
+              configured: {
+                RESEND_API_KEY: Boolean(env.RESEND_API_KEY),
+                NOTIFY_FROM: Boolean(env.NOTIFY_FROM),
+                NOTIFY_TO: Boolean(env.NOTIFY_TO),
+              },
+            }
+          : {}),
+      })
     : Response.redirect(new URL('/thank-you', request.url).href, 303);
 }
 
