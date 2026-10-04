@@ -73,15 +73,22 @@ const slots = (lead?.data.ingredients ?? []).map((_, i) => {
 
 // The switcher is plain radio inputs and CSS :has(), so it works without
 // JavaScript and degrades to the lead SKU's list where :has() is unsupported.
-const switcherCss = flavors
-  .map((f) => {
+//
+// Every variant is HIDDEN first, then the checked SKU's variant is SHOWN. Both
+// halves are needed: hiding the others alone leaves the default (lead-only)
+// rule in force, which blanked every non-lead fruit. The show rule comes after
+// the hide rule at equal specificity, so it wins.
+const switcherCss = [
+  `.six [data-sku]:not([data-sku="${lead?.id}"]) { display: none; }`,
+  ...flavors.map((f) => {
     const c = f.data.color;
     return [
       `.six:has(#sku-${f.id}:checked) { --sku: ${c?.ink ?? 'var(--color-accent-text)'}; }`,
-      `.six:has(#sku-${f.id}:checked) [data-sku]:not([data-sku="${f.id}"]) { display: none; }`,
+      `.six:has(#sku-${f.id}:checked) [data-sku] { display: none; }`,
+      `.six:has(#sku-${f.id}:checked) [data-sku="${f.id}"] { display: inline; }`,
     ].join('\n');
-  })
-  .join('\n');
+  }),
+].join('\n');
 
 const skuStyle = (f: (typeof flavors)[number]) =>
   f.data.color ? `--field: ${f.data.color.field}; --on-field: ${f.data.color.onText}` : undefined;
@@ -95,7 +102,8 @@ const pair = (f: (typeof flavors)[number]) => {
   });
   return names.length ? `${names.join(' and ')}.` : undefined;
 };
-const spec = `${product.caffeineMg} mg caffeine. ${product.lTheanineMg} mg L-theanine. ${product.canFlOz} fl oz.`;
+// Non-breaking spaces keep each number on the same line as its unit.
+const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00a0mg L-theanine. ${product.canFlOz}\u00a0fl\u00a0oz.`;
 ---
 
 <BaseLayout title={copy.home.seo.title} description={copy.home.seo.description} minimalHeader={true}>
@@ -428,7 +436,7 @@ const spec = `${product.caffeineMg} mg caffeine. ${product.lTheanineMg} mg L-the
     margin-inline: 10% -30%;
     display: grid;
     place-items: end center;
-    padding-block-start: var(--space-lg);
+    padding-block: var(--space-lg) var(--space-md);
   }
 
   .hero__field {
@@ -456,9 +464,9 @@ const spec = `${product.caffeineMg} mg caffeine. ${product.lTheanineMg} mg L-the
     will-change: transform, opacity;
   }
 
+  /* The whole can sits inside the colour, with a little ground under it. */
   .hero__stage :global(.asset) {
-    max-inline-size: 13rem;
-    margin-block-end: -1.5rem;
+    max-inline-size: 11rem;
   }
 
   .flavors {
@@ -513,7 +521,7 @@ const spec = `${product.caffeineMg} mg caffeine. ${product.lTheanineMg} mg L-the
       margin-inline: 0;
     }
     .hero__stage :global(.asset) {
-      max-inline-size: 10rem;
+      max-inline-size: 8.5rem;
     }
   }
 
@@ -631,10 +639,6 @@ const spec = `${product.caffeineMg} mg caffeine. ${product.lTheanineMg} mg L-the
   /* The slot that changes by can is set in that can's colour. */
   .six__variant {
     color: var(--sku);
-  }
-
-  .six__variant + .six__variant {
-    display: none;
   }
 
   .six__note {
@@ -773,14 +777,13 @@ const spec = `${product.caffeineMg} mg caffeine. ${product.lTheanineMg} mg L-the
     list-style: none;
   }
 
-  /* Text on the left, the can standing on the right. The tile clips the can
-     so it can sit low and large without spilling onto the paper. */
+  /* Text on the left, the can standing on the right, whole, with the same
+     margin under it as the text has. */
   .drink {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     gap: var(--space-md);
     padding: clamp(1.25rem, 0.8rem + 1.8vw, 2.25rem);
-    padding-block-end: 0;
     background-color: var(--field);
     color: var(--on-field);
     min-block-size: 15rem;
@@ -791,18 +794,15 @@ const spec = `${product.caffeineMg} mg caffeine. ${product.lTheanineMg} mg L-the
     display: grid;
     grid-template-rows: auto 1fr auto;
     gap: var(--space-md);
-    padding-block-end: clamp(1.25rem, 0.8rem + 1.8vw, 2.25rem);
   }
 
   .drink__can {
     align-self: end;
-    inline-size: clamp(4.5rem, 2rem + 6vw, 7.5rem);
-    margin-block-end: -1.5rem;
+    inline-size: clamp(3.75rem, 1.8rem + 5vw, 6.25rem);
   }
 
   .drink--lead .drink__can {
-    inline-size: clamp(9rem, 4rem + 12vw, 15rem);
-    margin-block-end: -2.5rem;
+    inline-size: clamp(7.5rem, 3.5rem + 10vw, 12.5rem);
   }
 
   .drink--lead {
@@ -851,7 +851,7 @@ const spec = `${product.caffeineMg} mg caffeine. ${product.lTheanineMg} mg L-the
       font-size: 2.1rem;
     }
     .drink--lead .drink__can {
-      inline-size: 7.5rem;
+      inline-size: 6.5rem;
     }
   }
 
