@@ -171,8 +171,13 @@ async function handleSubmission(
     data[key] = String(value);
   }
 
+  // Named in the JSON response so a misconfiguration is visible from outside:
+  // "console" means RESEND_API_KEY is not reaching the Worker and the
+  // submission was only logged. Reveals no secret, only which path ran.
+  const provider = getProvider(env);
+
   try {
-    await getProvider(env).submit({
+    await provider.submit({
       form,
       data,
       meta: {
@@ -194,7 +199,7 @@ async function handleSubmission(
   }
 
   return json
-    ? Response.json({ ok: true })
+    ? Response.json({ ok: true, provider: provider.name })
     : Response.redirect(new URL('/thank-you', request.url).href, 303);
 }
 
