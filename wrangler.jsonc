@@ -11,6 +11,12 @@
   "compatibility_date": "2026-05-01",
   "compatibility_flags": ["nodejs_compat"],
 
+  // Keep variables set in the Cloudflare dashboard across deploys. Without
+  // this, every deploy from GitHub resets plain-text variables to what is in
+  // this file (none). Secrets survive deploys either way. NEVER put secret
+  // values in this file: it is committed to GitHub.
+  "keep_vars": true,
+
   // Custom domain. Declaring it here rather than clicking it into the
   // dashboard keeps the config in the repo, so a redeploy can never quietly
   // detach it and you can see what the site is bound to without logging in.
