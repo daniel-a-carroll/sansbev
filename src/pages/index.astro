@@ -649,9 +649,8 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
     color: var(--color-ink-muted);
   }
 
-  /* Three equal columns, each under its own hairline, like the list above.
-     Headings are sized so the longest never fills its column; at the old
-     size "No added sugar" ran almost into "Crisp" and the gaps looked uneven. */
+  /* Three equal columns. Headings are as large as they can be while the
+     longest ("No added sugar") still leaves air in its column. */
   .facts {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
@@ -664,19 +663,18 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
   .facts li {
     display: grid;
     align-content: start;
-    gap: var(--space-2xs);
-    padding-block-start: var(--space-sm);
-    border-block-start: var(--rule-strong);
+    gap: var(--space-xs);
   }
 
   .facts__value {
     font-family: var(--font-family-display);
-    font-size: clamp(1.4rem, 1.2rem + 0.6vw, 1.75rem);
-    line-height: 1.15;
+    font-size: clamp(1.75rem, 1.35rem + 1.1vw, 2.35rem);
+    line-height: 1.1;
   }
 
   .facts__text {
-    font-size: var(--text-small);
+    font-size: var(--text-body);
+    line-height: 1.5;
     color: var(--color-ink-muted);
     max-inline-size: 22rem;
   }
