@@ -607,7 +607,9 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
     border-block-end: var(--rule);
   }
 
+  /* Centred on the whole row, not on the first line of the name. */
   .six__n {
+    align-self: center;
     font-family: var(--font-family-display);
     font-size: var(--text-h3);
     color: var(--sku);
@@ -640,7 +642,9 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
     color: var(--sku);
   }
 
+  /* Centred on the row, like the number, so every row reads the same. */
   .six__note {
+    align-self: center;
     font-size: var(--text-small);
     color: var(--color-ink-muted);
   }
@@ -681,6 +685,10 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
   @media (max-width: 40rem) {
     .six__item {
       grid-template-columns: 1.75rem minmax(0, 1fr);
+    }
+    /* The note drops under the name here, so the number spans both. */
+    .six__n {
+      grid-row: 1 / span 2;
     }
     .six__note {
       grid-column: 2;
