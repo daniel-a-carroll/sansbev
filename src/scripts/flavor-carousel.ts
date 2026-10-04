@@ -1,5 +1,5 @@
 /**
- * Hero flavour cycling.
+ * Hero flavour cycling. Also moves the ingredient list's tabs to match.
  *
  * PROGRESSIVE ENHANCEMENT. The markup renders every flavour's can and
  * ingredient list, with the lead one visible and the controls hidden. This
@@ -113,6 +113,12 @@ const setUp = (root: HTMLElement): void => {
       el.hidden = Number(el.dataset.flavorPanel) !== index;
     });
     label(name);
+
+    // Keep the ingredient list below on the same flavour. Its tabs are plain
+    // radios, so checking one is all the list needs.
+    const id = incoming.dataset.canId;
+    const radio = id ? document.querySelector<HTMLInputElement>(`#sku-${id}`) : null;
+    if (radio) radio.checked = true;
 
     if (prefersReducedMotion()) {
       outgoing.hidden = true;

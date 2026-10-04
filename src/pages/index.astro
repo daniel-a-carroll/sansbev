@@ -121,6 +121,44 @@ const spec = `${product.caffeineMg} mg caffeine. ${product.lTheanineMg} mg L-the
           </p>
         </div>
       </div>
+
+      {/* The can carousel. Every flavour's can is rendered, the lead one shown
+          and the controls hidden; src/scripts/flavor-carousel.ts reveals the
+          controls and switches between them. With JavaScript off this is a
+          static lead can and no dead buttons.
+
+          The stage is the coloured rectangle AND the clipping window: a can
+          sliding out disappears at the colour's edge rather than tracking
+          across the paper. */}
+      <div class="hero__figure" data-flavor-carousel>
+        <div class="hero__stage" style={lead?.data.color ? `--field: ${lead.data.color.field}` : undefined}>
+          <div class="hero__field" data-flavor-field aria-hidden="true"></div>
+          <div class="hero__wipe" data-flavor-wipe aria-hidden="true"></div>
+          {flavors.map((f, i) => (
+            <div class="hero__can" data-flavor-can={i} hidden={i !== 0}
+                 data-can-name={f.data.name}
+                 data-can-id={f.id}
+                 data-can-color={f.data.color?.field}>
+              <Asset
+                slot={flavorSlot(f.id, 'can-front')}
+                alt={`The ${f.data.name} can, with its six ingredients printed on the front.`}
+                sizes="(min-width: 48rem) 20vw, 50vw"
+                loading={i === 0 ? 'eager' : 'lazy'}
+              />
+            </div>
+          ))}
+        </div>
+
+        <div class="flavors" data-flavor-controls hidden>
+          <button type="button" class="flavors__btn" data-flavor-prev aria-label="Previous flavour">
+            <span aria-hidden="true">&#8592;</span>
+          </button>
+          <span class="flavors__name" data-flavor-current aria-live="polite">{lead?.data.name}</span>
+          <button type="button" class="flavors__btn" data-flavor-next aria-label="Next flavour">
+            <span aria-hidden="true">&#8594;</span>
+          </button>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -296,6 +334,7 @@ const spec = `${product.caffeineMg} mg caffeine. ${product.lTheanineMg} mg L-the
 
 <script>
   import '../scripts/forms';
+  import '../scripts/flavor-carousel';
 </script>
 
 <style>
@@ -310,6 +349,11 @@ const spec = `${product.caffeineMg} mg caffeine. ${product.lTheanineMg} mg L-the
   /* --- 1. Hero --------------------------------------------------------- */
   .hero {
     padding-block: var(--space-2xl) var(--space-3xl);
+    overflow-x: clip;
+  }
+
+  .hero > .grid {
+    align-items: start;
   }
 
   .hero__mark {
@@ -319,10 +363,12 @@ const spec = `${product.caffeineMg} mg caffeine. ${product.lTheanineMg} mg L-the
   }
 
   .hero__body {
-    grid-column: 3 / span 9;
+    grid-column: 3 / span 6;
   }
 
+  /* Shares the row with the can, so it runs a step smaller than --text-display. */
   .hero__headline {
+    font-size: clamp(2.5rem, 1.6rem + 3.4vw, 4.5rem);
     max-inline-size: 16ch;
     font-variation-settings: 'opsz' 72;
   }
@@ -365,6 +411,110 @@ const spec = `${product.caffeineMg} mg caffeine. ${product.lTheanineMg} mg L-the
 
   .hero__product {
     line-height: 1.6;
+  }
+
+  /* The can stage. Bleeds off the right edge of the page. */
+  .hero__figure {
+    grid-column: 9 / span 4;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding-block-start: var(--space-sm);
+  }
+
+  .hero__stage {
+    grid-row: 1;
+    position: relative;
+    overflow: clip;
+    margin-inline: 10% -30%;
+    display: grid;
+    place-items: end center;
+    padding-block-start: var(--space-lg);
+  }
+
+  .hero__field {
+    position: absolute;
+    inset: 0;
+    background-color: var(--field, var(--color-accent));
+    transform-origin: bottom;
+    animation: field-rise var(--duration-considered) var(--ease-out) both;
+  }
+
+  /* The incoming colour, rising over the outgoing one. Idle at zero height. */
+  .hero__wipe {
+    position: absolute;
+    inset: 0;
+    background-color: var(--wipe, transparent);
+    transform-origin: bottom;
+    transform: scaleY(0);
+  }
+
+  /* Stacked in one cell so a switch cannot shift layout. */
+  .hero__can {
+    grid-area: 1 / 1;
+    position: relative;
+    align-self: end;
+    will-change: transform, opacity;
+  }
+
+  .hero__stage :global(.asset) {
+    max-inline-size: 13rem;
+    margin-block-end: -1.5rem;
+  }
+
+  .flavors {
+    grid-row: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    margin-block-start: var(--space-sm);
+    margin-inline: 10% -30%;
+  }
+
+  .flavors__btn {
+    display: grid;
+    place-items: center;
+    inline-size: 2.5rem;
+    block-size: 2.5rem;
+    background: transparent;
+    border: 1px solid var(--color-rule-strong);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: var(--text-body);
+    line-height: 1;
+  }
+
+  .flavors__btn:hover {
+    border-color: var(--color-ink);
+  }
+
+  .flavors__name {
+    min-inline-size: 7ch;
+    text-align: center;
+    font-size: var(--text-small);
+    font-weight: var(--font-weight-medium);
+  }
+
+  @keyframes field-rise {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__field { animation: none; }
+  }
+
+  @media (max-width: 48rem) {
+    .hero__figure {
+      margin-block-start: var(--space-xl);
+    }
+    .hero__stage,
+    .flavors {
+      margin-inline: 0;
+    }
+    .hero__stage :global(.asset) {
+      max-inline-size: 10rem;
+    }
   }
 
   /* --- 2. The rule ----------------------------------------------------- */
