@@ -11,6 +11,47 @@
  * claim about the product may live anywhere else in the codebase.
  *
  * ---------------------------------------------------------------------------
+ * THE SIX REFORMULATION AND RENAME (October 2026) -- READ THIS FIRST
+ * ---------------------------------------------------------------------------
+ *
+ * The product is now SIX (working name, clearance pending). Formula, per SKU:
+ * carbonated water, two organic fruit juices, caffeine from green coffee
+ * beans, L-theanine from green tea, salt. 20% juice from concentrate. 220mg
+ * caffeine, 200mg L-theanine. No added sugar and no sweetener of any kind.
+ * SKUs: Cranberry (cranberry and pear), Lemon (lemon and pear), Orange
+ * (orange and lemon). Acacia and the apple blend are gone.
+ *
+ * Several notes further down (sections 4c and 4d) describe the retired SANS
+ * packaging. They are kept as the record of what was reviewed, not as current
+ * guidance. Where they conflict with this block, this block wins.
+ *
+ * Current exposures, in order:
+ *   - ORGANIC: the BEVERAGE IS NOT CERTIFIED ORGANIC (founder, 2026-10-04). The
+ *     juice supplier is certified organic. Juice is about 20% of the drink,
+ *     under the 70% line, so under 7 CFR 205.305 (as we understand it;
+ *     COUNSEL TO CONFIRM) "organic" may only identify those ingredients in
+ *     the ingredient statement: "organic cranberry juice". It may NOT describe
+ *     the drink ("organic energy drink", "made with organic..."), and the USDA
+ *     seal may not appear. Keep the supplier's certificate on file.
+ *     On the site, the word appears only attached to a juice in an ingredient
+ *     list. The lint bans the product-level phrasings below; it cannot tell
+ *     an ingredient use from a product use on its own, so review any new
+ *     sentence that contains the word.
+ *     OPEN QUESTION FOR COUNSEL: the cans print "Organic Juice (...)" inside
+ *     the ingredient panel on the FRONT of the can. Confirm that placement is
+ *     acceptable for a product under 70% organic content.
+ *   - IMAGE COPY: the founder checks the words on every supplied image before
+ *     delivery. imageClaims below is not used for SIX artwork.
+ *   - "NO ADDED SUGAR" and "no sweetener of any kind": a regulated nutrient
+ *     content claim and an absence claim. Need the finished panel.
+ *   - "NATURAL CAFFEINE": in the brief, deliberately NOT used on the site. The
+ *     copy names the source printed on the can instead: green coffee beans.
+ *   - Time and money comparisons are illustrative estimates, and every place
+ *     they appear prints their assumptions. No named café or competitor.
+ *   - The trademark and registered symbols must never appear: nothing is
+ *     registered. The lint rejects both characters.
+ *
+ * ---------------------------------------------------------------------------
  * RULES FOR ANY STRING ADDED HERE
  * ---------------------------------------------------------------------------
  *
@@ -314,120 +355,52 @@ const claimsSchema = z.object({
 
 export const claims = claimsSchema.parse({
   productDescriptor:
-    '[[PLACEHOLDER: one sentence describing what is in the can. Composition only, no effect language.]]',
+    'A sparkling can made with real fruit juice. Six ingredients: carbonated water, two organic fruit juices, caffeine from green coffee beans, L-theanine from green tea, and salt.',
 
   compositionPoints: [
-    // Confirmed: printed on all three packaging renders.
-    {
-      label: '220mg caffeine from green coffee beans',
-      detail: 'Per 12 fl oz can.',
-      confirmed: true,
-    },
-    {
-      label: 'Made with organic fruit juice',
-      // The juice is a BLEND and the can names it. Lime is lime and apple,
-      // pineapple is pineapple and lime, cranberry is cranberry and apple.
-      // Per-flavor lists live on the flavor entries.
-      detail: 'A named blend, printed on the front of the can.',
-      confirmed: true,
-    },
-    {
-      label: 'Acacia fiber',
-      detail: 'A natural soluble fiber. Per 12 fl oz can.',
-      confirmed: true,
-    },
-    // CAFFEINE FIGURE HISTORY -- the number has now moved three times:
-    //   150mg  discussed early in development
-    //   160mg  first-generation packaging renders
-    //   200mg  founder direction
-    //   220mg  second-generation packaging (current, and used here)
-    //
-    // The site and the can now AGREE at 220mg, which they did not before.
-    // Keep them in lockstep: FDA treats this site as labeling, so any future
-    // change has to land in both places in the same breath.
-    {
-      label: '200mg L-theanine from green tea',
-      detail: 'Per 12 fl oz can.',
-      confirmed: true,
-    },
-    {
-      label: '[[PLACEHOLDER: juice percentage. Also the open question for the "healthy" claim.]]',
-      confirmed: false,
-    },
-    {
-      label: '[[PLACEHOLDER: sweetener approach, stated as composition]]',
-      confirmed: false,
-    },
+    { label: '20% juice, from concentrate, reconstituted to single strength', confirmed: true },
+    // Ingredient identification only. The beverage is not certified.
+    { label: 'Juices identified as organic in the ingredient list (certified supplier)', confirmed: true },
+    { label: '220mg caffeine from green coffee beans', detail: 'Per 12 fl oz can.', confirmed: true },
+    { label: '200mg L-theanine from green tea', detail: 'Per 12 fl oz can.', confirmed: true },
+    // Regulated nutrient content claim (21 CFR 101.60(c)(2)). Plausible: no
+    // ingredient is a sweetener, and juice sugars are intrinsic, not added.
+    // Total sugars will not be zero. Have the finished panel in hand.
+    { label: 'No added sugar', confirmed: true },
+    // Absence claim. Must hold for the finished formula and processing aids.
+    { label: 'No sweetener of any kind', confirmed: true },
   ],
 
-  absencePoints: [
-    { label: '[[PLACEHOLDER: e.g. "No artificial colors"]]', confirmed: false },
-    { label: '[[PLACEHOLDER: e.g. "No artificial flavors"]]', confirmed: false },
-    { label: '[[PLACEHOLDER: carbohydrate/sugar statement, stated factually]]', confirmed: false },
-  ],
+  absencePoints: [],
 
   disclosures: {
-    // Matches the packaging exactly. Keep these two in sync.
     caffeine: 'Contains 220mg caffeine per 12 fl oz can.',
-    // Category-standard advisory. At 200mg per can this is worth carrying
-    // whether or not it is strictly required. Confirm exact wording with counsel.
+    // Shown in the site footer on every page. Confirm exact wording with
+    // counsel; keep it in step with the can.
     notRecommendedFor:
-      'Not recommended for children, or for people sensitive to caffeine.',
+      'Not recommended for children, pregnant or nursing women, or anyone sensitive to caffeine.',
     general: undefined,
   },
 
-  imageClaims: [
-    {
-      asset: 'brand-board',
-      where: 'Wholesale page, full-bleed under the intro',
-      // Transcribed from src/assets/brand-board.png. SECOND BOARD: the copy
-      // changed substantially from the first one, so this is a fresh
-      // transcription, not an edit.
-      transcript: [
-        'SANS',
-        'ENERGY DRINK',
-        "What's important is what's not in it.",
-        '0 ADDED SUGAR',
-        'NO ARTIFICIAL INGREDIENTS',
-        'NO PRESERVATIVES',
-        'REAL ENERGY. A CLEANER WAY.',
-        'INGREDIENTS',
-        'Carbonated Water',
-        'Organic Juice (Lime and Apple)',
-        'Organic Juice (Pineapple and Lime)',
-        'Organic Juice (Cranberry and Apple)',
-        'Caffeine (From Green Coffee Beans) 220 MG',
-        'L-Theanine (From Green Tea) 400 MG',
-        'Acacia (Natural Fiber)',
-        'Salt (For Balance)',
-        'LIME',
-        'PINEAPPLE',
-        'CRANBERRY',
-        'NATURAL ENERGY',
-        '220 MG CAFFEINE (FROM GREEN COFFEE BEANS)',
-        'CALM FOCUS',
-        '400 MG L-THEANINE (FROM GREEN TEA)',
-        'PLANT-BASED GOODNESS',
-        'ACACIA (NATURAL FIBER)',
-        'REAL FRUIT JUICE',
-        'LIME, PINEAPPLE OR CRANBERRY',
-        'SIMPLE INGREDIENTS. BIG DIFFERENCE.',
-      ],
-      // None of these trip prohibitedTerms, so the build passes. That is NOT
-      // the same as being cleared, and this board is riskier than the last one.
-      needsReview: [
-        'CALM FOCUS',        // see 4d below. The most exposed line on the site.
-        'NATURAL ENERGY',
-        '0 ADDED SUGAR',     // regulated nutrient content claim
-        'NO PRESERVATIVES',
-        'NO ARTIFICIAL INGREDIENTS',
-        'REAL ENERGY. A CLEANER WAY.',
-      ],
-    },
-  ],
+  // Not used for SIX artwork: the founder checks image copy before delivery.
+  // The SANS board and competitor label transcripts were retired with them.
+  imageClaims: [],
 
-  // Enforced by the build-time copy lint added in stage 5.
+  // Enforced by scripts/lint-copy.mjs, which fails the build if any of these
+  // appear in rendered text. Matched case-insensitively on word boundaries.
   prohibitedTerms: [
+    // The beverage is not certified organic. "organic" may only name an
+    // ingredient, so these product-level phrasings are banned outright.
+    'certified organic',
+    'usda organic',
+    'made with organic',
+    'organic energy',
+    'organic drink',
+    'organic beverage',
+    'organic can',
+    'organic juice drink',
+    '100% organic',
+    // Health and function. Composition only, never an effect on the body.
     'healthy',
     'healthful',
     'all natural',
@@ -440,12 +413,42 @@ export const claims = claimsSchema.parse({
     'depression',
     'fights fatigue',
     'burns fat',
-    'metabolism booster',
+    'metabolism',
+    'supports focus',
+    'focus',
     'clinically proven',
     'doctor recommended',
     'cures',
     'treats',
     'prevents',
+    // Category language the brand does not use.
+    'unleash',
+    'fuel',
+    'crush',
+    'elevate',
+    'elevated',
+    'game-changer',
+    'game changer',
+    'clean energy',
+    'zero compromise',
+    // The drink is thin bodied and crisp. Never describe it otherwise.
+    'creamy',
+    'smooth',
+    'full-bodied',
+    'full bodied',
+    // Never state the price-name coincidence.
+    'six dollars',
+    'six bucks',
+    // No named competitors or cafés, anywhere.
+    'starbucks',
+    'dunkin',
+    'celsius',
+    'spindrift',
+    'red bull',
+    'monster',
+    'bang',
+    'alani',
+    'ghost',
   ],
 });
 

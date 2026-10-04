@@ -8,7 +8,14 @@
  * no dangling labels.
  */
 import Wordmark from './Wordmark.astro';
+import Tally from './Tally.astro';
 import { site } from '../data/site';
+import { claims } from '../data/claims';
+
+// Shown on every page. Required: see claims.ts.
+const advisory = [claims.disclosures.caffeine, claims.disclosures.notRecommendedFor]
+  .filter(Boolean)
+  .join(' ');
 
 const contacts = [
   { label: 'Trade', email: site.contact.trade },
@@ -23,7 +30,8 @@ const year = new Date().getFullYear();
   <div class="container site-footer__inner">
     <div class="site-footer__brand">
       <Wordmark size="sm" />
-      {site.brand.tagline && <p class="caption">{site.brand.tagline}</p>}
+      {site.brand.tagline && <p class="site-footer__tagline">{site.brand.tagline}</p>}
+      <Tally size={0.7} class="site-footer__tally" />
     </div>
 
     {
@@ -69,6 +77,7 @@ const year = new Date().getFullYear();
   </div>
 
   <div class="container">
+    {advisory && <p class="site-footer__advisory">{advisory}</p>}
     <p class="caption site-footer__legal">
       &copy; {year} {site.brand.legalName ?? site.brand.name}. All rights reserved.
     </p>
@@ -95,6 +104,7 @@ const year = new Date().getFullYear();
   }
 
   .site-footer__heading {
+    font-family: var(--font-family);
     font-size: var(--text-caption);
     font-weight: var(--font-weight-medium);
     color: var(--color-ink-muted);
@@ -110,7 +120,25 @@ const year = new Date().getFullYear();
     gap: var(--space-3xs);
   }
 
-  .site-footer__legal {
+  .site-footer__tagline {
+    font-family: var(--font-family-display);
+    font-size: var(--text-h3);
+  }
+
+  .site-footer__brand :global(.site-footer__tally) {
+    margin-block-start: var(--space-2xs);
+    color: var(--color-accent-text);
+  }
+
+  .site-footer__advisory {
     margin-block-start: var(--space-xl);
+    padding-block-start: var(--space-sm);
+    border-block-start: var(--rule);
+    max-inline-size: var(--measure);
+    font-size: var(--text-small);
+  }
+
+  .site-footer__legal {
+    margin-block-start: var(--space-sm);
   }
 </style>

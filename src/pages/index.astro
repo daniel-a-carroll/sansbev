@@ -1,654 +1,783 @@
 ---
 /**
- * PRE-LAUNCH LANDING PAGE.
+ * HOME.
  *
- * The only job is turning a visitor into an email subscriber. There is no
- * product for sale and will not be for months.
+ * The page is built around one idea: the name and the proof are the same
+ * thing. Six real ingredients, set large, as the first substantive thing a
+ * visitor reads after the headline. If the list ever moves into an accordion
+ * or below the fold of a nutrition panel, the page has failed at its one job.
  *
- * STRUCTURE: every section names a problem the reader already feels, gives the
- * solution, and backs it with proof. The proof is compositional. The ingredient
- * panel is the evidence, and a six-item list a person can verify beats any
- * claim we could write. Where a photographed label does the work, the copy
- * stays out of the way.
+ * Order, from the brief:
+ *   1. Hero         the time claim, not the product. One CTA.
+ *   2. The rule     "Never more than six." A manifesto moment.
+ *   3. The six      the ingredient list as the hero element of the page.
+ *   4. The math     time and money, set like a receipt.
+ *   5. The drinks   three SKUs, cranberry first and dominant.
+ *   6. Subscribe    every fourth case free. The capture lives here.
+ *   7. FAQ          the deadpan register.
+ *   (8. Footer      the caffeine advisory, in SiteFooter.)
  *
- * EVERY SECTION ENDS WITH A CAPTURE, each tagged with its own `source`, so
- * someone convinced by the juice section never has to scroll to the ask, and so
- * we learn which proof actually converts.
+ * LAYOUT. One editorial grid throughout: a narrow margin column on the left
+ * carries the small section label, the content sits to its right. Nothing is
+ * centred.
  *
- * Section order follows the spec's priority: the label and juice sections do
- * the most work because their proof is unfalsifiable.
- *
- * Copy lives in src/data/landing.ts. Read the header there before editing: it
- * lists what must never appear on this page.
+ * Copy is in src/data/landing.ts, figures in src/data/numbers.ts, the brand
+ * name in src/data/site.ts. Nothing is written here.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Asset from '../components/Asset.astro';
 import JsonLd from '../components/JsonLd.astro';
-import IngredientPanel from '../components/IngredientPanel.astro';
-import CompetitorLabel from '../components/CompetitorLabel.astro';
+import Tally from '../components/Tally.astro';
+import Asset from '../components/Asset.astro';
+import { flavorSlot } from '../lib/assets';
 import JoinForm from '../components/forms/JoinForm.astro';
-import Reactions from '../components/Reactions.astro';
 import { getCollection } from 'astro:content';
 import { landing } from '../data/landing';
 import { copy } from '../data/copy';
-import { flavorSlot } from '../lib/assets';
+import { assumptions, product } from '../data/numbers';
 import { organizationSchema } from '../lib/schema';
 
 const flavors = (await getCollection('flavors', ({ data }) => !data.draft)).sort(
   (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99)
 );
-const lead = flavors[0];
+const [lead] = flavors;
 
-// Panels render per flavour, from the flavor data, so they can never disagree
-// with the can. The lists differ only in the juice blend.
-const fieldStyle = lead?.data.color ? `--field: ${lead.data.color.field}` : undefined;
+/*
+ * THE SIX, derived from the flavor data so the page can never disagree with
+ * the label. Every SKU has the same six slots; a slot whose value differs
+ * between SKUs (today, only the named fruit) renders one span per SKU and the
+ * switcher shows the selected one. If a SKU ever lists more than six, the
+ * build fails here rather than quietly breaking the rule on the page.
+ */
+for (const f of flavors) {
+  const n = f.data.ingredients?.length ?? 0;
+  if (n > product.maxIngredients) {
+    throw new Error(`${f.data.name} lists ${n} ingredients. The rule is never more than ${product.maxIngredients}.`);
+  }
+}
+// "Organic" identifies an INGREDIENT (the supplier's juice is certified), never
+// the drink, which is not. So it stays part of the ingredient's name, set as a
+// small qualifier above it rather than in the note, where it would read as a
+// claim about the can. It also keeps each name on one line at display size.
+// See the ORGANIC note in src/data/claims.ts.
+const ORGANIC = /^organic /i;
+const slots = (lead?.data.ingredients ?? []).map((_, i) => {
+  const raw = flavors.map((f) => f.data.ingredients?.[i] ?? '');
+  const qualifier = raw.every((v) => ORGANIC.test(v)) ? 'Organic' : undefined;
+  const values = flavors.map((f, j) => {
+    const v = qualifier ? raw[j]!.replace(ORGANIC, '') : raw[j]!;
+    return { id: f.id, value: v.charAt(0).toUpperCase() + v.slice(1) };
+  });
+  const varies = new Set(values.map((v) => v.value)).size > 1;
+  return { varies, values, qualifier, note: landing.six.notes[i] };
+});
 
-const theanineAmounts = [...new Set(
-  flavors.map((f) => f.data.lTheanineMg).filter((v): v is number => v !== undefined)
-)];
-const theanineMg = theanineAmounts.length === 1 ? theanineAmounts[0] : undefined;
-const caffeineAmounts = [...new Set(
-  flavors.map((f) => f.data.caffeineMg).filter((v): v is number => v !== undefined)
-)];
-const caffeineMg = caffeineAmounts.length === 1 ? caffeineAmounts[0] : undefined;
+// The switcher is plain radio inputs and CSS :has(), so it works without
+// JavaScript and degrades to the lead SKU's list where :has() is unsupported.
+const switcherCss = flavors
+  .map((f) => {
+    const c = f.data.color;
+    return [
+      `.six:has(#sku-${f.id}:checked) { --sku: ${c?.ink ?? 'var(--color-accent-text)'}; }`,
+      `.six:has(#sku-${f.id}:checked) [data-sku]:not([data-sku="${f.id}"]) { display: none; }`,
+    ].join('\n');
+  })
+  .join('\n');
+
+const skuStyle = (f: (typeof flavors)[number]) =>
+  f.data.color ? `--field: ${f.data.color.field}; --on-field: ${f.data.color.onText}` : undefined;
+
+const pair = (f: (typeof flavors)[number]) => {
+  // "Cranberry and pear." from the two juice lines, so it follows the label.
+  const juices = (f.data.ingredients ?? []).filter((i) => / juice$/i.test(i));
+  const names = juices.map((j, i) => {
+    const word = j.replace(/^organic /i, '').replace(/ juice$/i, '');
+    return i === 0 ? word.charAt(0).toUpperCase() + word.slice(1) : word.toLowerCase();
+  });
+  return names.length ? `${names.join(' and ')}.` : undefined;
+};
+const spec = `${product.caffeineMg} mg caffeine. ${product.lTheanineMg} mg L-theanine. ${product.canFlOz} fl oz.`;
 ---
 
-<BaseLayout
-  title={copy.home.seo.title}
-  description={copy.home.seo.description}
-  minimalHeader={true}
->
+<BaseLayout title={copy.home.seo.title} description={copy.home.seo.description} minimalHeader={true}>
   <JsonLd schema={organizationSchema()} />
+  <Fragment set:html={`<style>${switcherCss}</style>`} />
 
-  {/* 1. HERO. The visual is the panel, not a lifestyle shot. Capture is above
-       the fold: nobody should have to scroll to subscribe.
-
-       Every flavour's can and list is rendered, with the lead one shown and the
-       controls hidden. src/scripts/flavor-carousel.ts reveals the controls and
-       switches between them, so with JavaScript off this is exactly the static
-       hero it was before, with no dead buttons.
-
-       Cycling is also on-message: the only line that changes between flavours
-       is the juice. The list makes that visible without a sentence about it. */}
+  {/* 1. HERO */}
   <section class="hero">
-    <div class="container grid hero__inner" data-flavor-carousel>
-      <div class="hero__text">
-        <p class="label">{landing.hero.eyebrow}</p>
+    <div class="container grid">
+      <div class="hero__mark">
+        <Tally size={0.9} />
+      </div>
+      <div class="hero__body">
         <h1 class="hero__headline display">{landing.hero.headline}</h1>
-        <p class="hero__sub">{landing.hero.subheadIntro}</p>
-
-        <div class="hero__panels">
-          {flavors.map((flavor, i) => (
-            <div class="hero__panel" data-flavor-panel={i} hidden={i !== 0}>
-              <IngredientPanel
-                ingredients={flavor.data.ingredients ?? []}
-                numbered={true}
-              />
-            </div>
-          ))}
+        <div class="hero__sub">
+          {landing.hero.sub.map((p) => <p>{p}</p>)}
         </div>
-
-        <JoinForm source="hero" label={landing.hero.captureLabel} />
-      </div>
-
-      <div class="hero__figure">
-        {/* The stage is the coloured rectangle AND the clipping window. Cans
-            slide within it, so one leaving simply disappears at the colour's
-            edge rather than tracking across the cream page. */}
-        <div class="hero__stage" style={fieldStyle}>
-          <div class="hero__field" data-flavor-field aria-hidden="true"></div>
-          <div class="hero__wipe" data-flavor-wipe aria-hidden="true"></div>
-
-          {flavors.map((flavor, i) => (
-            <div class="hero__can" data-flavor-can={i} hidden={i !== 0}
-                 data-can-name={flavor.data.name}
-                 data-can-color={flavor.data.color?.field}>
-              <Asset
-                slot={flavorSlot(flavor.id, 'can-front')}
-                alt={`The front of the ${flavor.data.name} can, showing its full ingredient list.`}
-                sizes="(min-width: 48rem) 28vw, 60vw"
-                loading="eager"
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* Hidden until the script runs, so no-JS never sees a dead control. */}
-        <div class="flavors" data-flavor-controls hidden>
-          <button type="button" class="flavors__btn" data-flavor-prev aria-label="Previous flavour">
-            <span aria-hidden="true">&#8592;</span>
-          </button>
-          <span class="flavors__name" data-flavor-current aria-live="polite">
-            {lead?.data.name}
-          </span>
-          <button type="button" class="flavors__btn" data-flavor-next aria-label="Next flavour">
-            <span aria-hidden="true">&#8594;</span>
-          </button>
+        <div class="hero__action">
+          <a class="cta plain" href={landing.hero.ctaHref}>{landing.hero.ctaLabel}</a>
+          <p class="hero__product caption">
+            {landing.hero.productLine}
+            <br /><a href="#math">{landing.hero.estimateNote}</a>
+          </p>
         </div>
       </div>
     </div>
   </section>
 
-  {/* 2. READ THE LABEL. The longest section, and the most load-bearing. Ours
-       beside theirs at comparable size; the length differential argues. */}
-  <section class="section proof">
-    <div class="container">
-      <p class="proof__problem">{landing.label.problem}</p>
-      <h2>{landing.label.heading}</h2>
-      {landing.label.body.map((p) => <p class="proof__body prose">{p}</p>)}
-
-      <div class="grid compare">
-        <div class="compare__ours">
-          {flavors.map((flavor, i) => (
-            <div data-flavor-panel={i} hidden={i !== 0}>
-              <IngredientPanel
-                ingredients={flavor.data.ingredients ?? []}
-                heading={landing.label.oursHeading}
-                numbered={true}
-              />
-            </div>
-          ))}
-        </div>
-        <div class="compare__theirs">
-          <p class="label compare__theirs-heading">{landing.label.theirsHeading}</p>
-          {landing.label.competitors.map((c) => (
-            <CompetitorLabel
-              asset={c.asset}
-              brand={c.brand}
-              caption={c.caption}
-              showBrand={false}
-              sizes="(min-width: 48rem) 55vw, 90vw"
-            />
-          ))}
+  {/* 2. THE RULE */}
+  <section class="section rule" aria-labelledby="rule-heading">
+    <div class="container grid">
+      <p class="label margin">{landing.rule.label}</p>
+      <div class="rule__body">
+        <h2 id="rule-heading" class="rule__heading display">{landing.rule.heading}</h2>
+        <div class="rule__text">
+          {landing.rule.body.map((p) => <p>{p}</p>)}
         </div>
       </div>
-
-      <JoinForm source="label" label={landing.label.captureLabel} />
     </div>
   </section>
 
-  {/* 3. REAL JUICE. Our 20% is the headline; their 0% is the caption to the
-       evidence. Setting a competitor's line in the largest type on the section
-       would spend our emphasis amplifying their phrase. */}
-  <section class="section proof">
-    <div class="container">
-      <p class="proof__problem">{landing.juice.problem}</p>
-      <h2 class="juice__claim">{landing.juice.heading}</h2>
-      {landing.juice.subhead && <p class="juice__sub">{landing.juice.subhead}</p>}
-      {landing.juice.body.map((p) => <p class="proof__body prose">{p}</p>)}
+  {/* 3. THE SIX. The largest type on the page. */}
+  <section class="section six" aria-labelledby="six-heading">
+    <div class="container grid">
+      <p class="label margin">{landing.six.label}</p>
 
-      {landing.juice.competitors.length > 0 && (
-        <div class="theirs">
-          <h3 class="theirs__heading">{landing.juice.competitorHeading}</h3>
-          {landing.juice.competitorNote && (
-            <p class="theirs__note prose">{landing.juice.competitorNote}</p>
-          )}
-        </div>
-      )}
+      <div class="six__body">
+        <h2 id="six-heading" class="visually-hidden">{landing.six.heading}</h2>
 
-      {landing.juice.competitors.length > 0 && (
-        <ul class="evidence">
-          {landing.juice.competitors.map((c) => (
-            <li>
-              <CompetitorLabel
-                asset={c.asset}
-                brand={c.brand}
-                caption={c.caption}
-                sizes="(min-width: 48rem) 30vw, 90vw"
-              />
-            </li>
-          ))}
-        </ul>
-      )}
-
-      <JoinForm source="juice" label={landing.juice.captureLabel} />
-    </div>
-  </section>
-
-  {/* 4. NOTHING TO SWEETEN IT. State the sugar number ourselves. Omitting it
-       would be the one dishonest move on a page built on not overstating. */}
-  <section class="section proof">
-    <div class="container">
-      <p class="proof__problem">{landing.sweetener.problem}</p>
-      <h2>{landing.sweetener.heading}</h2>
-      {landing.sweetener.body.map((p) => <p class="proof__body prose">{p}</p>)}
-
-      {landing.sweetener.facts.length > 0 && (
-        <ul class="facts">
-          {landing.sweetener.facts.map((f) => (
-            <li>
-              <span class="facts__value display">{f.value}</span>
-              <span class="facts__label">{f.label}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {landing.sweetener.categorySweeteners.length > 0 && (
-        <div class="sweeteners">
-          <h3 class="sweeteners__heading">{landing.sweetener.categorySweetenersHeading}</h3>
-          <p class="sweeteners__note caption">{landing.sweetener.categorySweetenersNote}</p>
-          <ul class="sweeteners__list">
-            {landing.sweetener.categorySweeteners.map((name) => <li>{name}</li>)}
-          </ul>
-        </div>
-      )}
-
-      <JoinForm source="sweetener" label={landing.sweetener.captureLabel} />
-    </div>
-  </section>
-
-  {/* 6. THE CONSTRAINT. The most shareable element on the page, so it gets the
-       one dark band. Rules the brand is bound by, not features it added. */}
-  <section class="band band--flavor constraint">
-    <div class="container">
-      <h2 class="constraint__heading">{landing.constraint.heading}</h2>
-      {landing.constraint.intro && (
-        <p class="constraint__intro prose">{landing.constraint.intro}</p>
-      )}
-      <ul class="constraint__rules">
-        {landing.constraint.rules.map((r) => <li>{r}</li>)}
-      </ul>
-      <JoinForm source="constraint" label={landing.constraint.captureLabel} tone="dark" />
-    </div>
-  </section>
-
-  {/*
-    5. CAFFEINE AND L-THEANINE.
-
-    DELIBERATELY THE SHORTEST SECTION, and placed late. It is the only place the
-    reader is asked to trust research rather than read a label, which makes it
-    the weakest proof on the page and the most tempting to overwrite.
-
-    !! REGULATORY REVIEW REQUIRED BEFORE LAUNCH !!
-    This is the one section that describes what an ingredient does. On a
-    CONVENTIONAL FOOD a structure/function claim must derive from nutritive
-    value, and L-theanine is not generally treated as nutritive. The research is
-    presented AS RESEARCH, on the two compounds and not on this drink, and the
-    note beside it says so explicitly. Do not paraphrase the findings into a
-    claim about the can. See src/data/claims.ts.
-  */}
-  <section class="section proof pairing">
-    <div class="container">
-      <p class="proof__problem">{landing.pairing.problem}</p>
-      <h2>{landing.pairing.heading}</h2>
-
-      <div class="grid pairing__inner">
-        <div class="pairing__amounts">
-          {caffeineMg !== undefined && (
-            <p class="pairing__amount">
-              <span class="display">{caffeineMg}<span class="pairing__unit">mg</span></span>
-              <span class="pairing__what">caffeine, from green coffee beans</span>
-            </p>
-          )}
-          {theanineMg !== undefined && (
-            <p class="pairing__amount">
-              <span class="display">{theanineMg}<span class="pairing__unit">mg</span></span>
-              <span class="pairing__what">L-theanine, from green tea</span>
-            </p>
-          )}
-        </div>
-
-        <div class="pairing__text prose">
-          {landing.pairing.body.map((p) => <p>{p}</p>)}
-          <h3>{landing.pairing.researchHeading}</h3>
-          <p class="caption">{landing.pairing.researchNote}</p>
-          <ol class="research">
-            {landing.pairing.research.map((r) => (
-              <li>
-                {r.url ? <a href={r.url}>{r.citation}</a> : r.citation}
-              </li>
+        {flavors.length > 1 && (
+          <fieldset class="switcher">
+            <legend class="caption switcher__legend">{landing.six.switcherLabel}</legend>
+            {flavors.map((f, i) => (
+              <span class="switcher__option">
+                <input
+                  class="visually-hidden"
+                  type="radio"
+                  name="sku"
+                  id={`sku-${f.id}`}
+                  value={f.id}
+                  checked={i === 0}
+                />
+                <label for={`sku-${f.id}`}>{f.data.name}</label>
+              </span>
             ))}
-          </ol>
-        </div>
-      </div>
+          </fieldset>
+        )}
 
-      <JoinForm source="pairing" label={landing.pairing.captureLabel} />
+        <ol class="six__list">
+          {slots.map((slot, i) => (
+            <li class="six__item">
+              <span class="six__n" aria-hidden="true">{i + 1}</span>
+              <span class="six__name">
+                {slot.qualifier && <span class="six__qual">{slot.qualifier} </span>}
+                {slot.varies
+                  ? slot.values.map((v) => (
+                      <span class="six__variant" data-sku={v.id}>{v.value}</span>
+                    ))
+                  : slot.values[0]?.value}
+              </span>
+              {slot.note && <span class="six__note">{slot.note}</span>}
+            </li>
+          ))}
+        </ol>
+
+        <ul class="facts">
+          {landing.six.facts.map((f) => (
+            <li>
+              <span class="facts__value">{f.value}</span>
+              <span class="facts__text">{f.text}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   </section>
 
-  {/* 7. REACTIONS. Built, and hidden until there is something real in it. */}
-  <Reactions />
+  {/* 4. THE MATH. A receipt, not a graphic. */}
+  <section class="section math" id="math" aria-labelledby="math-heading">
+    <div class="container grid">
+      <p class="label margin">{landing.math.label}</p>
+      <div class="math__body">
+        <h2 id="math-heading" class="math__heading">{landing.math.heading}</h2>
 
+        {[landing.math.money, landing.math.time].map((block) => (
+          <table class="receipt">
+            <caption class="label">{block.heading}</caption>
+            <tbody>
+              {block.rows.map((r) => (
+                <tr>
+                  <th scope="row">{r.item}</th>
+                  <td>{r.amount}</td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot>
+              <tr>
+                <th scope="row">{block.total.item}</th>
+                <td>{block.total.amount}</td>
+              </tr>
+            </tfoot>
+          </table>
+        ))}
+
+        <div class="math__notes caption">
+          {assumptions.map((a) => <p>{a}</p>)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* 5. THE DRINKS. Cranberry leads and takes the most room. */}
+  <section class="section drinks" aria-labelledby="drinks-heading">
+    <div class="container grid">
+      <p class="label margin">{landing.drinks.label}</p>
+      <h2 id="drinks-heading" class="drinks__heading">{landing.drinks.heading}</h2>
+    </div>
+
+    <div class="container">
+      <ul class="drinks__grid">
+        {flavors.map((f, i) => (
+          <li class:list={['drink', { 'drink--lead': i === 0 }]} style={skuStyle(f)}>
+            <div class="drink__text">
+              <div class="drink__top">
+                <Tally size={i === 0 ? 1.1 : 0.8} />
+                {landing.drinks.kicker[f.id] && (
+                  <span class="drink__kicker">{landing.drinks.kicker[f.id]}</span>
+                )}
+              </div>
+              <h3 class="drink__name">{f.data.name}</h3>
+              <div class="drink__meta">
+                {pair(f) && <p class="drink__pair">{pair(f)}</p>}
+                <p class="drink__spec">{spec}</p>
+              </div>
+            </div>
+            <div class="drink__can">
+              <Asset
+                slot={flavorSlot(f.id, 'can-front')}
+                alt={`The ${f.data.name} can, with its six ingredients printed on the front.`}
+                sizes={i === 0 ? '(min-width: 48rem) 18vw, 40vw' : '(min-width: 48rem) 9vw, 28vw'}
+              />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* 6. SUBSCRIPTION. The one capture on the page. */}
+  <section class="section subscribe" id={landing.subscription.id} aria-labelledby="subscribe-heading">
+    <div class="container grid">
+      <p class="label margin">{landing.subscription.label}</p>
+      <div class="subscribe__body">
+        <h2 id="subscribe-heading" class="subscribe__heading display">{landing.subscription.heading}</h2>
+        <div class="subscribe__text">
+          {landing.subscription.body.map((p) => <p>{p}</p>)}
+        </div>
+        <JoinForm source="subscribe" label={landing.subscription.captureLabel} />
+      </div>
+    </div>
+  </section>
+
+  {/* 7. FAQ. Long question, short answer. The gap is the joke. */}
+  <section class="section faq" aria-labelledby="faq-heading">
+    <div class="container grid">
+      <h2 id="faq-heading" class="label margin">{landing.faq.label}</h2>
+      <dl class="faq__list">
+        {landing.faq.items.map((item) => (
+          <div class="faq__item">
+            <dt>{item.q}</dt>
+            <dd>{item.a}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
 </BaseLayout>
 
 <script>
   import '../scripts/forms';
-  import '../scripts/flavor-carousel';
 </script>
 
 <style>
+  /* --- Grid -------------------------------------------------------------
+     Margin column: 1-2. Content: 3-12. Collapses to one column at 48rem via
+     the global .grid rule. */
+  .margin {
+    grid-column: 1 / span 2;
+    padding-block-start: 0.6em;
+  }
+
+  /* --- 1. Hero --------------------------------------------------------- */
   .hero {
-    padding-block: var(--space-xl) 0;
-    overflow-x: clip;
+    padding-block: var(--space-2xl) var(--space-3xl);
   }
 
-  .hero__inner {
-    align-items: start;
+  .hero__mark {
+    grid-column: 1 / span 2;
+    color: var(--color-accent-text);
+    padding-block-start: 1.1em;
   }
 
-  .hero__text {
-    grid-column: 1 / span 7;
+  .hero__body {
+    grid-column: 3 / span 9;
   }
 
   .hero__headline {
-    margin-block-start: var(--space-2xs);
+    max-inline-size: 16ch;
+    font-variation-settings: 'opsz' 72;
   }
 
   .hero__sub {
-    margin-block-start: var(--space-md);
+    margin-block-start: var(--space-lg);
+    max-inline-size: 34rem;
     font-size: var(--text-h3);
+    line-height: 1.45;
     color: var(--color-ink-muted);
   }
 
-  .hero__panel {
-    margin-block-start: var(--space-md);
-    max-inline-size: 26rem;
-  }
-
-  .hero__figure {
-    grid-column: 9 / span 4;
-    display: grid;
-    grid-template-rows: 1fr auto;
-    padding-block-start: var(--space-lg);
-  }
-
-  /* The coloured rectangle, and the window the cans move inside. `clip` rather
-     than `hidden` so it never becomes a scroll container. It bleeds off the
-     right exactly as the field did before. */
-  .hero__stage {
-    grid-row: 1;
-    position: relative;
-    overflow: clip;
-    margin-inline: 10% -30%;
-    display: grid;
-    place-items: end center;
-    padding-block-start: var(--space-lg);
-  }
-
-  .hero__field {
-    position: absolute;
-    inset: 0;
-    background-color: var(--field, var(--color-accent));
-    transform-origin: bottom;
-    /* On first load there is nothing behind, so the base itself rises. */
-    animation: field-rise var(--duration-considered) var(--ease-out) both;
-  }
-
-  /* The incoming colour, rising over the outgoing one. Idle at zero height. */
-  .hero__wipe {
-    position: absolute;
-    inset: 0;
-    background-color: var(--wipe, transparent);
-    transform-origin: bottom;
-    transform: scaleY(0);
-  }
-
-  /* Stacked in one cell so a switch cannot shift layout, and so the outgoing
-     and incoming cans can occupy the same space mid-transition. */
-  .hero__can {
-    grid-area: 1 / 1;
-    position: relative;
-    align-self: end;
-    will-change: transform, opacity;
-  }
-
-  .hero__stage :global(.asset) {
-    max-inline-size: 15rem;
-  }
-
-  .flavors {
-    grid-row: 2;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-sm);
+  .hero__sub p + p {
     margin-block-start: var(--space-sm);
+    color: var(--color-ink);
   }
 
-  .flavors__btn {
-    display: grid;
-    place-items: center;
-    inline-size: 2.5rem;
-    block-size: 2.5rem;
-    background: transparent;
-    border: 1px solid var(--color-rule-strong);
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: var(--text-body);
-    line-height: 1;
-  }
-
-  .flavors__btn:hover {
-    border-color: var(--color-ink);
-  }
-
-  .flavors__name {
-    min-inline-size: 7ch;
-    text-align: center;
-    font-size: var(--text-small);
-    font-weight: var(--font-weight-medium);
-  }
-
-  @keyframes field-rise {
-    from { transform: scaleY(0); }
-    to { transform: scaleY(1); }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .hero__field { animation: none; }
-  }
-
-  /* Each proof section opens by naming the problem in the reader's words. */
-  .proof__problem {
-    font-size: var(--text-h3);
-    color: var(--color-ink-muted);
-    margin-block-end: var(--space-2xs);
-    max-inline-size: var(--measure);
-  }
-
-  .proof__body {
-    margin-block-start: var(--space-sm);
-  }
-
-  /* Our claim is the largest thing in the section. */
-  .juice__claim {
-    font-size: var(--text-display);
-    font-weight: var(--font-weight-display);
-    line-height: var(--leading-display);
-    letter-spacing: var(--tracking-display);
-    max-inline-size: 18ch;
-  }
-
-  .juice__sub {
-    margin-block-start: var(--space-2xs);
-    font-size: var(--text-h3);
-    color: var(--color-ink-muted);
-  }
-
-  /* Their disclosure, one level down: a caption to the evidence rather than
-     our argument. */
-  .theirs {
-    margin-block-start: var(--space-2xl);
-    padding-block-start: var(--space-md);
-    border-block-start: var(--rule-strong);
-  }
-
-  .theirs__heading {
-    font-size: var(--text-h3);
-  }
-
-  .theirs__note {
-    margin-block-start: var(--space-2xs);
-    color: var(--color-ink-muted);
-  }
-
-  .evidence {
-    margin-block-start: var(--space-md) !important;
-  }
-
-  .compare {
-    margin-block-start: var(--space-xl);
-    align-items: start;
-  }
-
-  .compare__ours {
-    grid-column: 1 / span 4;
-  }
-
-  .compare__theirs {
-    grid-column: 6 / span 7;
-  }
-
-  .compare__theirs-heading {
-    margin-block-end: var(--space-sm);
-  }
-
-  .evidence {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
-    gap: var(--grid-gap);
-    margin-block-start: var(--space-xl);
-    padding: 0;
-    list-style: none;
-  }
-
-  /* A plain wrapped list. The length is the argument, so it is set small and
-     dense and given no emphasis of its own. */
-  .sweeteners {
-    margin-block-start: var(--space-2xl);
-    padding-block-start: var(--space-md);
-    border-block-start: var(--rule-strong);
-  }
-
-  .sweeteners__heading {
-    font-size: var(--text-h3);
-  }
-
-  .sweeteners__note {
-    margin-block-start: var(--space-3xs);
-    max-inline-size: var(--measure);
-  }
-
-  .sweeteners__list {
+  .hero__action {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-2xs) var(--space-sm);
-    margin-block-start: var(--space-md);
+    align-items: center;
+    gap: var(--space-sm) var(--space-lg);
+    margin-block-start: var(--space-xl);
+  }
+
+  .cta {
+    display: inline-block;
+    padding: 0.85rem 2.25rem;
+    background-color: var(--color-ink);
+    color: var(--color-on-ink);
+    font-size: var(--text-small);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: 0.02em;
+    transition: background-color var(--duration-quick) var(--ease-out);
+  }
+
+  .cta:hover {
+    background-color: var(--color-accent);
+  }
+
+  .hero__product {
+    line-height: 1.6;
+  }
+
+  /* --- 2. The rule ----------------------------------------------------- */
+  .rule__body {
+    grid-column: 3 / -1;
+  }
+
+  .rule__heading {
+    font-size: var(--text-six);
+    font-variation-settings: 'opsz' 72;
+    line-height: 0.98;
+  }
+
+  .rule__text {
+    margin-block-start: var(--space-xl);
+    margin-inline-start: auto;
+    max-inline-size: 30rem;
+    font-family: var(--font-family-display);
+    font-size: clamp(1.3rem, 1.1rem + 0.8vw, 1.75rem);
+    line-height: 1.35;
+  }
+
+  .rule__text p + p {
+    margin-block-start: var(--space-sm);
+  }
+
+  /* --- 3. The six ------------------------------------------------------ */
+  .six {
+    --sku: var(--color-accent-text);
+  }
+
+  .six__body {
+    grid-column: 3 / -1;
+  }
+
+  .switcher {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2xs) var(--space-md);
+    margin: 0 0 var(--space-lg);
     padding: 0;
-    list-style: none;
+    border: 0;
+  }
+
+  .switcher__legend {
+    float: left;
+    margin-inline-end: var(--space-sm);
+  }
+
+  .switcher label {
+    cursor: pointer;
     font-size: var(--text-small);
     color: var(--color-ink-muted);
-    max-inline-size: 60rem;
+    padding-block-end: 0.15em;
+    border-block-end: 1px solid transparent;
   }
 
-  .sweeteners__list li::after {
-    content: '·';
-    margin-inline-start: var(--space-sm);
-    opacity: 0.5;
+  .switcher input:checked + label {
+    color: var(--color-ink);
+    border-block-end-color: var(--sku);
   }
 
-  .sweeteners__list li:last-child::after {
-    content: none;
+  .switcher input:focus-visible + label {
+    outline: var(--focus-width) solid var(--color-focus);
+    outline-offset: var(--focus-offset);
+  }
+
+  .six__list {
+    margin: 0;
+    margin-inline-start: calc(-1 * (2rem + var(--space-md)));
+    padding: 0;
+    list-style: none;
+    border-block-start: var(--rule-strong);
+  }
+
+  .six__item {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr) minmax(0, 9rem);
+    align-items: baseline;
+    column-gap: var(--space-md);
+    padding-block: clamp(0.6rem, 0.3rem + 1vw, 1.1rem);
+    border-block-end: var(--rule);
+  }
+
+  .six__n {
+    font-family: var(--font-family-display);
+    font-size: var(--text-h3);
+    color: var(--sku);
+    transition: color var(--duration-quick) var(--ease-out);
+  }
+
+  .six__name {
+    font-family: var(--font-family-display);
+    font-size: var(--text-six);
+    font-variation-settings: 'opsz' 72;
+    font-weight: 350;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .six__qual {
+    display: block;
+    margin-block-end: 0.35rem;
+    font-family: var(--font-family);
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+
+  /* The slot that changes by can is set in that can's colour. */
+  .six__variant {
+    color: var(--sku);
+  }
+
+  .six__variant + .six__variant {
+    display: none;
+  }
+
+  .six__note {
+    font-size: var(--text-small);
+    color: var(--color-ink-muted);
   }
 
   .facts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-xl);
-    margin-block-start: var(--space-xl);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    gap: var(--space-lg) var(--grid-gap);
+    margin: var(--space-2xl) 0 0;
     padding: 0;
     list-style: none;
   }
 
   .facts li {
     display: grid;
-    gap: var(--space-3xs);
+    align-content: start;
+    gap: var(--space-2xs);
   }
 
   .facts__value {
-    font-size: clamp(2.5rem, 1.6rem + 3.4vw, 4rem);
-    line-height: 1;
+    font-family: var(--font-family-display);
+    font-size: var(--text-h2);
+    line-height: 1.1;
   }
 
-  .facts__label {
+  .facts__text {
     font-size: var(--text-small);
     color: var(--color-ink-muted);
-    max-inline-size: 12rem;
+    max-inline-size: 22rem;
   }
 
-  /* Deep green from the lime can. Cream on it is 5.49, AA. */
-  .constraint {
-    --band: var(--c-lime);
-    --band-on: var(--c-cream);
+  @media (max-width: 48rem) {
+    .six__list {
+      margin-inline-start: 0;
+    }
   }
 
-  .constraint__heading {
+  @media (max-width: 40rem) {
+    .six__item {
+      grid-template-columns: 1.75rem minmax(0, 1fr);
+    }
+    .six__note {
+      grid-column: 2;
+      margin-block-start: var(--space-3xs);
+    }
+  }
+
+  /* --- 4. The math ----------------------------------------------------- */
+  .math__body {
+    grid-column: 3 / span 8;
+  }
+
+  .math__heading {
+    font-size: var(--text-h2);
+    margin-block-end: var(--space-xl);
+  }
+
+  .receipt {
+    inline-size: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  .receipt + .receipt {
+    margin-block-start: var(--space-xl);
+  }
+
+  .receipt caption {
+    text-align: start;
+    padding-block-end: var(--space-2xs);
+  }
+
+  .receipt th,
+  .receipt td {
+    padding-block: var(--space-xs);
+    vertical-align: baseline;
+    border-block-start: var(--rule);
+  }
+
+  .receipt th {
+    text-align: start;
+    font-weight: var(--font-weight-body);
+    padding-inline-end: var(--space-lg);
+  }
+
+  .receipt td {
+    text-align: end;
+    white-space: nowrap;
+  }
+
+  /* The total, under a dashed rule, like the bottom of a till roll. */
+  .receipt tfoot th,
+  .receipt tfoot td {
+    border-block-start: 1px dashed var(--color-ink);
+    font-weight: var(--font-weight-medium);
+    padding-block-start: var(--space-sm);
+  }
+
+  .receipt tbody tr:first-child th,
+  .receipt tbody tr:first-child td {
+    border-block-start: var(--rule-strong);
+  }
+
+  @media (max-width: 30rem) {
+    .receipt td {
+      white-space: normal;
+      min-inline-size: 6.5rem;
+    }
+  }
+
+  .math__notes {
+    margin-block-start: var(--space-lg);
     max-inline-size: var(--measure);
   }
 
-  .constraint__intro {
-    margin-block-start: var(--space-sm);
-    opacity: 0.85;
+  .math__notes p + p {
+    margin-block-start: var(--space-2xs);
   }
 
-  .constraint__rules {
-    margin-block-start: var(--space-lg);
+  /* --- 5. The drinks --------------------------------------------------- */
+  .drinks__heading {
+    grid-column: 3 / -1;
+    font-size: var(--text-h2);
+  }
+
+  .drinks__grid {
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    grid-template-rows: 1fr 1fr;
+    gap: var(--grid-gap);
+    margin: var(--space-xl) 0 0;
     padding: 0;
     list-style: none;
-    border-block-start: 1px solid color-mix(in srgb, currentColor 55%, transparent);
-    max-inline-size: 44rem;
   }
 
-  .constraint__rules li {
-    padding-block: var(--space-sm);
-    border-block-end: 1px solid color-mix(in srgb, currentColor 26%, transparent);
-    font-size: var(--text-h3);
+  /* Text on the left, the can standing on the right. The tile clips the can
+     so it can sit low and large without spilling onto the paper. */
+  .drink {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-md);
+    padding: clamp(1.25rem, 0.8rem + 1.8vw, 2.25rem);
+    padding-block-end: 0;
+    background-color: var(--field);
+    color: var(--on-field);
+    min-block-size: 15rem;
+    overflow: clip;
   }
 
-  .pairing__amounts {
-    grid-column: 1 / span 4;
+  .drink__text {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: var(--space-md);
+    padding-block-end: clamp(1.25rem, 0.8rem + 1.8vw, 2.25rem);
   }
 
-  .pairing__text {
-    grid-column: 6 / span 7;
+  .drink__can {
+    align-self: end;
+    inline-size: clamp(4.5rem, 2rem + 6vw, 7.5rem);
+    margin-block-end: -1.5rem;
   }
 
-  .pairing__amount {
+  .drink--lead .drink__can {
+    inline-size: clamp(9rem, 4rem + 12vw, 15rem);
+    margin-block-end: -2.5rem;
+  }
+
+  .drink--lead {
+    grid-row: 1 / span 2;
+    min-block-size: clamp(28rem, 20rem + 20vw, 40rem);
+  }
+
+  .drink__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .drink__kicker {
+    font-size: var(--text-small);
+  }
+
+  .drink__name {
+    align-self: end;
+    font-size: var(--text-h1);
+    font-variation-settings: 'opsz' 72;
+    line-height: 1;
+  }
+
+  /* Sized to the text column beside the can, not to the page: the longest
+     name has to fit without running under it. */
+  .drink--lead .drink__name {
+    font-size: clamp(2.5rem, 0.9rem + 3.6vw, 4.25rem);
+  }
+
+  .drink__meta {
     display: grid;
     gap: var(--space-3xs);
+    font-size: var(--text-small);
   }
 
-  .pairing__amount + .pairing__amount {
+  .drink__spec {
+    opacity: 0.82;
+  }
+
+  /* On a phone the lead tile's text column is narrow: shrink both the name
+     and the can so the longest name clears it. */
+  @media (max-width: 30rem) {
+    .drink--lead .drink__name {
+      font-size: 2.1rem;
+    }
+    .drink--lead .drink__can {
+      inline-size: 7.5rem;
+    }
+  }
+
+  @media (max-width: 48rem) {
+    .drinks__grid {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: none;
+    }
+    .drink--lead {
+      grid-row: auto;
+      min-block-size: 24rem;
+    }
+  }
+
+  /* --- 6. Subscription ------------------------------------------------- */
+  .subscribe__body {
+    grid-column: 3 / span 8;
+  }
+
+  .subscribe__heading {
+    max-inline-size: 14ch;
+    font-variation-settings: 'opsz' 72;
+  }
+
+  .subscribe__text {
     margin-block-start: var(--space-lg);
+    max-inline-size: 36rem;
+    font-size: var(--text-h3);
+    line-height: 1.5;
   }
 
-  .pairing__amount .display {
-    font-size: clamp(2.5rem, 1.6rem + 3.4vw, 4rem);
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .pairing__unit {
-    font-size: 0.35em;
-    font-weight: var(--font-weight-heading);
-    margin-inline-start: 0.12em;
-  }
-
-  .pairing__what {
-    font-size: var(--text-small);
-    color: var(--color-ink-muted);
-  }
-
-  .research {
+  .subscribe__text p + p {
     margin-block-start: var(--space-sm);
-    padding-inline-start: var(--space-md);
-    font-size: var(--text-small);
+  }
+
+  .subscribe :global(.join) {
+    margin-block-start: var(--space-xl);
+  }
+
+  /* --- 7. FAQ ---------------------------------------------------------- */
+  .faq h2.label {
+    font-family: var(--font-family);
+    line-height: var(--leading-body);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .faq__list {
+    grid-column: 3 / -1;
+    margin: 0;
+    border-block-start: var(--rule-strong);
+  }
+
+  .faq__item {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 5fr);
+    gap: var(--space-2xs) var(--grid-gap);
+    align-items: baseline;
+    padding-block: var(--space-md);
+    border-block-end: var(--rule);
+  }
+
+  .faq__item dt {
     color: var(--color-ink-muted);
   }
 
-  .research li + li {
-    margin-block-start: var(--space-2xs);
+  .faq__item dd {
+    margin: 0;
+    font-family: var(--font-family-display);
+    font-size: var(--text-h2);
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  @media (max-width: 40rem) {
+    .faq__item {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 </style>

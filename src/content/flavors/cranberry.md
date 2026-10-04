@@ -1,23 +1,23 @@
 ---
 name: Cranberry
-order: 3
+order: 1
 status: in-development
-description: 'Carbonated water and organic juice (cranberry and apple), with caffeine from green coffee beans, L-theanine from green tea, acacia fiber and salt.'
-# Declared on the front of the can, in label order.
+description: 'Carbonated water, organic cranberry juice and organic pear juice, with caffeine from green coffee beans, L-theanine from green tea, and salt. Six ingredients. No added sugar.'
+# Label order. Six slots on every SKU; the two juice lines change by can.
+# The can prints the two juices on one line, "Organic Juice (Cranberry and Pear)".
 ingredients:
   - Carbonated water
-  - Organic juice (cranberry and apple)
-  - Caffeine (from green coffee beans)
-  - L-theanine (from green tea)
-  - Acacia (natural fiber)
-  - Salt (for balance)
+  - Organic cranberry juice
+  - Organic pear juice
+  - Caffeine
+  - L-theanine
+  - Salt
+juicePercent: 20
 canSizeFlOz: 12
 caffeineMg: 220
 lTheanineMg: 200
 color:
-  field: '#8E1520'
-  onText: '#F9EFE2'
-  ink: '#8E1520'
+  field: '#7A1E26'
+  onText: '#F4EFE6'
+  ink: '#7A1E26'
 ---
-
-The astringency is left in rather than sweetened out. It is the part that makes the fruit recognizable, and the part that makes the can worth finishing.

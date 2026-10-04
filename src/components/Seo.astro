@@ -53,18 +53,10 @@ const ogUrl = og ? new URL(og.image.src, canonical).href : undefined;
 <meta name="twitter:description" content={description} />
 {ogUrl && <meta name="twitter:image" content={ogUrl} />}
 
-<!-- Self-hosted and subset. Only the text face is preloaded: since the real
-     SVG wordmark landed, the Archivo wordmark face is a fallback that normally
-     never renders, so preloading it would download 2KB on every page for
-     nothing. Its @font-face stays declared, so it still works if the SVG is
-     ever removed. -->
-<link
-  rel="preload"
-  href="/fonts/archivo-text-var.woff2"
-  as="font"
-  type="font/woff2"
-  crossorigin
-/>
+<!-- Self-hosted latin subsets. Both faces render above the fold (the serif
+     headline and the grotesk body), so both are preloaded. -->
+<link rel="preload" href="/fonts/newsreader-var.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/instrument-sans-var.woff2" as="font" type="font/woff2" crossorigin />
 
 {
   site.analytics.cloudflareToken && (

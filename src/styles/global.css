@@ -33,6 +33,7 @@ body {
   line-height: var(--leading-body);
   letter-spacing: var(--tracking-body);
   font-variant-numeric: tabular-nums;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -59,6 +60,7 @@ h1,
 h2,
 h3,
 h4 {
+  font-family: var(--font-family-display);
   font-weight: var(--font-weight-heading);
   line-height: var(--leading-heading);
   letter-spacing: var(--tracking-heading);
@@ -82,6 +84,7 @@ li {
 
 /* The display register. */
 .display {
+  font-family: var(--font-family-display);
   font-size: var(--text-display);
   font-weight: var(--font-weight-display);
   line-height: var(--leading-display);
@@ -107,11 +110,10 @@ li {
   color: var(--color-ink-muted);
 }
 
-/* Small tracked caps, taken from the can. This is the one place the pattern is
- * earned: it is the packaging's own device, not a decorative eyebrow. */
+/* Small tracked caps. Section markers only, never anything set large. */
 .label {
   font-size: var(--text-caption);
-  font-weight: var(--font-weight-heading);
+  font-weight: var(--font-weight-medium);
   letter-spacing: var(--tracking-label);
   text-transform: uppercase;
   color: var(--color-ink-muted);
@@ -213,8 +215,8 @@ a.accent {
  * reads as a section, and it ties the landing page to the flavour pages and
  * the cans, which use the same three values.
  *
- * ONLY lime and cranberry carry cream text (5.49 and 8.11). Pineapple is 3.39
- * against cream and must use ink instead, which is why the on-colour is passed
+ * ONLY cranberry and orange carry paper text (8.98 and 5.36). Lemon is 2.72
+ * against paper and must use ink instead, which is why the on-colour is passed
  * in rather than assumed. The flavour entries already declare their own
  * on-colour for exactly this reason.
  */

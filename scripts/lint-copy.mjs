@@ -71,9 +71,25 @@ const visibleText = (html) =>
     .replace(/<!--[\s\S]*?-->/g, ' ')
     .replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ')
     .replace(/<[^>]+>/g, ' ')
+    // Decode the entities that could smuggle a forbidden character past the
+    // character check below.
+    .replace(/&mdash;|&#8212;|&#x2014;/gi, '\u2014')
+    .replace(/&trade;|&#8482;|&#x2122;/gi, '\u2122')
+    .replace(/&reg;|&#174;|&#xae;/gi, '\u00ae')
+    .replace(/&excl;|&#33;|&#x21;/gi, '!')
     .replace(/\s+/g, ' ');
 
 const violations = [];
+
+// Characters the brand never uses in reader-facing text. Word-boundary
+// matching cannot see these, so they are checked separately. Exclamation marks
+// are allowed only inside code-like contexts, which visibleText() strips.
+const forbiddenChars = [
+  { char: '\u2014', name: 'em dash' },
+  { char: '\u2122', name: 'trademark symbol (nothing is registered)' },
+  { char: '\u00ae', name: 'registered symbol (nothing is registered)' },
+  { char: '!', name: 'exclamation mark' },
+];
 
 // 1. Transcribed image copy.
 for (const { asset, lines } of imageSources) {
@@ -96,7 +112,18 @@ for (const { asset, lines } of imageSources) {
 
 // 2. Rendered page text.
 for (const file of htmlFiles) {
-  const text = visibleText(readFileSync(file, 'utf8')).toLowerCase();
+  const raw = visibleText(readFileSync(file, 'utf8'));
+  for (const { char, name } of forbiddenChars) {
+    const at = raw.indexOf(char);
+    if (at !== -1) {
+      violations.push({
+        file: file.replace(`${root}/`, ''),
+        term: name,
+        context: `…${raw.slice(Math.max(0, at - 60), at + 60).trim()}…`,
+      });
+    }
+  }
+  const text = raw.toLowerCase();
   for (const term of terms) {
     const pattern = new RegExp(`\\b${term.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`);
     const match = pattern.exec(text);

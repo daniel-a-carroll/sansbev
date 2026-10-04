@@ -8,6 +8,34 @@
 
 import { z } from 'astro/zod';
 
+/**
+ * THE NAME. Working name, trademark clearance pending.
+ *
+ * This is the only place the brand name is written. Every page title, the
+ * footer, JSON-LD and any copy that names the brand reads it from here, so a
+ * rename is this one line. Never append a trademark or registered symbol to
+ * it, here or anywhere: nothing is registered, and the build lint fails if
+ * either character ships.
+ */
+export const BRAND_NAME = 'SIX';
+
+/**
+ * THE WORDMARK. Rendered as live text by Wordmark.astro, never as an image.
+ *
+ * Open question: the word or the numeral. To try the numeral, set this to '6'.
+ * The typeface, weight and tracking it is set in live in tokens.css under
+ * --wordmark-*, so trying a different face is also a one-place edit.
+ */
+export const WORDMARK = BRAND_NAME;
+
+/**
+ * THE WORDMARK ARTWORK. The basename of an SVG in src/assets (any subfolder).
+ * When set and present, the header and footer inline it and it takes the
+ * --wordmark-color token. Set to null to fall back to the live-text WORDMARK
+ * above, for example to try the numeral.
+ */
+export const WORDMARK_ART: string | null = 'six-logo';
+
 const siteSchema = z.object({
   brand: z.object({
     /** Working name. Appears in the wordmark, <title>, and JSON-LD. */
@@ -16,6 +44,10 @@ const siteSchema = z.object({
     legalName: z.string().optional(),
     tagline: z.string().optional(),
     domain: z.string().url(),
+    /** The string Wordmark.astro sets. See WORDMARK above. */
+    wordmark: z.string(),
+    /** SVG basename for the logo artwork. Null means live text. */
+    wordmarkArt: z.string().nullable(),
     /** Set true once the name is final -- flips the wordmark out of its
      *  provisional treatment and clears the dev banner. */
     nameIsFinal: z.boolean().default(false),
@@ -69,14 +101,13 @@ const siteSchema = z.object({
 
 export const site = siteSchema.parse({
   brand: {
-    // The packaging renders read SANS, so that is the product brand and what
-    // the wordmark sets. SansBev is treated as the company/domain. CONFIRM
-    // this split -- if the brand is meant to be SansBev everywhere, this one
-    // line is the only change needed.
-    name: 'SANS',
+    name: BRAND_NAME,
+    wordmark: WORDMARK,
+    wordmarkArt: WORDMARK_ART,
     legalName: '[[PLACEHOLDER: registered legal entity name]]',
-    // Printed on all three cans.
-    tagline: "what's important is what's not in it",
+    // The rule, not a count. A promise survives reformulation; a description
+    // of the current recipe does not.
+    tagline: 'Never more than six.',
     domain: 'https://sansbev.com',
     nameIsFinal: false,
   },

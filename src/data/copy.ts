@@ -17,6 +17,8 @@
  */
 
 import { z } from 'astro/zod';
+import { BRAND_NAME } from './site';
+import { product } from './numbers';
 
 const seo = z.object({
   title: z.string(),
@@ -42,37 +44,6 @@ const legalPage = z.object({
 const copySchema = z.object({
   home: z.object({
     seo,
-    /** The one large display line. Keep it short enough to set at scale. */
-    heroHeadline: z.string(),
-    heroSubhead: z.string().optional(),
-    /** Trade entry point lives in the hero -- audience priority, per DESIGN.md. */
-    heroTradeLinkLabel: z.string(),
-    storyHeading: z.string().optional(),
-    storyBody: z.array(z.string()).default([]),
-    /**
-     * Ingredient spotlight on the home page.
-     *
-     * COMPOSITION ONLY. This section is about the single riskiest ingredient
-     * on the label: L-theanine is what the brand board's "Calm focus" claim
-     * hangs on, and on a conventional food a structure/function claim has to
-     * derive from nutritive value. So this copy says what the ingredient IS,
-     * where it comes from, and how much is in the can. It says nothing about
-     * what it does to a body, and adding that here would be the single most
-     * exposed sentence on the site. See src/data/claims.ts before editing.
-     *
-     * The amount is NOT written into this copy. It is read from the flavor
-     * data at render time, so it cannot go stale the way the caffeine figure
-     * did three times over.
-     */
-    theanine: z.object({
-      eyebrow: z.string(),
-      source: z.string(),
-      heading: z.string(),
-      body: z.array(z.string()).default([]),
-    }),
-
-    emailCaptureHeading: z.string(),
-    emailCaptureBody: z.string().optional(),
   }),
 
   /**
@@ -132,54 +103,29 @@ const copySchema = z.object({
 
 export const copy = copySchema.parse({
   home: {
+    // Section copy for the home page lives in landing.ts.
     seo: {
-      title: 'SANS energy drink, the whole list on the front',
-      description:
-        'The whole ingredient list is printed on the front of the can. Organic juice, caffeine from green coffee beans, L-theanine from green tea. Join the list for the taste panel.',
+      title: `${BRAND_NAME}. Never more than six.`,
+      description: `A sparkling can made with real fruit juice. Six ingredients, ${product.caffeineMg} mg caffeine, no added sugar.`,
     },
-    // The line printed on every can. It is the strongest copy the brand has, it
-    // makes no claim about the body, and it is already on the packaging.
-    heroHeadline: "What's important is what's not in it",
-    heroSubhead:
-      'Made with organic fruit juice, with 220mg of caffeine from green coffee beans.',
-    heroTradeLinkLabel: 'See wholesale specs',
-
-    storyHeading: 'Sans means without',
-    storyBody: [
-      'Sans means without in French. That is the whole idea. What matters in a can of SANS is the list of things that are not in it.',
-      'The full ingredient list is printed on the front of the can, not hidden on the back in small type. That is the whole argument.',
-    ],
-
-    theanine: {
-      eyebrow: 'L-theanine',
-      source: 'from green tea',
-      heading: 'An amino acid that occurs naturally in tea leaves',
-      body: [
-        'Ours is extracted from green tea rather than made synthetically, which is the kind of detail that usually stays on a spec sheet and never reaches the label.',
-        'It is on the front of the can with everything else, and with the amount attached. An ingredient listed without a number is not really listed.',
-      ],
-    },
-
-    emailCaptureHeading: 'Find out when it lands near you',
-    emailCaptureBody: 'We use your ZIP to decide which markets to open next.',
   },
 
   product: {
     seo: {
       title: 'The lineup',
       description:
-        'Lime, pineapple, and cranberry. Each made with organic fruit juice, with 220mg of caffeine from green coffee beans, in a 12 ounce slim can.',
+        `Cranberry, lemon and orange. Six ingredients each, made with real fruit juice, with ${product.caffeineMg}mg caffeine from green coffee beans, in a 12 ounce can.`,
     },
     heading: 'The lineup',
     intro:
-      'Every can prints its full ingredient list on the front. The juice is organic, and the blend is named there too.',
+      'Six ingredients in every can. Only the fruit changes.',
   },
 
   whereToBuy: {
     seo: {
       title: 'Where to buy',
       description:
-        'Find the stores carrying SANS. Not on shelves near you yet? Tell us where you shop.',
+        `Find the stores carrying ${BRAND_NAME}. Not on shelves near you yet? Tell us where you shop.`,
     },
     heading: 'Where to buy',
     intro: undefined,
@@ -196,7 +142,7 @@ export const copy = copySchema.parse({
     },
     heading: 'Wholesale and retail partners',
     intro:
-      'SANS is a 12 ounce slim-can energy drink made with organic fruit juice, with 220mg of caffeine from green coffee beans. We are talking to buyers, distributors, and brokers in Colorado now. [[PLACEHOLDER: launch timing, and whether you are taking orders yet. One sentence.]]',
+      `${BRAND_NAME} is a 12 ounce sparkling can made with real fruit juice, with ${product.caffeineMg}mg of caffeine. Six ingredients. We are talking to buyers, distributors, and brokers in Colorado now. [[PLACEHOLDER: launch timing, and whether you are taking orders yet. One sentence.]]`,
     availableOnRequestHeading: 'Available on request',
     availableOnRequestNote:
       'Send an inquiry and we will follow up with the current sell sheet and full specifications.',
@@ -208,7 +154,7 @@ export const copy = copySchema.parse({
     seo: {
       title: 'About',
       description:
-        'Why SANS exists, in the founder’s words. A Colorado energy drink made with real fruit juice.',
+        `Why ${BRAND_NAME} exists, in the founder’s words. A Colorado energy drink made with real fruit juice.`,
     },
     heading: 'About',
     // The founder's own account, lightly edited for grammar and flow. Claim
@@ -218,7 +164,7 @@ export const copy = copySchema.parse({
       'For years I got my caffeine from everywhere. Coffee, tea, supplements, energy drinks, whatever was in front of me that day.',
       'Then I had a family and ran out of time. I wanted one convenient thing I could reach for every day and feel good about drinking. I went looking and could not find it. Some had ingredients I did not recognize. Some were sweeter than I wanted. Some just did not taste good.',
       'So I kept drinking things I was not happy with. For years. Eventually I decided to do something about it myself.',
-      'SANS is the drink I wanted and could not buy. Organic juice, caffeine from green coffee beans, and a label I am comfortable handing to anybody.',
+      `${BRAND_NAME} is the drink I wanted and could not buy. Six ingredients, real fruit juice, and a label I am comfortable handing to anybody.`,
       'We are based in Colorado. [[PLACEHOLDER: where specifically, and where the product is produced. Buyers ask this early, so answer it plainly here.]]',
     ],
   },
@@ -226,7 +172,7 @@ export const copy = copySchema.parse({
   contact: {
     seo: {
       title: 'Contact',
-      description: 'Trade, general, and press contacts for SANS.',
+      description: `Trade, general, and press contacts for ${BRAND_NAME}.`,
     },
     heading: 'Contact',
     intro:
@@ -238,7 +184,7 @@ export const copy = copySchema.parse({
       seo: {
         title: 'Privacy policy',
         description:
-          'What SANS collects through this site, why, and how it is handled.',
+          `What ${BRAND_NAME} collects through this site, why, and how it is handled.`,
       },
       summary:
         'This site collects very little, stores none of it on our own servers, and sets no cookies.',
@@ -249,7 +195,7 @@ export const copy = copySchema.parse({
           body: [
             'We collect information only when you choose to submit one of the forms on this site.',
             'The email signup collects your email address and your ZIP code. The ZIP code is required, and we use it to decide which markets to open next.',
-            'The store request form collects the name and location of a store you would like to see carrying SANS, and your email address if you choose to give it.',
+            `The store request form collects the name and location of a store you would like to see carrying ${BRAND_NAME}, and your email address if you choose to give it.`,
             'The wholesale inquiry form collects your business name, your name, your email address, your role, and your channel, plus your number of locations, your region, and a message if you provide them.',
           ],
         },
@@ -290,7 +236,7 @@ export const copy = copySchema.parse({
     terms: {
       seo: {
         title: 'Terms of use',
-        description: 'Terms governing use of the SANS website.',
+        description: `Terms governing use of the ${BRAND_NAME} website.`,
       },
       summary: 'The short version: this site is informational.',
       lastUpdated: '[[PLACEHOLDER: date this was last reviewed]]',
@@ -317,7 +263,7 @@ export const copy = copySchema.parse({
         {
           heading: 'Content and trademarks',
           body: [
-            'The content of this site, including the SANS name and packaging design, belongs to us. Please do not reproduce it for commercial purposes without permission.',
+            `The content of this site, including the ${BRAND_NAME} name and packaging design, belongs to us. Please do not reproduce it for commercial purposes without permission.`,
           ],
         },
         {

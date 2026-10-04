@@ -2,91 +2,101 @@
 /**
  * The brand wordmark.
  *
- * The real SVG is INLINED rather than rendered through <Asset> as an <img>.
- * That is deliberate: the artwork is authored with fill="currentColor", and an
- * <img> loads the SVG in an isolated context where page CSS cannot reach it,
- * so it would be locked to black and would ignore the design tokens. Inlined,
- * it inherits `color` from whatever it sits on, which is what lets the same
- * file render ink-on-cream in the header and cream-on-dark on a color band,
- * exactly as the packaging does.
+ * Two modes, chosen in src/data/site.ts:
  *
- * Cost is about 3KB gzipped per instance, against one cached request. Worth it
- * for a logo that has to change color.
+ *   WORDMARK_ART  an SVG basename in src/assets. Inlined, not an <img>, so the
+ *                 fill can be swapped for currentColor and the mark follows
+ *                 --wordmark-color. An <img> would lock it to its own colour.
+ *   WORDMARK      live text, used when WORDMARK_ART is null or the file is
+ *                 missing. Set it to '6' to try the numeral. Its typeface and
+ *                 tracking are the --wordmark-* tokens.
  *
- * If the file is absent it falls back to a typographic setting rather than to
- * the gray <Asset> placeholder, because a placeholder box in the header would
- * make every page look broken.
+ * Either way the accessible name is the brand name.
  */
 import { site } from '../data/site';
 
 interface Props {
-  /** Header uses the larger setting; footer uses the smaller one. */
-  size?: 'sm' | 'md';
+  size?: 'sm' | 'md' | 'lg';
   class?: string;
 }
 
 const { size = 'md', class: className } = Astro.props;
+const { name, wordmark, wordmarkArt } = site.brand;
+const isNumeral = /^\d+$/.test(wordmark);
 
-// Build-time lookup so a missing file degrades instead of failing the build.
-const inlined = import.meta.glob<string>('/src/assets/*.svg', {
+const svgs = import.meta.glob<string>('/src/assets/**/*.svg', {
   query: '?raw',
   import: 'default',
   eager: true,
 });
-const markup = inlined['/src/assets/logo-wordmark.svg'];
+const artPath = wordmarkArt
+  ? Object.keys(svgs).find((p) => p.split('/').pop() === `${wordmarkArt}.svg`)
+  : undefined;
+
+// Strip the file's own fills, title and labelling: colour comes from CSS and
+// the accessible name from the wrapper.
+const art = artPath
+  ? svgs[artPath]!
+      .replace(/<title>[\s\S]*?<\/title>/g, '')
+      .replace(/\s(role|aria-label)="[^"]*"/g, '')
+      .replace(/fill="(?!none)[^"]*"/g, 'fill="currentColor"')
+      .replace('<svg', '<svg aria-hidden="true" focusable="false"')
+  : undefined;
 ---
 
-{
-  markup ? (
-    <span
-      class:list={['wordmark-svg', `wordmark--${size}`, className]}
-      set:html={markup}
-    />
-  ) : (
-    <span class:list={['wordmark', `wordmark--${size}`, className]}>
-      {site.brand.name}
-    </span>
-  )
-}
+{art ? (
+  <span
+    class:list={['wordmark-art', `wordmark--${size}`, className]}
+    role="img"
+    aria-label={name}
+    set:html={art}
+  />
+) : (
+  <span
+    class:list={['wordmark', `wordmark--${size}`, { 'wordmark--numeral': isNumeral }, className]}
+    role="img"
+    aria-label={name}
+  >{wordmark}</span>
+)}
 
 <style>
-  /* Inline SVG inherits `color`, so the wordmark follows the design tokens
-     wherever it is placed. */
-  .wordmark-svg {
+  .wordmark-art {
     display: inline-block;
     line-height: 0;
-    color: currentColor;
+    color: var(--wordmark-color);
   }
 
-  .wordmark-svg :global(svg) {
+  .wordmark-art :global(svg) {
     display: block;
-    width: auto;
-    height: 1em;
+    block-size: 1em;
+    inline-size: auto;
   }
 
-  .wordmark-svg.wordmark--md {
-    font-size: 2rem;
-  }
+  .wordmark-art.wordmark--sm { font-size: 1rem; }
+  .wordmark-art.wordmark--md { font-size: 1.2rem; }
+  .wordmark-art.wordmark--lg { font-size: clamp(2.5rem, 1.5rem + 4vw, 4.5rem); }
 
-  .wordmark-svg.wordmark--sm {
-    font-size: 1.5rem;
-  }
-
-  /* Typographic fallback, used only if the SVG is missing. */
   .wordmark {
     display: inline-block;
-    font-family: var(--font-family-wordmark);
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 0.005em;
+    font-family: var(--wordmark-family);
+    font-weight: var(--wordmark-weight);
+    font-variation-settings: 'opsz' 72;
+    letter-spacing: var(--wordmark-tracking);
+    /* Tracking adds space after the last letter too. Pull it back so the mark
+       aligns optically with whatever sits under it. */
+    margin-inline-end: calc(-1 * var(--wordmark-tracking));
+    color: var(--wordmark-color);
     line-height: 1;
+    white-space: nowrap;
   }
 
-  .wordmark.wordmark--md {
-    font-size: 1.6rem;
+  /* A single numeral has no inter-letter space to track. */
+  .wordmark--numeral {
+    letter-spacing: 0;
+    margin-inline-end: 0;
   }
 
-  .wordmark.wordmark--sm {
-    font-size: 1.125rem;
-  }
+  .wordmark.wordmark--sm { font-size: 1.125rem; }
+  .wordmark.wordmark--md { font-size: 1.375rem; }
+  .wordmark.wordmark--lg { font-size: clamp(2.5rem, 1.5rem + 4vw, 4.5rem); }
 </style>

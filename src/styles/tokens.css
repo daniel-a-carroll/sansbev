@@ -1,41 +1,37 @@
 /* ===========================================================================
  * DESIGN TOKENS — the only file you edit to re-skin this site.
  *
- * Sampled from the second-generation SANS packaging in assets/: the three can
- * cutouts and the brand board. Every contrast ratio below was computed, not
- * estimated.
- *
- * The direction is premium: a warm cream ground, near-black ink, and three
- * deep saturated flavor colors. Nothing here is bright or shouty; the richness
- * comes from depth of color and generous space, not from contrast tricks.
+ * Editorial and type-led: warm off-white paper, near-black ink, one deep muted
+ * accent per SKU, a display serif and a plain grotesk. No gradients, no
+ * shadows, no glow. Every contrast ratio below was computed, not estimated.
  *
  * Rationale and the design record are in docs/DESIGN.md.
  * ======================================================================== */
 
 /* --- Typefaces --------------------------------------------------------- */
-/* Archivo, SIL OFL 1.1. Self-hosted, latin subset, split into two files:
+/* Both SIL OFL 1.1, self-hosted latin subsets. No third-party font request.
  *
- *   archivo-text-var    variable weight 400-900 at normal width. 34KB.
- *   archivo-wordmark    static weight 900 / width 82%, uppercase only. 2KB.
+ *   Newsreader       display serif. Transitional, drawn by Production Type,
+ *                    with an optical-size axis: at display sizes it sharpens
+ *                    into a high-contrast face, which is where it earns its
+ *                    keep. Variable weight 300-600, opsz 6-72. 132KB.
+ *   Instrument Sans  body grotesk. Plain, slightly narrow, unfussy. 30KB.
  *
- * The wordmark face is now only a FALLBACK. The real SVG wordmark is inlined by
- * Wordmark.astro and inherits `color`, so the logo follows --color-ink rather
- * than being locked to whatever an <img> would render. Archivo's version is
- * kept, undeclared in any preload, purely so the header still reads correctly
- * if the SVG is ever removed. */
+ * The wordmark is live text set in the display serif. See --wordmark-* below
+ * and WORDMARK in src/data/site.ts. */
 
 @font-face {
-  font-family: 'Archivo';
-  src: url('/fonts/archivo-text-var.woff2') format('woff2-variations');
-  font-weight: 400 900;
+  font-family: 'Newsreader';
+  src: url('/fonts/newsreader-var.woff2') format('woff2-variations');
+  font-weight: 300 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Archivo Wordmark';
-  src: url('/fonts/archivo-wordmark.woff2') format('woff2');
-  font-weight: 900;
+  font-family: 'Instrument Sans';
+  src: url('/fonts/instrument-sans-var.woff2') format('woff2-variations');
+  font-weight: 400 600;
   font-style: normal;
   font-display: swap;
 }
@@ -48,92 +44,102 @@
    * semantic tokens below.
    * ================================================================== */
 
-  --c-cream: #f9efe2;   /* brand board ground. Warm, not white.           */
-  --c-ink: #101509;     /* brand board ink. Near-black with a green cast. */
-  --c-stone: #575247;   /* secondary text. Derived to clear AA on cream.  */
-  --c-surface: #f0e4d3; /* recessed surfaces, table banding.              */
+  --c-paper: #f4efe6;   /* warm off-white. Paper, not cream.             */
+  --c-ink: #1a1917;     /* near-black, faintly warm.                     */
+  --c-stone: #5e594f;   /* secondary text.                               */
+  --c-surface: #ebe5d9; /* recessed surfaces, table banding.             */
+  --c-forest: #2d3c28;  /* the wordmark green, from the can.             */
 
-  /* Flavor colors, taken from the can faces.
+  /* One deep accent per SKU. Muted, never bright.
    *
    * `field` is the band color. `onText` is what is legible ON it. `ink` is the
-   * value that survives as small text on cream. Lime and cranberry are dark
-   * enough that field and ink are the same value; pineapple is not, so it
-   * carries a darker sibling. This is why the schema requires all three. */
-  --c-lime: #3f6c13;
-  --c-lime-ink: #3f6c13;
-  --c-pineapple: #a87a08;
-  --c-pineapple-ink: #7f5c05;
-  --c-cranberry: #8e1520;
-  --c-cranberry-ink: #8e1520;
+   * value that survives as small text on paper. Cranberry and orange are dark
+   * enough that field and ink are the same value; lemon is not, so it carries
+   * a darker sibling and takes ink, not paper, as its on-colour. These must
+   * match the flavor entries in src/content/flavors/. */
+  --c-cranberry: #7a1e26;
+  --c-cranberry-ink: #7a1e26;
+  --c-orange: #9c4a24;
+  --c-orange-ink: #9c4a24;
+  --c-lemon: #b98a2e;
+  --c-lemon-ink: #7a5a16;
 
   /* Semantic. Components use only these. */
-  --color-bg: var(--c-cream);
+  --color-bg: var(--c-paper);
   --color-ink: var(--c-ink);
-  --color-ink-muted: var(--c-stone);  /* 6.83:1 on cream — AA              */
+  --color-ink-muted: var(--c-stone);
   --color-surface: var(--c-surface);
-  --color-on-ink: var(--c-cream);     /* 16.30:1 on ink — AAA              */
+  --color-on-ink: var(--c-paper);
 
-  /* The deep green is the house accent. The brand board sets the operative
-   * words of the tagline in it, and it is the only flavor color that reads as
-   * brand rather than as one SKU. */
-  --color-accent: var(--c-lime);      /* 5.49:1 on cream — AA              */
-  --color-accent-text: var(--c-lime);
-  --color-on-accent: var(--c-cream);
+  /* Cranberry is the lead SKU, so it is the house accent. */
+  --color-accent: var(--c-cranberry);
+  --color-accent-text: var(--c-cranberry-ink);
+  --color-on-accent: var(--c-paper);
 
   --color-rule: color-mix(in srgb, var(--c-stone) 24%, transparent);
-  --color-rule-strong: color-mix(in srgb, var(--c-stone) 48%, transparent);
-  --color-focus: var(--c-lime);
-  --color-focus-on-ink: var(--c-cream);
+  --color-rule-strong: color-mix(in srgb, var(--c-stone) 55%, transparent);
+  --color-focus: var(--c-cranberry);
+  --color-focus-on-ink: var(--c-paper);
 
-  /* VERIFIED CONTRAST
-   *   ink on cream ..................... 16.30  AAA  body
-   *   cream on ink ..................... 16.30  AAA  dark bands
-   *   stone on cream .................... 6.83  AA   secondary
-   *   stone on surface .................. 6.19  AA
-   *   lime on cream ..................... 5.49  AA   links, focus ring
-   *   cream on lime ..................... 5.49  AA   lime band
-   *   ink on pineapple .................. 4.81  AA   pineapple band
-   *   pineapple-ink on cream ............ 5.38  AA
-   *   cream on cranberry ................ 8.11  AAA  cranberry band
+  /* VERIFIED CONTRAST (WCAG 2.x, computed)
+   *   ink on paper ..................... 15.34  AAA  body
+   *   stone on paper .................... 6.08  AA   secondary
+   *   cranberry on paper ................ 8.98  AAA  accent text, focus
+   *   paper on cranberry ................ 8.98  AAA  cranberry band
+   *   orange on paper ................... 5.36  AA
+   *   paper on orange ................... 5.36  AA   orange band
+   *   forest on paper .................. 10.25  AAA  wordmark
+   *   ink on lemon ...................... 5.64  AA   lemon band
+   *   lemon-ink on paper ................ 5.55  AA
    *
-   * NEVER: cream on pineapple (3.39), or the pineapple field color as small
-   * text on cream (3.39). Pineapple is the reason every flavor declares its
-   * own on-color in the schema instead of trusting a single global rule. */
+   * NEVER: paper on lemon (2.72), or the lemon field as small text on paper.
+   */
 
   /* =====================================================================
    * TYPE
    * ================================================================== */
 
-  --font-family: 'Archivo', ui-sans-serif, system-ui, -apple-system,
+  --font-family: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system,
     'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --font-family-wordmark: 'Archivo Wordmark', 'Archivo Narrow', var(--font-family);
+  --font-family-display: 'Newsreader', 'Iowan Old Style', 'Palatino Linotype',
+    Palatino, Georgia, serif;
 
   --font-weight-body: 400;
   --font-weight-medium: 500;
-  --font-weight-heading: 600;
-  --font-weight-display: 800;
+  --font-weight-heading: 400;
+  --font-weight-display: 400;
 
-  --text-display: clamp(2.75rem, 1.45rem + 5.55vw, 6rem);
+  /* The wordmark. Live text, so the word-or-numeral question and the typeface
+   * question are both one edit: WORDMARK in site.ts, these four here. Wide
+   * tracking and a light cut, after the sketch in src/assets. */
+  --wordmark-family: var(--font-family-display);
+  --wordmark-weight: 400;
+  --wordmark-tracking: 0.32em;
+  --wordmark-color: var(--c-forest);
+
+  /* The six ingredients are the largest type on the page, larger than the
+   * headline. That is the hierarchy the brand rests on. */
+  --text-six: clamp(2.4rem, 1.1rem + 5.6vw, 6rem);
+  --text-display: clamp(2.5rem, 1.5rem + 4.6vw, 5.25rem);
   --text-h1: clamp(2rem, 1.46rem + 2.3vw, 3.25rem);
-  --text-h2: clamp(1.5rem, 1.29rem + 0.9vw, 2rem);
+  --text-h2: clamp(1.75rem, 1.35rem + 1.8vw, 2.75rem);
   --text-h3: clamp(1.1875rem, 1.13rem + 0.24vw, 1.375rem);
   --text-body: 1.0625rem;
   --text-small: 0.9375rem;
   --text-caption: 0.8125rem;
 
-  --leading-display: 0.96;
-  --leading-heading: 1.14;
+  --leading-display: 1.02;
+  --leading-heading: 1.12;
   --leading-body: 1.6;
   --leading-tight: 1.35;
 
-  --tracking-display: -0.025em;
-  --tracking-heading: -0.012em;
+  --tracking-display: -0.018em;
+  --tracking-heading: -0.01em;
   --tracking-body: 0;
-  /* The packaging sets ENERGY DRINK and INGREDIENTS as widely tracked caps.
-   * That is the brand's own device, so it is earned here. */
-  --tracking-label: 0.18em;
+  /* Small labels only. Never on anything set large. */
+  --tracking-label: 0.14em;
 
-  --measure: 64ch;
+  --measure: 60ch;
   --measure-narrow: 44ch;
 
   /* =====================================================================
@@ -148,8 +154,8 @@
   --space-md: 1.5rem;
   --space-lg: 2.5rem;
   --space-xl: 4rem;
-  --space-2xl: clamp(4.5rem, 2.8rem + 6.5vw, 8rem);
-  --space-3xl: clamp(6rem, 3.2rem + 11vw, 11rem);
+  --space-2xl: clamp(5rem, 2.8rem + 8vw, 10rem);
+  --space-3xl: clamp(7rem, 3.2rem + 13vw, 14rem);
 
   /* =====================================================================
    * LAYOUT

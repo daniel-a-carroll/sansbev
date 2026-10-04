@@ -1,0 +1,42 @@
+---
+/**
+ * The six marks. Six short upright strokes, evenly spaced, never crossed.
+ *
+ * The site's one repeating device, and a candidate for the can: it says six
+ * without the word or the numeral, so it survives a rename. Decorative, so it
+ * is hidden from assistive technology. Draws in currentColor.
+ */
+interface Props {
+  /** Stroke height in em. Width follows. */
+  size?: number;
+  class?: string;
+}
+
+const { size = 1, class: className } = Astro.props;
+const strokes = [0, 1, 2, 3, 4, 5];
+---
+
+<svg
+  class:list={['tally', className]}
+  viewBox="0 0 56 20"
+  style={`--tally-size: ${size}em`}
+  aria-hidden="true"
+  focusable="false"
+>
+  {strokes.map((i) => (
+    <line x1={3 + i * 10} y1="1" x2={3 + i * 10} y2="19" />
+  ))}
+</svg>
+
+<style>
+  .tally {
+    display: block;
+    block-size: var(--tally-size);
+    inline-size: auto;
+    aspect-ratio: 56 / 20;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: butt;
+    overflow: visible;
+  }
+</style>

@@ -14,39 +14,38 @@
 - id: caffeine-amount
   question: How much caffeine is in a can?
   answer: >-
-    220mg per 12 fl oz can, from green coffee beans. Not recommended for
-    children, or for people sensitive to caffeine.
+    220mg per 12 fl oz can. Not recommended for children, pregnant or nursing
+    women, or anyone sensitive to caffeine.
   audience: consumer
   order: 1
 
 - id: whats-in-it
   question: What is actually in it?
   answer: >-
-    The whole list is printed on the front of the can: carbonated water, organic
-    juice, caffeine from green coffee beans, L-theanine from green tea, acacia
-    fiber, and salt.
+    Six things. Carbonated water, two organic fruit juices, caffeine from green
+    coffee beans, L-theanine from green tea, and salt. Nothing else.
   audience: consumer
   order: 2
 
 - id: real-juice
   question: Is it actually made with fruit juice?
   answer: >-
-    Yes, and the blend is named on the front of the can rather than left as
-    "fruit juice". Lime is lime and apple, pineapple is pineapple and lime, and
-    cranberry is cranberry and apple.
+    Yes. 20% juice, from concentrate, brought back to single strength.
+    Cranberry and pear, lemon and pear, or orange and lemon. There is no added
+    sugar and no sweetener of any kind.
   audience: consumer
   order: 3
 
 - id: can-size
   question: What size is the can?
-  answer: 12 fl oz (355 mL), in a slim can.
+  answer: 12 fl oz (355 mL).
   audience: both
   order: 4
 
 - id: where-sold
   question: Where can I buy it?
   answer: >-
-    Stores carrying SANS are listed on the where to buy page. If there is nothing
+    Stores carrying it are listed on the where to buy page. If there is nothing
     near you yet, tell us the store you shop at. We bring those requests to
     buyers when we pitch an account.
   audience: consumer
