@@ -187,14 +187,14 @@ export const copy = copySchema.parse({
           `What ${BRAND_NAME} collects through this site, why, and how it is handled.`,
       },
       summary:
-        'This site collects very little, stores none of it on our own servers, and sets no cookies.',
+        'This site collects very little, keeps it with our email provider rather than on our own servers, and sets no cookies.',
       lastUpdated: '[[PLACEHOLDER: date this was last reviewed]]',
       sections: [
         {
           heading: 'What we collect',
           body: [
             'We collect information only when you choose to submit one of the forms on this site.',
-            'The email signup collects your email address and your ZIP code. The ZIP code is required, and we use it to decide which markets to open next.',
+            'The email signup collects your email address and nothing else. We use it to tell you when subscriptions open.',
             `The store request form collects the name and location of a store you would like to see carrying ${BRAND_NAME}, and your email address if you choose to give it.`,
             'The wholesale inquiry form collects your business name, your name, your email address, your role, and your channel, plus your number of locations, your region, and a message if you provide them.',
           ],
@@ -202,8 +202,9 @@ export const copy = copySchema.parse({
         {
           heading: 'How it is handled',
           body: [
-            'Submissions are forwarded to us by email through Resend, our email provider. They are not written to a database or stored on any server we operate. The record is our inbox.',
-            'We do not sell this information, and we do not share it outside the business except with our email provider, which processes it in order to deliver the message.',
+            'Email signups are saved as contacts with Resend, our email provider, so that we can write to you when subscriptions open. Every email we send that way has a link to unsubscribe.',
+            'Store requests and wholesale inquiries are forwarded to us by email through Resend. They are not written to a database or stored on any server we operate.',
+            'We do not sell this information, and we do not share it outside the business except with our email provider, which stores and processes it on our behalf.',
             'We may report demand in aggregate, for example how many people in a given area have asked for the product, to retailers and distributors. That reporting does not identify individuals.',
           ],
         },

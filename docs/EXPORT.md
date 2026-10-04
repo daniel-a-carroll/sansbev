@@ -2,14 +2,37 @@
 
 ## How submissions work right now
 
-**Email only. Nothing is stored on a server.**
+**Email signups are Resend contacts. Everything else is email.**
 
-Every form submission is forwarded to `NOTIFY_TO` by Resend and then it is gone
-from our side. Your inbox is the record. There is no database, no dashboard, and
-no admin login to forget the password to.
+- **Signups** (`/api/subscribe`) are saved as contacts in Resend: Audience →
+  Contacts in the Resend dashboard. That list is what you send to when
+  subscriptions open, using Resend Broadcasts, which add the unsubscribe link
+  for you. If `RESEND_SEGMENT_ID` is set, new signups also join that segment.
+  Signing up twice is not an error; the person is already on the list.
+- **Store requests and wholesale inquiries** are emailed to `NOTIFY_TO` and
+  stored nowhere else.
+- With `NOTIFY_FROM` and `NOTIFY_TO` set, you also get an email per signup.
+  That is optional. The contact list is the record.
 
-This was a deliberate choice — it is the simplest thing that works and it keeps
-customer data off any server we run. It has a real cost, described below.
+### Secrets
+
+| Secret | Needed for |
+|---|---|
+| `RESEND_API_KEY` | Everything. Without it, submissions are only logged and lost. |
+| `RESEND_SEGMENT_ID` | Optional. Puts signups in a segment. |
+| `NOTIFY_FROM` | Emailed notifications. Must be an address on a domain verified in Resend. |
+| `NOTIFY_TO` | Emailed notifications. Your inbox. |
+
+Set each with `npx wrangler secret put NAME`, or in the Cloudflare dashboard
+under Workers → sansbev → Settings → Variables and Secrets.
+
+### Exporting the signup list
+
+Resend dashboard → Audience → Contacts → export to CSV.
+
+## Inbox notifications (optional)
+
+The notes below apply to the per-submission emails.
 
 ## Pulling the list before a meeting
 

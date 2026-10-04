@@ -184,8 +184,10 @@ async function handleSubmission(
   } catch (error) {
     // Never swallow this: a dropped lead is the most expensive failure here.
     console.error(`[submission:${form}] provider failed`, error);
+    // No contact address is published yet, so ask for a retry rather than
+    // pointing at an inbox the visitor cannot find.
     const message =
-      'Something went wrong on our end and your details were not sent. Please email us directly.';
+      'Something went wrong on our end and your details were not saved. Please try again in a minute.';
     return json
       ? Response.json({ ok: false, formError: message }, { status: 502 })
       : errorPage({ _: message }, referer);
