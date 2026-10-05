@@ -852,9 +852,10 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
     font-size: var(--text-small);
   }
 
+  /* Sized so the longest name ("Pomegranate") clears the can beside it. */
   .drink__name {
     align-self: end;
-    font-size: var(--text-h1);
+    font-size: clamp(1.75rem, 1rem + 1.9vw, 2.6rem);
     font-variation-settings: 'opsz' 72;
     line-height: 1;
   }
@@ -886,7 +887,9 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
     }
   }
 
-  @media (max-width: 48rem) {
+  /* Stack the tiles before the small ones get too narrow for "Pomegranate"
+     to clear its can. */
+  @media (max-width: 60rem) {
     .drinks__grid {
       grid-template-columns: minmax(0, 1fr);
       grid-template-rows: none;

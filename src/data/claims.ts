@@ -18,8 +18,8 @@
  * carbonated water, two organic fruit juices, caffeine from green coffee
  * beans, L-theanine from green tea, salt. 20% juice from concentrate. 220mg
  * caffeine, 200mg L-theanine. No added sugar and no sweetener of any kind.
- * SKUs: Cranberry (cranberry and pear), Lemon (lemon and pear), Orange
- * (orange and lemon). Acacia and the apple blend are gone.
+ * SKUs: Cranberry (cranberry and pear), Lemon (lemon and pear), Pomegranate
+ * (pomegranate and lemon). Orange was dropped on 2026-10-05. Acacia and the apple blend are gone.
  *
  * Several notes further down (sections 4c and 4d) describe the retired SANS
  * packaging. They are kept as the record of what was reviewed, not as current

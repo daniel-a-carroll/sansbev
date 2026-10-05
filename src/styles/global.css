@@ -215,7 +215,7 @@ a.accent {
  * reads as a section, and it ties the landing page to the flavour pages and
  * the cans, which use the same three values.
  *
- * ONLY cranberry and orange carry paper text (8.98 and 5.36). Lemon is 2.72
+ * ONLY cranberry and pomegranate carry paper text (8.98 and 7.14). Lemon is 2.72
  * against paper and must use ink instead, which is why the on-colour is passed
  * in rather than assumed. The flavour entries already declare their own
  * on-colour for exactly this reason.

@@ -53,14 +53,14 @@
   /* One deep accent per SKU. Muted, never bright.
    *
    * `field` is the band color. `onText` is what is legible ON it. `ink` is the
-   * value that survives as small text on paper. Cranberry and orange are dark
+   * value that survives as small text on paper. Cranberry and pomegranate are dark
    * enough that field and ink are the same value; lemon is not, so it carries
    * a darker sibling and takes ink, not paper, as its on-colour. These must
    * match the flavor entries in src/content/flavors/. */
   --c-cranberry: #7a1e26;
   --c-cranberry-ink: #7a1e26;
-  --c-orange: #9c4a24;
-  --c-orange-ink: #9c4a24;
+  --c-pomegranate: #93224a;
+  --c-pomegranate-ink: #93224a;
   --c-lemon: #b98a2e;
   --c-lemon-ink: #7a5a16;
 
@@ -86,8 +86,8 @@
    *   stone on paper .................... 6.08  AA   secondary
    *   cranberry on paper ................ 8.98  AAA  accent text, focus
    *   paper on cranberry ................ 8.98  AAA  cranberry band
-   *   orange on paper ................... 5.36  AA
-   *   paper on orange ................... 5.36  AA   orange band
+   *   pomegranate on paper .............. 7.14  AAA
+   *   paper on pomegranate .............. 7.14  AAA  pomegranate band
    *   forest on paper .................. 10.25  AAA  wordmark
    *   ink on lemon ...................... 5.64  AA   lemon band
    *   lemon-ink on paper ................ 5.55  AA

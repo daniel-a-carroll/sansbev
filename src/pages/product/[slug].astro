@@ -13,6 +13,7 @@ import JsonLd from '../../components/JsonLd.astro';
 import NutritionPanel from '../../components/NutritionPanel.astro';
 import { getCollection, render } from 'astro:content';
 import { flavorSlot } from '../../lib/assets';
+import { hasAsset } from '../../lib/resolve-asset';
 import { productSchema } from '../../lib/schema';
 import { claims } from '../../data/claims';
 import { site } from '../../data/site';
@@ -27,6 +28,9 @@ export const getStaticPaths = (async () => {
 
 const { flavor } = Astro.props;
 const d = flavor.data;
+// The scene photo is optional: skip it rather than show an empty placeholder.
+const sceneSlot = flavorSlot(flavor.id, 'scene');
+const hasScene = hasAsset(sceneSlot);
 const { Content } = await render(flavor);
 
 const title = d.seo?.title ?? `${d.name}`;
@@ -133,13 +137,15 @@ const disclosures = [
 
           </div>
 
+          {hasScene && (
           <div class="flavor__scene">
             <Asset
-              slot={flavorSlot(flavor.id, 'scene')}
+              slot={sceneSlot}
               alt={`A can of ${d.name}, with its ingredients printed on the front.`}
               sizes="(min-width: 60rem) 30vw, 90vw"
             />
           </div>
+          )}
 
           <div class="flavor__panel">
             <NutritionPanel nutrition={d.nutrition} flavorName={d.name} />

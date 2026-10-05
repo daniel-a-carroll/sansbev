@@ -114,7 +114,7 @@ export const copy = copySchema.parse({
     seo: {
       title: 'The lineup',
       description:
-        `Cranberry, lemon and orange. Six ingredients each, made with real fruit juice, with ${product.caffeineMg}mg caffeine from green coffee beans, in a 12 ounce can.`,
+        `Cranberry, lemon and pomegranate. Six ingredients each, made with real fruit juice, with ${product.caffeineMg}mg caffeine from green coffee beans, in a 12 ounce can.`,
     },
     heading: 'The lineup',
     intro:
