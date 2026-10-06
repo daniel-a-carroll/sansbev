@@ -61,6 +61,16 @@
   --c-cranberry-ink: #7a1e26;
   --c-pomegranate: #93224a;
   --c-pomegranate-ink: #93224a;
+
+  /* JUICE colours, for each juice's name in the ingredient list. A juice is
+   * always its own fruit's colour, whichever can it is in. Named
+   * --c-juice-<fruit>; a juice with no token falls back to the can's colour.
+   * The names are set large, so 3:1 (large text) is the bar.
+   *   lemon on paper ..... 3.30  pear on paper ..... 3.33 */
+  --c-juice-cranberry: var(--c-cranberry);
+  --c-juice-pomegranate: var(--c-pomegranate);
+  --c-juice-lemon: #a37e1c;
+  --c-juice-pear: #7a8a2e;
   --c-lemon: #b98a2e;
   --c-lemon-ink: #7a5a16;
 

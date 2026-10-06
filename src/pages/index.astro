@@ -90,6 +90,13 @@ const switcherCss = [
   }),
 ].join('\n');
 
+// Each juice is set in its own fruit's colour (--c-juice-<fruit> in
+// tokens.css), so lemon is yellow whether it is the first juice or the second.
+const juiceStyle = (name: string) => {
+  const fruit = name.toLowerCase().replace(/ juice$/, '').replace(/[^a-z]+/g, '-');
+  return / juice$/i.test(name) ? `--juice: var(--c-juice-${fruit})` : undefined;
+};
+
 const skuStyle = (f: (typeof flavors)[number]) =>
   f.data.color ? `--field: ${f.data.color.field}; --on-field: ${f.data.color.onText}` : undefined;
 
@@ -217,7 +224,7 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
                 {slot.qualifier && <span class="six__qual">{slot.qualifier} </span>}
                 {slot.varies
                   ? slot.values.map((v) => (
-                      <span class="six__variant" data-sku={v.id}>{v.value}</span>
+                      <span class="six__variant" data-sku={v.id} style={juiceStyle(v.value)}>{v.value}</span>
                     ))
                   : slot.values[0]?.value}
               </span>
@@ -648,9 +655,10 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
     color: var(--color-ink-muted);
   }
 
-  /* The slot that changes by can is set in that can's colour. */
+  /* A juice is its own fruit's colour; anything else that varies by can
+     falls back to the can's colour. */
   .six__variant {
-    color: var(--sku);
+    color: var(--juice, var(--sku));
   }
 
   /* Centred on the row, like the number, so every row reads the same. */
