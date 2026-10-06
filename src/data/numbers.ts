@@ -33,6 +33,35 @@ export const price = {
   subscriberDiscount: 'roughly 25%',
 } as const;
 
+/*
+ * SOURCES, checked 2026-10-06. Keep these on file; they are what the figures
+ * rest on if anyone asks. Do not name any café on the page itself.
+ *
+ * $6.50 café drink, built up from:
+ *   - $5.59 average US 16oz iced latte menu price ($5.44 for a 12oz hot
+ *     latte), before tax. Joe Coffee, State of Coffee report, Q2 2026,
+ *     ~42,600 menu prices across 30+ US cities, via Brikly's 2026 Café
+ *     Drinks Trend Report (brik.ly/reports/cafe-drinks-trend-report-2026,
+ *     published 2026-05-06).
+ *   - +7.53% sales tax: Tax Foundation, 2026 population-weighted average
+ *     combined state and local rate (taxfoundation.org).
+ *   - +14.52% tip when a tip is left: Square, Food & Beverage data, Q1 2026
+ *     (squareup.com/us/en/press/food-beverage-q1-2026-data, 2026-05-12).
+ *     Roughly half of café purchases are tipped (older Square figure, 45-50%).
+ *   Iced latte with tax: $6.01. With tax and tip: $6.82. Typical day with
+ *   about half of purchases tipped: ~$6.40-6.50. So $6.50 is a fair,
+ *   slightly conservative figure for ONE DRINK. An average ticket (per visit,
+ *   often more than one item) is not a substitute for it.
+ *
+ * 5 minutes 24 seconds drive-thru: Intouch Insight, 2026 Drive-Thru Study
+ *   (intouchinsight.com/press-releases/2026-drive-thru-study, 2026-10-01).
+ *   2,145 mystery-shopper visits to 13 quick-service chains (4 of them coffee
+ *   chains), June-July 2026. It is the all-chain average, which is how the
+ *   page words it; some coffee chains in the study ran faster.
+ *
+ * UNSOURCED ASSUMPTIONS, labelled as such in the footnote: the 4-minute
+ *   detour, and 10 minutes a day for home espresso with grinding and cleanup.
+ */
 export const money = {
   cafeDrinkPerDay: '$6.50',
   cafeDrinkPerYear: '$2,372',
