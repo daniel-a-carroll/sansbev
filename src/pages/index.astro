@@ -9,7 +9,7 @@
  *
  * Order, from the brief:
  *   1. Hero         the time claim, not the product. One CTA.
- *   2. The rule     "Never more than six." A manifesto moment.
+ *   2. The rule     "Never more than six ingredients." A manifesto moment.
  *   3. The six      the ingredient list as the hero element of the page.
  *   4. The math     time and money, set like a receipt.
  *   5. The drinks   three SKUs, cranberry first and dominant.
@@ -284,6 +284,16 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
     <div class="container grid">
       <p class="label margin">{landing.drinks.label}</p>
       <h2 id="drinks-heading" class="drinks__heading">{landing.drinks.heading}</h2>
+    </div>
+
+    <div class="container">
+      <figure class="drinks__photo">
+        <Asset
+          slot="drinks-trio"
+          alt="Cranberry, Pomegranate and Lemon cans on a wooden table, among cranberries, a split pomegranate, lemons and a pear."
+          sizes="(min-width: 78rem) 72rem, 92vw"
+        />
+      </figure>
     </div>
 
     <div class="container">
@@ -804,6 +814,10 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
   .drinks__heading {
     grid-column: 3 / -1;
     font-size: var(--text-h2);
+  }
+
+  .drinks__photo {
+    margin: var(--space-xl) 0 0;
   }
 
   .drinks__grid {

@@ -31,9 +31,9 @@
       "slot": "og-default",
       "width": 1200,
       "height": 630,
-      "format": "png",
+      "format": "jpg",
       "where": "Open Graph / social preview for any page without its own image",
-      "note": "The INGREDIENT PANEL, per the landing page spec: the panel is the pitch, so it is what should appear when the page is shared. A lifestyle shot here would undercut the whole argument. Until this exists the site emits no OG image, which is better than the wrong one."
+      "note": "FULFILLED. 1200x630 crop of drinks-trio, used as the link preview image when any page is shared."
     },
     {
       "slot": "brand-board",
@@ -74,7 +74,7 @@
       "height": 1200,
       "format": "jpg",
       "where": "Wholesale page, near the specs table",
-      "note": "The shipper case, and a pallet if one exists. Plain background. This is an operational photo for buyers, not a beauty shot \u2014 it should show the case as it arrives on a dock."
+      "note": "The shipper case, and a pallet if one exists. Plain background. This is an operational photo for buyers, not a beauty shot — it should show the case as it arrives on a dock."
     },
     {
       "slot": "wholesale-shelf",
@@ -82,7 +82,7 @@
       "height": 1200,
       "format": "jpg",
       "where": "Wholesale page",
-      "note": "Product on a real retail shelf, facing forward. Powerful proof for a category buyer. Omit until there is a genuine shelf placement \u2014 do not stage this."
+      "note": "Product on a real retail shelf, facing forward. Powerful proof for a category buyer. Omit until there is a genuine shelf placement — do not stage this."
     },
     {
       "slot": "competitor-celsius-panel",
@@ -115,6 +115,14 @@
       "format": "jpg",
       "where": "Landing page, the proof sections",
       "note": "Kirkland Signature can with CONTAINS 0% JUICE legible. Same framing as the others. REPLACEABLE: competitor labels change, so treat these as perishable and re-shoot when a formula or pack changes."
+    },
+    {
+      "slot": "drinks-trio",
+      "width": 1448,
+      "height": 1086,
+      "format": "png",
+      "where": "Home, the drinks section, above the flavour tiles",
+      "note": "FULFILLED. All three cans on a table with their fruit. Founder-supplied, copy on the cans checked by the founder."
     }
   ],
   "_flavorComment": [

@@ -50,7 +50,7 @@ export const landing = {
 
   rule: {
     label: 'The rule',
-    heading: 'Never more than six.',
+    heading: 'Never more than six ingredients.',
     body: [] as string[],
   },
 
