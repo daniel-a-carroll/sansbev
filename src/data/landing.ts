@@ -142,14 +142,13 @@ export const landing = {
 
   faq: {
     label: 'Questions',
-    // Exactly as briefed. Plain word, full stop. Do not elaborate the answers.
+    // Plain word, full stop. Do not elaborate the answers.
     items: [
       { q: 'What flavour system do you use?', a: 'Juice.' },
       { q: 'What’s in your proprietary energy blend?', a: 'Caffeine.' },
-      { q: 'What’s the adaptogen stack?', a: 'There isn’t one.' },
       { q: 'Why only six ingredients?', a: 'We couldn’t justify a seventh.' },
       { q: `Why is it ${price.perCan.replace('.00', '')}?`, a: 'Because we refuse to compromise on quality.' },
-      { q: 'Is this an energy drink?', a: 'No. Just kidding, it is.' },
+      { q: 'Is this an energy drink?', a: 'Yes, and it is the realest one ever made.' },
     ],
   },
 };
