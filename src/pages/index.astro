@@ -348,7 +348,9 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
         {landing.faq.items.map((item) => (
           <div class="faq__item">
             <dt>{item.q}</dt>
-            <dd>{item.a}</dd>
+            {/* Short answers are the joke and stay big; a long one, like a
+                list, sets smaller so it doesn't dominate the section. */}
+            <dd class:list={{ 'faq__a--long': item.a.length > 60 }}>{item.a}</dd>
           </div>
         ))}
       </dl>
@@ -979,6 +981,12 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
     font-size: var(--text-h2);
     line-height: 1.15;
     text-wrap: balance;
+  }
+
+  .faq__item dd.faq__a--long {
+    font-size: var(--text-h3);
+    line-height: 1.4;
+    text-wrap: pretty;
   }
 
   @media (max-width: 40rem) {

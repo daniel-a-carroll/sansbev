@@ -147,7 +147,7 @@ export const landing = {
       { q: 'What flavour system do you use?', a: 'Juice.' },
       { q: 'What’s in your proprietary energy blend?', a: 'Caffeine.' },
       { q: 'Why only six ingredients?', a: 'We couldn’t justify a seventh.' },
-      { q: `Why is it ${price.perCan.replace('.00', '')}?`, a: 'Carbonated Water, Organic Fruit Juice, Caffeine from green coffee beans, L-theanine from green tea, and salt.' },
+      { q: `Why is it ${price.perCan.replace('.00', '')}?`, a: 'Carbonated water, organic fruit juices, caffeine from green coffee beans, L-theanine from green tea, and salt.' },
       { q: 'Is this an energy drink?', a: 'Yes, and it is the realest one ever made.' },
     ],
   },
