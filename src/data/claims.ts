@@ -355,7 +355,7 @@ const claimsSchema = z.object({
 
 export const claims = claimsSchema.parse({
   productDescriptor:
-    'A sparkling can made with real fruit juice. Six ingredients: carbonated water, two organic fruit juices, caffeine from green coffee beans, L-theanine from green tea, and salt.',
+    'A sparkling can made with real fruit juice. Ingredients: carbonated water, two organic fruit juices, caffeine from green coffee beans, L-theanine from green tea, and salt.',
 
   compositionPoints: [
     { label: '20% juice, from concentrate, reconstituted to single strength', confirmed: true },

@@ -153,7 +153,7 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
                  data-can-color={f.data.color?.field}>
               <Asset
                 slot={flavorSlot(f.id, 'can-front')}
-                alt={`The ${f.data.name} can, with its six ingredients printed on the front.`}
+                alt={`The ${f.data.name} can, with its ingredients printed on the front.`}
                 sizes="(min-width: 48rem) 20vw, 50vw"
                 loading={i === 0 ? 'eager' : 'lazy'}
               />
@@ -174,7 +174,8 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
     </div>
   </section>
 
-  {/* 2. THE RULE */}
+  {/* 2. THE RULE. Switched off by landing.rule.show; see the note there. */}
+  {landing.rule.show && (
   <section class="section rule" aria-labelledby="rule-heading">
     <div class="container grid">
       <p class="label margin">{landing.rule.label}</p>
@@ -188,6 +189,7 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
       </div>
     </div>
   </section>
+  )}
 
   {/* 3. THE SIX. The largest type on the page. */}
   <section class="section six" aria-labelledby="six-heading">
@@ -316,7 +318,7 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
             <div class="drink__can">
               <Asset
                 slot={flavorSlot(f.id, 'can-front')}
-                alt={`The ${f.data.name} can, with its six ingredients printed on the front.`}
+                alt={`The ${f.data.name} can, with its ingredients printed on the front.`}
                 sizes={i === 0 ? '(min-width: 48rem) 18vw, 40vw' : '(min-width: 48rem) 9vw, 28vw'}
               />
             </div>
@@ -550,7 +552,12 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
     padding-block: var(--space-xl) var(--space-lg);
   }
 
+  /* Straight after the hero (rule hidden), the list keeps a modest gap. */
   .section.six {
+    padding-block-start: var(--space-xl);
+  }
+
+  .section.rule + .section.six {
     padding-block-start: 0;
     border-block-start: 0;
   }

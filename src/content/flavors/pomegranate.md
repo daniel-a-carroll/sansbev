@@ -2,7 +2,7 @@
 name: Pomegranate
 order: 3
 status: in-development
-description: 'Carbonated water, organic pomegranate juice and organic lemon juice, with caffeine from green coffee beans, L-theanine from green tea, and salt. Six ingredients. No added sugar.'
+description: 'Carbonated water, organic pomegranate juice and organic lemon juice, with caffeine from green coffee beans, L-theanine from green tea, and salt. No added sugar.'
 # Label order. Six slots on every SKU; the two juice lines change by can.
 # The can prints the two juices on one line, "Organic Juice (Pomegranate and Lemon)".
 ingredients:

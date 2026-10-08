@@ -49,6 +49,10 @@ export const landing = {
   },
 
   rule: {
+    // OFF while the SIX trademark application is pending (2026-10-08). Copy
+    // that explains the name as the ingredient count is evidence the mark is
+    // merely descriptive. Set to true to bring the section back as it was.
+    show: false,
     label: 'The rule',
     heading: 'Never more than six ingredients.',
     body: [] as string[],
@@ -146,7 +150,8 @@ export const landing = {
     items: [
       { q: 'What flavour system do you use?', a: 'Juice.' },
       { q: 'What’s in your proprietary energy blend?', a: 'Caffeine.' },
-      { q: 'Why only six ingredients?', a: 'We couldn’t justify a seventh.' },
+      // Removed while the trademark application is pending (see rule.show):
+      // { q: 'Why only six ingredients?', a: 'We couldn’t justify a seventh.' },
       { q: `Why is it ${price.perCan.replace('.00', '')}?`, a: 'Carbonated water, organic fruit juices, caffeine from green coffee beans, L-theanine from green tea, and salt.' },
       { q: 'Is this an energy drink?', a: 'Absolutely.' },
     ],

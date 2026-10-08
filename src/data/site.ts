@@ -105,9 +105,9 @@ export const site = siteSchema.parse({
     wordmark: WORDMARK,
     wordmarkArt: WORDMARK_ART,
     legalName: '[[PLACEHOLDER: registered legal entity name]]',
-    // The rule, not a count. A promise survives reformulation; a description
-    // of the current recipe does not.
-    tagline: 'Never more than six.',
+    // Was 'Never more than six.' Off while the trademark application is
+    // pending: it ties the name to the ingredient count. Undefined hides it.
+    tagline: undefined,
     domain: 'https://sansbev.com',
     nameIsFinal: false,
   },

@@ -105,8 +105,8 @@ export const copy = copySchema.parse({
   home: {
     // Section copy for the home page lives in landing.ts.
     seo: {
-      title: `${BRAND_NAME}. Never more than six.`,
-      description: `A sparkling can made with real fruit juice. Six ingredients, ${product.caffeineMg} mg caffeine, no added sugar.`,
+      title: `${BRAND_NAME} energy drink`,
+      description: `A sparkling energy drink made with real fruit juice. ${product.caffeineMg} mg caffeine, no added sugar.`,
     },
   },
 
@@ -114,11 +114,11 @@ export const copy = copySchema.parse({
     seo: {
       title: 'The lineup',
       description:
-        `Cranberry, lemon and pomegranate. Six ingredients each, made with real fruit juice, with ${product.caffeineMg}mg caffeine from green coffee beans, in a 12 ounce can.`,
+        `Cranberry, lemon and pomegranate. Made with real fruit juice, with ${product.caffeineMg}mg caffeine from green coffee beans, in a 12 ounce can.`,
     },
     heading: 'The lineup',
     intro:
-      'Six ingredients in every can. Only the fruit changes.',
+      'Every can is the same recipe. Only the fruit changes.',
   },
 
   whereToBuy: {
@@ -142,7 +142,7 @@ export const copy = copySchema.parse({
     },
     heading: 'Wholesale and retail partners',
     intro:
-      `${BRAND_NAME} is a 12 ounce sparkling can made with real fruit juice, with ${product.caffeineMg}mg of caffeine. Six ingredients. We are talking to buyers, distributors, and brokers in Colorado now. [[PLACEHOLDER: launch timing, and whether you are taking orders yet. One sentence.]]`,
+      `${BRAND_NAME} is a 12 ounce sparkling can made with real fruit juice, with ${product.caffeineMg}mg of caffeine. We are talking to buyers, distributors, and brokers in Colorado now. [[PLACEHOLDER: launch timing, and whether you are taking orders yet. One sentence.]]`,
     availableOnRequestHeading: 'Available on request',
     availableOnRequestNote:
       'Send an inquiry and we will follow up with the current sell sheet and full specifications.',
@@ -164,7 +164,7 @@ export const copy = copySchema.parse({
       'For years I got my caffeine from everywhere. Coffee, tea, supplements, energy drinks, whatever was in front of me that day.',
       'Then I had a family and ran out of time. I wanted one convenient thing I could reach for every day and feel good about drinking. I went looking and could not find it. Some had ingredients I did not recognize. Some were sweeter than I wanted. Some just did not taste good.',
       'So I kept drinking things I was not happy with. For years. Eventually I decided to do something about it myself.',
-      `${BRAND_NAME} is the drink I wanted and could not buy. Six ingredients, real fruit juice, and a label I am comfortable handing to anybody.`,
+      `${BRAND_NAME} is the drink I wanted and could not buy. Real fruit juice, a short ingredient list, and a label I am comfortable handing to anybody.`,
       'We are based in Colorado. [[PLACEHOLDER: where specifically, and where the product is produced. Buyers ask this early, so answer it plainly here.]]',
     ],
   },
