@@ -103,12 +103,21 @@ class ResendProvider implements SubmissionProvider {
     };
   }
 
+  private async contactExists(email: string): Promise<boolean> {
+    const response = await fetch(`${RESEND_API}/contacts/${encodeURIComponent(email)}`, {
+      headers: this.headers(),
+    });
+    return response.ok;
+  }
+
   /**
-   * Saves the signup as a Resend contact. Signing up twice is not an error:
-   * if the create call fails, we look the address up, and if the contact
-   * already exists the visitor is simply already on the list.
+   * Saves the signup as a Resend contact and returns true if it is NEW.
+   * Signing up twice is not an error, and is not new: the address is looked
+   * up first, so a repeat signup creates nothing and sends no notification.
    */
-  private async addContact(email: string): Promise<void> {
+  private async addContact(email: string): Promise<boolean> {
+    if (await this.contactExists(email)) return false;
+
     const response = await fetch(`${RESEND_API}/contacts`, {
       method: 'POST',
       headers: this.headers(),
@@ -118,13 +127,11 @@ class ResendProvider implements SubmissionProvider {
         ...(this.segmentId ? { segments: [{ id: this.segmentId }] } : {}),
       }),
     });
-    if (response.ok) return;
+    if (response.ok) return true;
 
+    // Two signups racing each other: the other one created it first.
     const detail = await response.text().catch(() => '');
-    const existing = await fetch(`${RESEND_API}/contacts/${encodeURIComponent(email)}`, {
-      headers: this.headers(),
-    });
-    if (existing.ok) return;
+    if (await this.contactExists(email)) return false;
 
     throw new Error(`Resend contacts returned ${response.status}: ${detail.slice(0, 300)}`);
   }
@@ -162,11 +169,14 @@ class ResendProvider implements SubmissionProvider {
     }
 
     // The contact is the record. If saving it fails, the visitor is told.
-    await this.addContact(s.data.email!);
+    // A repeat signup gets the same "Noted." as a new one, so the form never
+    // reveals whether an address is already on the list.
+    const isNew = await this.addContact(s.data.email!);
 
-    // The per-signup email is a convenience. Once the contact is saved, a
-    // failed notification is logged, not shown to the visitor as a failure.
-    if (this.notify) {
+    // The per-signup email is a convenience, sent only for NEW contacts.
+    // Once the contact is saved, a failed notification is logged, not shown
+    // to the visitor as a failure.
+    if (isNew && this.notify) {
       await this.sendNotification(s).catch((error) =>
         console.error('[submission:subscribe] contact saved, notification failed', error)
       );

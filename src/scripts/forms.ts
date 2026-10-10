@@ -146,6 +146,9 @@ const enhance = (shell: HTMLElement): void => {
       const result = (await response.json()) as SubmitResponse;
 
       if (result.ok) {
+        // Clear the fields, so a reload or a second look at the page does not
+        // show the address ready to send again.
+        form.reset();
         form.hidden = true;
         success.hidden = false;
         success.focus();
