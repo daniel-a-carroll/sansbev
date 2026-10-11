@@ -95,7 +95,7 @@ export const landing = {
     money: {
       heading: 'Money',
       rows: [
-        { item: `A ${money.cafeDrinkPerDay} café drink`, amount: money.cafeDrinkPerYear },
+        { item: `A ${money.cafeDrinkPerDay} café drink, plus a ${money.cafeTip} tip`, amount: money.cafeDrinkWithTipPerYear },
         { item: `${BRAND_NAME}, subscribed, at ${price.subscriberPerCan} a can`, amount: money.subscriberPerYear },
       ],
       total: { item: 'Difference', amount: money.savingPerYear },
