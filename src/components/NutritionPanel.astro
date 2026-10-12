@@ -59,7 +59,7 @@ const rows = n
       { label: 'Total Sugars', value: amount(n.totalSugarsG, 'g'), dv: undefined, indent: true },
       { label: 'Includes Added Sugars', value: amount(n.addedSugarsG, 'g'), dv: percentDV(n.addedSugarsG, DAILY_VALUES.addedSugarsG), indent: true, deep: true },
       { label: 'Sugar Alcohols', value: amount(n.sugarAlcoholsG, 'g'), dv: undefined, indent: true },
-      { label: 'Protein', value: amount(n.proteinG, 'g'), dv: undefined, bold: true },
+      { label: 'Protein', value: amount(n.proteinG, 'g'), dv: percentDV(n.proteinG, DAILY_VALUES.proteinG), bold: true },
     ].filter((r) => r.value !== '')
   : [];
 

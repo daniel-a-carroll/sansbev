@@ -44,7 +44,7 @@ export const MICRONUTRIENT_DV: Record<string, { amount: number; unit: 'mg' | 'mc
 };
 
 /**
- * FDA rounds %DV to the nearest whole percent. Values that round to zero are
+ * Macronutrient %DV rounds to the nearest whole percent. Values that round to zero are
  * expressed as 0%, not omitted, when the nutrient is declared.
  */
 export const percentDV = (
@@ -52,6 +52,20 @@ export const percentDV = (
   dailyValue: number
 ): number | undefined =>
   amount === undefined ? undefined : Math.round((amount / dailyValue) * 100);
+
+/**
+ * Vitamins and minerals round %DV in steps, not to the nearest 1%
+ * (21 CFR 101.9(c)(8)(iii)): to the nearest 2% up to 10%, the nearest 5% from
+ * 10% to 50%, and the nearest 10% above that. Computed from the declared
+ * (already rounded) amount, which is how the can label does it, so the two
+ * agree: potassium 70mg is 1.5% and shows as 2%; calcium 10mg is 0.8% and
+ * shows as 0%.
+ */
+const roundMicronutrientPercent = (pct: number): number => {
+  if (pct < 10) return Math.round(pct / 2) * 2;
+  if (pct <= 50) return Math.round(pct / 5) * 5;
+  return Math.round(pct / 10) * 10;
+};
 
 export const micronutrientPercentDV = (
   name: string,
@@ -64,7 +78,7 @@ export const micronutrientPercentDV = (
   const amount = dv.unit === 'mg' ? amountMg : amountMcg;
   if (amount === undefined) return undefined;
 
-  return Math.round((amount / dv.amount) * 100);
+  return roundMicronutrientPercent((amount / dv.amount) * 100);
 };
 
 /** Formats a declared amount with its unit, dropping trailing zeros. Two

@@ -16,11 +16,10 @@ juicePercent: 20
 canSizeFlOz: 12
 caffeineMg: 220
 lTheanineMg: 200
-# Nutrition Facts, from the can label (src/assets/six/six-can-lemon-back.png).
-# Calories and sodium are shown with FDA rounding (calories to the nearest 5
-# at 50 or under, sodium to the nearest 5 mg); the label draft said
-# 31 calories and 47 mg. Everything else is as printed, pending the
-# corrected labels. Keep this block and the label art in step.
+# Nutrition Facts, transcribed from the corrected can label
+# (src/assets/six/six-can-lemon-back.png, FDA rounding applied, 2026-10-12).
+# This block drives the live panel, the calorie line on the home page and the
+# Product JSON-LD. If the label art changes, change this in the same commit.
 nutrition:
   servingsPerContainer: 1
   servingSizeFlOz: 12
@@ -37,9 +36,9 @@ nutrition:
   proteinG: 0
   micronutrients:
     - { name: Vitamin D, amountMcg: 0 }
-    - { name: Calcium, amountMg: 8 }
+    - { name: Calcium, amountMg: 10 }
     - { name: Iron, amountMg: 0 }
-    - { name: Potassium, amountMg: 83 }
+    - { name: Potassium, amountMg: 80 }
     - { name: Vitamin C, amountMg: 8.9 }
     - { name: Folate, amountMcg: 0 }
     - { name: Pantothenic Acid, amountMg: 0 }
