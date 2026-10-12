@@ -39,6 +39,7 @@ export const MICRONUTRIENT_DV: Record<string, { amount: number; unit: 'mg' | 'mc
   iron: { amount: 18, unit: 'mg' },
   magnesium: { amount: 420, unit: 'mg' },
   zinc: { amount: 11, unit: 'mg' },
+  manganese: { amount: 2.3, unit: 'mg' },
   potassium: { amount: 4700, unit: 'mg' },
 };
 
@@ -66,9 +67,10 @@ export const micronutrientPercentDV = (
   return Math.round((amount / dv.amount) * 100);
 };
 
-/** Formats a declared amount with its unit, dropping trailing zeros. */
+/** Formats a declared amount with its unit, dropping trailing zeros. Two
+ *  decimals, so trace minerals (manganese at 0.02mg) do not collapse to 0. */
 export const amount = (value: number | undefined, unit: string): string =>
-  value === undefined ? '' : `${Number(value.toFixed(1))}${unit}`;
+  value === undefined ? '' : `${Number(value.toFixed(2))}${unit}`;
 
 /**
  * True when there is enough data to render a panel at all. A panel with only

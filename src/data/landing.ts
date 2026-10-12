@@ -73,6 +73,8 @@ export const landing = {
       'A pinch.',
     ],
     switcherLabel: 'Show the list for',
+    // Under the back of the can; goes to the full panel on the product page.
+    nutritionLink: 'Nutrition facts',
     facts: [
       {
         value: `${product.juicePercent}% juice`,

@@ -66,7 +66,11 @@ const rows = n
 const micros = (n?.micronutrients ?? [])
   .map((m) => ({
     name: m.name,
-    value: m.amountMg !== undefined ? amount(m.amountMg, 'mg') : amount(m.amountMcg, 'mcg'),
+    // Folate is declared in dietary folate equivalents, as on the label.
+    value:
+      m.amountMg !== undefined
+        ? amount(m.amountMg, 'mg')
+        : amount(m.amountMcg, /^folate$/i.test(m.name.trim()) ? 'mcg DFE' : 'mcg'),
     dv: micronutrientPercentDV(m.name, m.amountMg, m.amountMcg),
   }))
   .filter((m) => m.value !== '');
@@ -90,13 +94,17 @@ const micros = (n?.micronutrients ?? [])
         </thead>
 
         <tbody>
-          {(n?.servingsPerContainer !== undefined || n?.servingSizeFlOz !== undefined) && (
+          {n?.servingsPerContainer !== undefined && (
+            <tr class="panel__servings">
+              <th scope="row" colspan="3">Servings per container {n.servingsPerContainer}</th>
+            </tr>
+          )}
+          {n?.servingSizeFlOz !== undefined && (
             <tr class="panel__serving">
-              <th scope="row" colspan="3">
-                {n.servingsPerContainer !== undefined && `${n.servingsPerContainer} serving per container`}
-                {n.servingsPerContainer !== undefined && n.servingSizeFlOz !== undefined && ' · '}
-                {n.servingSizeFlOz !== undefined && `Serving size ${n.servingSizeFlOz} fl oz`}
-              </th>
+              <th scope="row">Serving size</th>
+              <td class="numeric" colspan="2">
+                {n.servingsPerContainer === 1 ? `1 can (${n.servingSizeFlOz} fl oz)` : `${n.servingSizeFlOz} fl oz`}
+              </td>
             </tr>
           )}
 
@@ -193,9 +201,15 @@ const micros = (n?.micronutrients ?? [])
     text-align: end;
   }
 
-  .panel__serving th {
+  .panel__servings th {
+    border-block-end: 0;
+  }
+
+  .panel__serving th,
+  .panel__serving td {
+    font-weight: var(--font-weight-heading);
     border-block-end: 8px solid var(--color-ink);
-    padding-block: var(--space-3xs) var(--space-2xs);
+    padding-block: 0 var(--space-2xs);
   }
 
   .panel__calories th {

@@ -11,12 +11,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Asset from '../../components/Asset.astro';
 import JsonLd from '../../components/JsonLd.astro';
 import NutritionPanel from '../../components/NutritionPanel.astro';
+import JoinForm from '../../components/forms/JoinForm.astro';
 import { getCollection, render } from 'astro:content';
 import { flavorSlot } from '../../lib/assets';
 import { hasAsset } from '../../lib/resolve-asset';
 import { productSchema } from '../../lib/schema';
 import { claims } from '../../data/claims';
 import { site } from '../../data/site';
+import { landing } from '../../data/landing';
 
 export const getStaticPaths = (async () => {
   const flavors = await getCollection('flavors', ({ data }) => !data.draft);
@@ -31,6 +33,10 @@ const d = flavor.data;
 // The scene photo is optional: skip it rather than show an empty placeholder.
 const sceneSlot = flavorSlot(flavor.id, 'scene');
 const hasScene = hasAsset(sceneSlot);
+// The back of the can, beside the live panel: the same facts twice, once as
+// the label people will hold and once as text that can be read and searched.
+const backSlot = `six-can-${flavor.id}-back`;
+const hasBack = hasAsset(backSlot);
 const { Content } = await render(flavor);
 
 const title = d.seo?.title ?? `${d.name}`;
@@ -121,13 +127,13 @@ const disclosures = [
 
   {
     (d.ingredients?.length || d.nutrition || d.allergenStatement) && (
-      <section class="section">
+      <section class="section" id="nutrition">
         <div class="container grid">
           <div class="flavor__label-data">
             {d.ingredients && d.ingredients.length > 0 && (
               <>
                 <h2>Ingredients</h2>
-                <p class="prose">{d.ingredients.join(', ')}.</p>
+                <p class="prose">{d.ingredients.join(', ').replace(/-/g, '\u2011')}.</p>
               </>
             )}
 
@@ -135,21 +141,30 @@ const disclosures = [
               <p class="prose flavor__allergen">{d.allergenStatement}</p>
             )}
 
+            <div class="flavor__panel">
+              <NutritionPanel nutrition={d.nutrition} flavorName={d.name} />
+            </div>
           </div>
 
-          {hasScene && (
-          <div class="flavor__scene">
-            <Asset
-              slot={sceneSlot}
-              alt={`A can of ${d.name}, with its ingredients printed on the front.`}
-              sizes="(min-width: 60rem) 30vw, 90vw"
-            />
-          </div>
+          {hasBack && (
+            <div class="flavor__back">
+              <Asset
+                slot={backSlot}
+                alt={`The back of the ${d.name} can: Nutrition Facts and the ingredient list.`}
+                sizes="(min-width: 60rem) 18vw, 60vw"
+              />
+            </div>
           )}
 
-          <div class="flavor__panel">
-            <NutritionPanel nutrition={d.nutrition} flavorName={d.name} />
-          </div>
+          {hasScene && (
+            <div class="flavor__scene">
+              <Asset
+                slot={sceneSlot}
+                alt={`A can of ${d.name}, with its ingredients printed on the front.`}
+                sizes="(min-width: 60rem) 30vw, 90vw"
+              />
+            </div>
+          )}
         </div>
       </section>
     )
@@ -167,6 +182,20 @@ const disclosures = [
       </section>
     )
   }
+
+  {/* Someone reading a nutrition panel is close to buying. Same capture,
+      same offer as the home page, tagged with the flavour that converted. */}
+  <section class="section flavor__subscribe" aria-labelledby="flavor-subscribe-heading">
+    <div class="container grid">
+      <div class="flavor__subscribe-body">
+        <h2 id="flavor-subscribe-heading" class="display flavor__subscribe-heading">
+          {landing.subscription.heading}
+        </h2>
+        <p class="prose">{landing.subscription.body[0]}</p>
+        <JoinForm source={`product-${flavor.id}`} label={landing.subscription.captureLabel} />
+      </div>
+    </div>
+  </section>
 
   <section class="section">
     <div class="container">
@@ -240,9 +269,28 @@ const disclosures = [
     grid-column: 9 / span 4;
   }
 
+  .flavor__back {
+    grid-column: 9 / span 3;
+    align-self: start;
+  }
+
+  .flavor__back :global(.asset) {
+    max-inline-size: 16rem;
+    margin-inline: auto;
+  }
+
   .flavor__panel {
-    grid-column: 1 / span 7;
     margin-block-start: var(--space-lg);
+  }
+
+  .flavor__subscribe-body {
+    grid-column: 1 / span 8;
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  .flavor__subscribe-heading {
+    font-size: var(--text-h1);
   }
 
   .flavor__allergen {

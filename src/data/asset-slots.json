@@ -123,6 +123,30 @@
       "format": "png",
       "where": "Home, the drinks section, above the flavour tiles",
       "note": "FULFILLED. All three cans on a table with their fruit. Founder-supplied, copy on the cans checked by the founder."
+    },
+    {
+      "slot": "six-can-cranberry-back",
+      "width": 652,
+      "height": 1675,
+      "format": "png",
+      "where": "Home ingredient list (switches with the flavour), product page beside the Nutrition Facts",
+      "note": "FULFILLED. Back of the Cranberry can: Nutrition Facts, ingredients, caffeine and L-theanine statements. Transparent PNG. Named to match the label artwork file, so a corrected label replaces it under the same name with no code change. The numbers in the picture must match the nutrition block in src/content/flavors/cranberry.md, which drives the live panel."
+    },
+    {
+      "slot": "six-can-lemon-back",
+      "width": 652,
+      "height": 1675,
+      "format": "png",
+      "where": "Home ingredient list (switches with the flavour), product page beside the Nutrition Facts",
+      "note": "FULFILLED. Back of the Lemon can: Nutrition Facts, ingredients, caffeine and L-theanine statements. Transparent PNG. Named to match the label artwork file, so a corrected label replaces it under the same name with no code change. The numbers in the picture must match the nutrition block in src/content/flavors/lemon.md, which drives the live panel."
+    },
+    {
+      "slot": "six-can-pomegranate-back",
+      "width": 652,
+      "height": 1675,
+      "format": "png",
+      "where": "Home ingredient list (switches with the flavour), product page beside the Nutrition Facts",
+      "note": "FULFILLED. Back of the Pomegranate can: Nutrition Facts, ingredients, caffeine and L-theanine statements. Transparent PNG. Named to match the label artwork file, so a corrected label replaces it under the same name with no code change. The numbers in the picture must match the nutrition block in src/content/flavors/pomegranate.md, which drives the live panel."
     }
   ],
   "_flavorComment": [

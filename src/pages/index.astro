@@ -80,12 +80,15 @@ const slots = (lead?.data.ingredients ?? []).map((_, i) => {
 // the hide rule at equal specificity, so it wins.
 const switcherCss = [
   `.six [data-sku]:not([data-sku="${lead?.id}"]) { display: none; }`,
+  `.six [data-sku-back]:not([data-sku-back="${lead?.id}"]) { display: none; }`,
   ...flavors.map((f) => {
     const c = f.data.color;
     return [
       `.six:has(#sku-${f.id}:checked) { --sku: ${c?.ink ?? 'var(--color-accent-text)'}; }`,
       `.six:has(#sku-${f.id}:checked) [data-sku] { display: none; }`,
       `.six:has(#sku-${f.id}:checked) [data-sku="${f.id}"] { display: inline; }`,
+      `.six:has(#sku-${f.id}:checked) [data-sku-back] { display: none; }`,
+      `.six:has(#sku-${f.id}:checked) [data-sku-back="${f.id}"] { display: block; }`,
     ].join('\n');
   }),
 ].join('\n');
@@ -95,6 +98,18 @@ const switcherCss = [
 const juiceStyle = (name: string) => {
   const fruit = name.toLowerCase().replace(/ juice$/, '').replace(/[^a-z]+/g, '-');
   return / juice$/i.test(name) ? `--juice: var(--c-juice-${fruit})` : undefined;
+};
+
+// The back of each can sits beside the list: the label on the page is the
+// label on the can. Under it, the two numbers people check first, read from
+// the same nutrition data that draws the full panel on the product page.
+// Plain amounts only; no "low calorie" or similar nutrient content claims.
+const backSlot = (id: string) => `six-can-${id}-back`;
+const nutritionLine = (f: (typeof flavors)[number]) => {
+  const n = f.data.nutrition;
+  if (n?.calories === undefined || n.totalSugarsG === undefined) return undefined;
+  const added = n.addedSugarsG === 0 ? ', none added' : '';
+  return `${n.calories} calories. ${n.totalSugarsG}\u00a0g sugar${added}.`;
 };
 
 const skuStyle = (f: (typeof flavors)[number]) =>
@@ -218,6 +233,7 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
           </fieldset>
         )}
 
+        <div class="six__split">
         <ul class="six__list">
           {slots.map((slot) => (
             <li class="six__item">
@@ -233,6 +249,25 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
             </li>
           ))}
         </ul>
+
+        <div class="six__backs">
+          {flavors.map((f) => (
+            <figure class="six__back" data-sku-back={f.id}>
+              <a href={`/product/${f.id}#nutrition`} class="six__back-link">
+                <Asset
+                  slot={backSlot(f.id)}
+                  alt={`The back of the ${f.data.name} can: Nutrition Facts and the ingredient list.`}
+                  sizes="(min-width: 60rem) 14rem, 11rem"
+                />
+              </a>
+              <figcaption class="six__back-caption">
+                {nutritionLine(f) && <span>{nutritionLine(f)}</span>}
+                <a href={`/product/${f.id}#nutrition`}>{landing.six.nutritionLink}</a>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+        </div>
 
         <ul class="facts">
           {landing.six.facts.map((f) => (
@@ -308,7 +343,7 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
                   <span class="drink__kicker">{landing.drinks.kicker[f.id]}</span>
                 )}
               </div>
-              <h3 class="drink__name">{f.data.name}</h3>
+              <h3 class="drink__name"><a class="drink__link" href={`/product/${f.id}`}>{f.data.name}</a></h3>
               <div class="drink__meta">
                 {pair(f) && <p class="drink__pair">{pair(f)}</p>}
                 <p class="drink__spec">{spec}</p>
@@ -626,6 +661,50 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
     outline-offset: var(--focus-offset);
   }
 
+  /* The list and the back of the can. Side by side from 60rem; below that
+     the can follows the list, smaller and centred. */
+  .six__split {
+    display: grid;
+    gap: var(--space-lg);
+  }
+
+  @media (min-width: 60rem) {
+    .six__split {
+      grid-template-columns: minmax(0, 1fr) 14rem;
+      gap: var(--space-xl);
+      align-items: start;
+    }
+  }
+
+  .six__back {
+    margin: 0;
+    max-inline-size: 14rem;
+    margin-inline: auto;
+  }
+
+  .six__back-link {
+    display: block;
+  }
+
+  .six__back-caption {
+    display: grid;
+    gap: var(--space-3xs);
+    margin-block-start: var(--space-sm);
+    text-align: center;
+    font-size: var(--text-small);
+    color: var(--color-ink-muted);
+  }
+
+  .six__back-caption span {
+    color: var(--color-ink);
+  }
+
+  @media (max-width: 59.99rem) {
+    .six__back {
+      max-inline-size: 11rem;
+    }
+  }
+
   /* Unnumbered: the list is not presented as a count (see the trademark note
      on landing.rule). */
   .six__list {
@@ -831,6 +910,27 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
     color: var(--on-field);
     min-block-size: 15rem;
     overflow: clip;
+    position: relative;
+  }
+
+  /* The whole tile is the link to the product page; the name carries it so
+     the accessible name is just the flavour. */
+  .drink__link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .drink__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .drink:hover .drink__link,
+  .drink__link:focus-visible {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.12em;
   }
 
   .drink__text {
