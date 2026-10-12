@@ -4,7 +4,7 @@
  * These are the verified figures from the brief. Do not re-derive or re-round
  * them in components: if a number changes, it changes here and nowhere else.
  * Display strings sit beside the raw values on purpose, so that a rounding
- * decision ("about $1,200", "about 57 hours") is made once, by a person, rather
+ * decision ("about $1,075", "about 57 hours") is made once, by a person, rather
  * than by whatever Math.round happens to do in a template.
  *
  * The savings and time figures are ILLUSTRATIVE ESTIMATES. Anywhere they are
@@ -52,12 +52,11 @@ export const price = {
  *   about half of purchases tipped: ~$6.40-6.50. So $6.50 is a fair,
  *   slightly conservative figure for ONE DRINK. An average ticket (per visit,
  *   often more than one item) is not a substitute for it.
- *   NOTE (2026-10-11): the page now adds an explicit 20% tip on top of $6.50,
+ *   NOTE (2026-10-11): the page adds the average 14.52% tip on top of $6.50,
  *   at the founder's request. Since $6.50 was built allowing for a tip about
- *   half the time, the tipped total ($7.80) partly counts the tip twice and
- *   uses a rate above the 14.52% average. It is shown as a stated assumption
- *   in the footnote. If challenged, the closest sourced daily figure is a
- *   $5.59 latte + 7.53% tax + a 20% tip = $7.13.
+ *   half the time, the tipped total ($7.44) partly counts the tip twice. It
+ *   is shown as a stated assumption in the footnote. If challenged, the
+ *   closest sourced figure is the $6.82 tipped iced latte above.
  *
  * 5 minutes 24 seconds drive-thru: Intouch Insight, 2026 Drive-Thru Study
  *   (intouchinsight.com/press-releases/2026-drive-thru-study, 2026-10-01).
@@ -70,15 +69,14 @@ export const price = {
  */
 export const money = {
   cafeDrinkPerDay: '$6.50',
-  /** Founder's choice (2026-10-11): a 20% tip on top, stated as an assumption.
-   *  Above the 14.52% café average in the sources note, and assumes a tip
-   *  every day. $6.50 x 1.20 = $7.80 a day, x 365 = $2,847. */
-  cafeTip: '20%',
-  cafeDrinkWithTipPerYear: '$2,847',
+  /** The average café tip (Square, Q1 2026), stated as an assumption and
+   *  applied every day. $6.50 x 1.1452 = $7.44 a day, x 365 = $2,717. */
+  cafeTip: '14.52%',
+  cafeDrinkWithTipPerYear: '$2,717',
   // $4.50 x 365 = $1,642.50, shown as $1,642 to match how $2,372.50 is shown.
   subscriberPerYear: '$1,642',
-  // $2,847 - $1,642 = $1,205.
-  savingPerYear: 'about $1,200',
+  // $2,717 - $1,642 = $1,075.
+  savingPerYear: 'about $1,075',
 } as const;
 
 export const time = {
