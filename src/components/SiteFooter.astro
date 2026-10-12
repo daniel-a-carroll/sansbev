@@ -24,6 +24,11 @@ const contacts = [
 ].filter((c): c is { label: string; email: string } => Boolean(c.email));
 
 const year = new Date().getFullYear();
+// An unwritten legal name is a [[PLACEHOLDER]]; never print it in the footer.
+const owner =
+  site.brand.legalName && !site.brand.legalName.startsWith('[[')
+    ? site.brand.legalName
+    : site.brand.name;
 ---
 
 <footer class="site-footer">
@@ -79,7 +84,7 @@ const year = new Date().getFullYear();
   <div class="container">
     {advisory && <p class="site-footer__advisory">{advisory}</p>}
     <p class="caption site-footer__legal">
-      &copy; {year} {site.brand.legalName ?? site.brand.name}. All rights reserved.
+      &copy; {year} {owner}. All rights reserved.
     </p>
   </div>
 </footer>
