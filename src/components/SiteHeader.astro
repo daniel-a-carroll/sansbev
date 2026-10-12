@@ -7,7 +7,8 @@
  * zero JavaScript, has no disclosure state to get trapped in, and needs no
  * focus management. A toggle here would add complexity and remove capability.
  *
- * Wholesale was removed (2026-10-12): launch is direct to consumer only. The
+ * Wholesale and Where to buy were removed (2026-10-12): launch is direct to
+ * consumer only. The
  * page is in git history if that changes. Contact is listed only once there
  * is an address to publish; until then the page would be a dead end.
  */
@@ -18,7 +19,6 @@ const hasContact = Boolean(site.contact.general || site.contact.press || site.co
 
 const nav = [
   { href: '/product', label: 'Product' },
-  { href: '/where-to-buy', label: 'Where to buy' },
   { href: '/about', label: 'About' },
   ...(hasContact ? [{ href: '/contact', label: 'Contact' }] : []),
 ];

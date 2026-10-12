@@ -12,7 +12,6 @@ import { site } from '../data/site';
 const STATIC_PATHS = [
   '/',
   '/product',
-  '/where-to-buy',
   '/about',
   '/contact',
   '/privacy',

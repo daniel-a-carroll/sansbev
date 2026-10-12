@@ -194,14 +194,12 @@ export const copy = copySchema.parse({
           body: [
             'We collect information only when you choose to submit one of the forms on this site.',
             'The email signup collects your email address and, if you choose to give them, your ZIP code and the flavour you are most excited to try. We use your email to tell you when subscriptions open. We use ZIP codes and flavours, counted together, to plan where and what to launch.',
-            `The store request form collects the name and location of a store you would like to see carrying ${BRAND_NAME}, and your email address if you choose to give it.`,
           ],
         },
         {
           heading: 'How it is handled',
           body: [
             'Email signups, with the ZIP code and flavour if you gave them, are saved as contacts with Resend, our email provider, so that we can write to you when subscriptions open. Every email we send that way has a link to unsubscribe.',
-            'Store requests are forwarded to us by email through Resend. They are not written to a database or stored on any server we operate.',
             'We do not sell this information, and we do not share it outside the business except with our email provider, which stores and processes it on our behalf.',
             'We may report demand in aggregate, for example how many people in a given area have asked for the product, to retailers and distributors. That reporting does not identify individuals.',
           ],
