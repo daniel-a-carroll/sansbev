@@ -144,7 +144,7 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
           {landing.hero.sub.map((p) => <p>{p}</p>)}
         </div>
         <div class="hero__action">
-          <a class="cta plain" href={landing.hero.ctaHref}>{landing.hero.ctaLabel}</a>
+          <JoinForm source="hero" label={landing.hero.captureLabel} />
           <p class="hero__product caption">{landing.hero.productLine}</p>
         </div>
       </div>
@@ -288,6 +288,13 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
       <div class="math__body">
         <h2 id="math-heading" class="math__heading">{landing.math.heading}</h2>
 
+        <p class="saving">
+          <span class="saving__value display">{landing.math.saving.value}</span>
+          <span class="saving__unit">{landing.math.saving.unit}</span>
+          <a class="saving__note caption" href="#math-working">{landing.math.saving.note}</a>
+        </p>
+
+        <div id="math-working"></div>
         {[landing.math.money, landing.math.time].map((block) => (
           <table class="receipt">
             <caption class="label">{block.heading}</caption>
@@ -311,6 +318,8 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
         <div class="math__notes caption">
           {assumptions.map((a) => <p>{a}</p>)}
         </div>
+
+        <JoinForm source="math" label={landing.math.captureLabel} />
       </div>
     </div>
   </section>
@@ -449,11 +458,20 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
   }
 
   .hero__action {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-sm) var(--space-lg);
-    margin-block-start: var(--space-xl);
+    margin-block-start: var(--space-lg);
+  }
+
+  .hero__action :global(.join) {
+    margin-block-start: 0;
+  }
+
+  .hero__action :global(.join__label) {
+    font-size: var(--text-body);
+    color: var(--color-ink-muted);
+  }
+
+  .hero__action .hero__product {
+    margin-block-start: var(--space-md);
   }
 
   .cta {
@@ -566,16 +584,28 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
     .hero__field { animation: none; }
   }
 
+  /* On a phone the can comes first, so the product is on the first screen,
+     with the headline straight under it. */
   @media (max-width: 48rem) {
+    .hero {
+      padding-block-start: var(--space-md);
+    }
+    .hero__mark {
+      display: none;
+    }
     .hero__figure {
-      margin-block-start: var(--space-xl);
+      order: -1;
+      margin-block-end: var(--space-md);
+    }
+    .hero__stage {
+      padding-block: var(--space-md) var(--space-sm);
     }
     .hero__stage,
     .flavors {
       margin-inline: 0;
     }
     .hero__stage :global(.asset) {
-      max-inline-size: 8.5rem;
+      max-inline-size: 6.5rem;
     }
   }
 
@@ -814,7 +844,32 @@ const spec = `${product.caffeineMg}\u00a0mg caffeine. ${product.lTheanineMg}\u00
 
   .math__heading {
     font-size: var(--text-h2);
+    margin-block-end: var(--space-lg);
+  }
+
+  /* The saving is the hook, so it is the largest thing in the section; the
+     receipts underneath are the working. */
+  .saving {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-2xs);
     margin-block-end: var(--space-xl);
+  }
+
+  .saving__value {
+    font-size: clamp(3.5rem, 2rem + 6vw, 7.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    font-variant-numeric: lining-nums;
+  }
+
+  .saving__unit {
+    font-family: var(--font-family-display);
+    font-size: var(--text-h3);
+  }
+
+  .saving__note {
+    color: var(--color-ink-muted);
   }
 
   .receipt {

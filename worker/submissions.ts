@@ -115,18 +115,32 @@ class ResendProvider implements SubmissionProvider {
    * Signing up twice is not an error, and is not new: the address is looked
    * up first, so a repeat signup creates nothing and sends no notification.
    */
-  private async addContact(email: string): Promise<boolean> {
+  private async addContact(email: string, properties: Record<string, string>): Promise<boolean> {
     if (await this.contactExists(email)) return false;
 
-    const response = await fetch(`${RESEND_API}/contacts`, {
-      method: 'POST',
-      headers: this.headers(),
-      body: JSON.stringify({
-        email,
-        unsubscribed: false,
-        ...(this.segmentId ? { segments: [{ id: this.segmentId }] } : {}),
-      }),
-    });
+    const create = (props: Record<string, string>) =>
+      fetch(`${RESEND_API}/contacts`, {
+        method: 'POST',
+        headers: this.headers(),
+        body: JSON.stringify({
+          email,
+          unsubscribed: false,
+          ...(Object.keys(props).length ? { properties: props } : {}),
+          ...(this.segmentId ? { segments: [{ id: this.segmentId }] } : {}),
+        }),
+      });
+
+    let response = await create(properties);
+
+    // Resend rejects a contact whose properties have not been created in the
+    // dashboard (Audience -> Properties: `zip` and `excited_for`, both
+    // strings). The email matters more than the extras, so save it without
+    // them and log why. The notification email still carries both values.
+    if (!response.ok && Object.keys(properties).length && response.status < 500) {
+      const detail = await response.text().catch(() => '');
+      console.error('[submission:subscribe] contact properties rejected, saving email only', detail.slice(0, 300));
+      response = await create({});
+    }
     if (response.ok) return true;
 
     // Two signups racing each other: the other one created it first.
@@ -171,7 +185,10 @@ class ResendProvider implements SubmissionProvider {
     // The contact is the record. If saving it fails, the visitor is told.
     // A repeat signup gets the same "Noted." as a new one, so the form never
     // reveals whether an address is already on the list.
-    const isNew = await this.addContact(s.data.email!);
+    const properties: Record<string, string> = {};
+    if (s.data.zip) properties.zip = s.data.zip;
+    if (s.data.excitedFor) properties.excited_for = s.data.excitedFor;
+    const isNew = await this.addContact(s.data.email!, properties);
 
     // The per-signup email is a convenience, sent only for NEW contacts.
     // Once the contact is saved, a failed notification is logged, not shown

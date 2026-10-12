@@ -7,17 +7,20 @@
  * zero JavaScript, has no disclosure state to get trapped in, and needs no
  * focus management. A toggle here would add complexity and remove capability.
  *
- * Wholesale sits inline with everything else at equal visual weight — it is
- * the primary audience's entry point, per docs/DESIGN.md.
+ * Wholesale was removed (2026-10-12): launch is direct to consumer only. The
+ * page is in git history if that changes. Contact is listed only once there
+ * is an address to publish; until then the page would be a dead end.
  */
 import Wordmark from './Wordmark.astro';
+import { site } from '../data/site';
+
+const hasContact = Boolean(site.contact.general || site.contact.press || site.contact.trade || site.contact.phone);
 
 const nav = [
   { href: '/product', label: 'Product' },
   { href: '/where-to-buy', label: 'Where to buy' },
-  { href: '/wholesale', label: 'Wholesale' },
   { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
+  ...(hasContact ? [{ href: '/contact', label: 'Contact' }] : []),
 ];
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';

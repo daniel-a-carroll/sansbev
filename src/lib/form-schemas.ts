@@ -37,7 +37,12 @@ const shortText = (label: string, max = 120) =>
 /**
  * Consumer email capture.
  *
- * EMAIL IS THE ONLY VISIBLE FIELD. The pre-launch landing page spec is explicit:
+ * UPDATE (2026-10-12): ZIP and "most excited to try" are back on the form as
+ * OPTIONAL fields, at the founder's call: a demand map by ZIP and a list split
+ * by flavour are worth more to a launch than the small conversion cost of two
+ * fields nobody has to fill in. Email stays the only required field.
+ *
+ * Previously: EMAIL WAS THE ONLY VISIBLE FIELD. The pre-launch landing page spec is explicit:
  * one field, no name, no phone. Every additional field costs conversions, and
  * conversion is the entire job of the site right now.
  *
@@ -56,6 +61,10 @@ const shortText = (label: string, max = 120) =>
 export const subscribeSchema = z.object({
   email,
   zip: zip.optional().or(z.literal('')),
+  // Optional: which flavour they are most looking forward to. Asked as
+  // "most excited to try", not "favourite", because nobody has tasted it yet.
+  // Free text to the schema; the form offers the current flavour names.
+  excitedFor: z.string().max(40).optional().or(z.literal('')),
   source: z.string().max(60).optional().or(z.literal('')),
   [HONEYPOT_FIELD]: honeypot,
 });

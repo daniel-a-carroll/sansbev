@@ -26,6 +26,20 @@
 Set each with `npx wrangler secret put NAME`, or in the Cloudflare dashboard
 under Workers → sansbev → Settings → Variables and Secrets.
 
+### Contact properties (ZIP and flavour)
+
+The signup form asks two optional questions: ZIP code and the flavour they are
+most excited to try. Resend stores them on the contact only if the properties
+exist first. Create them once in Resend: Audience, then Properties, then add:
+
+| Key | Type |
+|---|---|
+| `zip` | string |
+| `excited_for` | string |
+
+Until they exist, signups are still saved (email only) and the error is
+logged; the notification email carries both values either way.
+
 ### Exporting the signup list
 
 Resend dashboard → Audience → Contacts → export to CSV.

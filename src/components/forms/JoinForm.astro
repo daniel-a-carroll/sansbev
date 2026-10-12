@@ -2,7 +2,10 @@
 /**
  * The only conversion on the site.
  *
- * ONE FIELD. The pre-launch spec is explicit: email only, no name, no phone.
+ * Email is required; ZIP and "most excited to try" are optional (2026-10-12,
+ * founder's call: a demand map and a flavour split are worth the small cost).
+ *
+ * Previously ONE FIELD. The pre-launch spec was: email only, no name, no phone.
  * Every extra field costs signups, and signups are the entire job of the page
  * right now. ZIP was previously required here for buyer-meeting demand data;
  * that reasoning still holds, it was just outranked. The schema keeps ZIP
@@ -19,6 +22,12 @@
 import FormShell from './FormShell.astro';
 import Field from './Field.astro';
 import { landing } from '../../data/landing';
+import { getCollection } from 'astro:content';
+
+// "Most excited to try" offers the current flavours, in lineup order.
+const flavorNames = (await getCollection('flavors', ({ data }) => !data.draft))
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
+  .map((f) => f.data.name);
 
 interface Props {
   /** Which section this capture sits in. Becomes the tracked `source`. */
@@ -53,6 +62,24 @@ const id = `join-${source}`;
       autocomplete="email"
       inputmode="email"
     />
+    <div class="join__extras">
+      <Field
+        formId={id}
+        name="zip"
+        label={landing.capture.zipLabel}
+        autocomplete="postal-code"
+        inputmode="numeric"
+        pattern="[0-9]{5}"
+        maxlength={5}
+      />
+      <Field
+        formId={id}
+        name="excitedFor"
+        label={landing.capture.flavorLabel}
+        type="select"
+        options={flavorNames}
+      />
+    </div>
   </FormShell>
 
   <p class="join__note caption">{landing.capture.note}</p>
@@ -67,6 +94,13 @@ const id = `join-${source}`;
   .join__label {
     font-size: var(--text-h3);
     margin-block-end: var(--space-2xs);
+  }
+
+  /* The two optional fields share a row where there is room. */
+  .join__extras {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+    gap: var(--space-sm);
   }
 
   .join__note {

@@ -43,8 +43,10 @@ export const landing = {
     sub: [
       'You spend nearly 60 hours a year waiting for coffee. The queue, the detour, the tip prompt. The coffee was never the problem.',
     ],
-    ctaLabel: 'Subscribe',
-    ctaHref: '#subscribe',
+    // The hero carries the signup form itself (2026-10-12): the only thing a
+    // visitor can do before launch is leave an email, so it goes where they
+    // decide. The same form repeats after the math and after the drinks.
+    captureLabel: 'Subscriptions are not open yet. Get first access.',
     productLine: `Sparkling. Made with real fruit juice. ${product.caffeineMg} mg caffeine. ${product.lTheanineMg} mg L-Theanine`,
   },
 
@@ -94,6 +96,15 @@ export const landing = {
   math: {
     label: 'The math',
     heading: 'One drink a day, for a year.',
+    // The headline figure, set large above the receipts. It is an estimate,
+    // and says so where it stands.
+    saving: {
+      value: money.savingPerYear.replace(/^about /, 'About '),
+      unit: 'a year, kept.',
+      note: 'An illustrative estimate. The working is below.',
+    },
+    // Short lead-in for the form that follows the receipts.
+    captureLabel: 'Get first access when subscriptions open.',
     money: {
       heading: 'Money',
       rows: [
@@ -113,7 +124,7 @@ export const landing = {
           item: `Home espresso, with grinding and cleanup. ${time.homeEspressoPerDay.replace(/^about/, 'About')} a day.`,
           amount: time.homeEspressoPerYear,
         },
-        { item: `${BRAND_NAME}. Opening a can.`, amount: '365 Moments' },
+        { item: `${BRAND_NAME}. Opening a can.`, amount: 'Moments' },
       ],
       total: { item: 'Either way', amount: time.eitherWay.replace(/ a year$/, '') },
     },
@@ -140,7 +151,9 @@ export const landing = {
 
   capture: {
     fieldLabel: 'Email address',
-    submitLabel: 'Notify me',
+    submitLabel: 'Get first access',
+    zipLabel: 'ZIP code',
+    flavorLabel: 'Most excited to try',
     successHeading: 'Noted.',
     successBody: 'You will hear from us once, when subscriptions open.',
     note: 'One email when subscriptions open. Nothing else.',
@@ -154,7 +167,7 @@ export const landing = {
       { q: 'What’s in your proprietary energy blend?', a: 'Caffeine.' },
       // Removed while the trademark application is pending (see rule.show):
       // { q: 'Why only six ingredients?', a: 'We couldn’t justify a seventh.' },
-      { q: `Why is it ${price.perCan.replace('.00', '')}?`, a: 'Carbonated water, organic fruit juices, caffeine from green coffee beans, L-theanine from green tea, and salt.' },
+      { q: `Why is it ${price.perCan.replace('.00', '')}?`, a: 'Organic juice.' },
       { q: 'Is this an energy drink?', a: 'Absolutely.' },
     ],
   },
