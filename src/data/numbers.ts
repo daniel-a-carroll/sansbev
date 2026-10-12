@@ -4,7 +4,7 @@
  * These are the verified figures from the brief. Do not re-derive or re-round
  * them in components: if a number changes, it changes here and nowhere else.
  * Display strings sit beside the raw values on purpose, so that a rounding
- * decision ("about $1,075", "about 57 hours") is made once, by a person, rather
+ * decision ("about $1,100", "about 57 hours") is made once, by a person, rather
  * than by whatever Math.round happens to do in a template.
  *
  * The savings and time figures are ILLUSTRATIVE ESTIMATES. Anywhere they are
@@ -75,8 +75,8 @@ export const money = {
   cafeDrinkWithTipPerYear: '$2,717',
   // $4.50 x 365 = $1,642.50, shown as $1,642 to match how $2,372.50 is shown.
   subscriberPerYear: '$1,642',
-  // $2,717 - $1,642 = $1,075.
-  savingPerYear: 'about $1,075',
+  // $2,717 - $1,642 = $1,075, rounded to about $1,100.
+  savingPerYear: 'about $1,100',
 } as const;
 
 export const time = {
